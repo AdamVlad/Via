@@ -6,12 +6,14 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-public class @MainPlayerInput : IInputActionCollection, IDisposable
+namespace Assets.Configs.InputSystem
 {
-    public InputActionAsset asset { get; }
-    public @MainPlayerInput()
+    public class @MainPlayerInput : IInputActionCollection, IDisposable
     {
-        asset = InputActionAsset.FromJson(@"{
+        public InputActionAsset asset { get; }
+        public @MainPlayerInput()
+        {
+            asset = InputActionAsset.FromJson(@"{
     ""name"": ""MainPlayerInput"",
     ""maps"": [
         {
@@ -100,98 +102,100 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
         }
     ]
 }");
+            // Actions
+            m_Actions = asset.FindActionMap("Actions", throwIfNotFound: true);
+            m_Actions_Walk = m_Actions.FindAction("Walk", throwIfNotFound: true);
+        }
+
+        public void Dispose()
+        {
+            UnityEngine.Object.Destroy(asset);
+        }
+
+        public InputBinding? bindingMask
+        {
+            get => asset.bindingMask;
+            set => asset.bindingMask = value;
+        }
+
+        public ReadOnlyArray<InputDevice>? devices
+        {
+            get => asset.devices;
+            set => asset.devices = value;
+        }
+
+        public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
+
+        public bool Contains(InputAction action)
+        {
+            return asset.Contains(action);
+        }
+
+        public IEnumerator<InputAction> GetEnumerator()
+        {
+            return asset.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public void Enable()
+        {
+            asset.Enable();
+        }
+
+        public void Disable()
+        {
+            asset.Disable();
+        }
+
         // Actions
-        m_Actions = asset.FindActionMap("Actions", throwIfNotFound: true);
-        m_Actions_Walk = m_Actions.FindAction("Walk", throwIfNotFound: true);
-    }
-
-    public void Dispose()
-    {
-        UnityEngine.Object.Destroy(asset);
-    }
-
-    public InputBinding? bindingMask
-    {
-        get => asset.bindingMask;
-        set => asset.bindingMask = value;
-    }
-
-    public ReadOnlyArray<InputDevice>? devices
-    {
-        get => asset.devices;
-        set => asset.devices = value;
-    }
-
-    public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
-
-    public bool Contains(InputAction action)
-    {
-        return asset.Contains(action);
-    }
-
-    public IEnumerator<InputAction> GetEnumerator()
-    {
-        return asset.GetEnumerator();
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
-    }
-
-    public void Enable()
-    {
-        asset.Enable();
-    }
-
-    public void Disable()
-    {
-        asset.Disable();
-    }
-
-    // Actions
-    private readonly InputActionMap m_Actions;
-    private IActionsActions m_ActionsActionsCallbackInterface;
-    private readonly InputAction m_Actions_Walk;
-    public struct ActionsActions
-    {
-        private @MainPlayerInput m_Wrapper;
-        public ActionsActions(@MainPlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Walk => m_Wrapper.m_Actions_Walk;
-        public InputActionMap Get() { return m_Wrapper.m_Actions; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(ActionsActions set) { return set.Get(); }
-        public void SetCallbacks(IActionsActions instance)
+        private readonly InputActionMap m_Actions;
+        private IActionsActions m_ActionsActionsCallbackInterface;
+        private readonly InputAction m_Actions_Walk;
+        public struct ActionsActions
         {
-            if (m_Wrapper.m_ActionsActionsCallbackInterface != null)
+            private @MainPlayerInput m_Wrapper;
+            public ActionsActions(@MainPlayerInput wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Walk => m_Wrapper.m_Actions_Walk;
+            public InputActionMap Get() { return m_Wrapper.m_Actions; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(ActionsActions set) { return set.Get(); }
+            public void SetCallbacks(IActionsActions instance)
             {
-                @Walk.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnWalk;
-                @Walk.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnWalk;
-                @Walk.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnWalk;
-            }
-            m_Wrapper.m_ActionsActionsCallbackInterface = instance;
-            if (instance != null)
-            {
-                @Walk.started += instance.OnWalk;
-                @Walk.performed += instance.OnWalk;
-                @Walk.canceled += instance.OnWalk;
+                if (m_Wrapper.m_ActionsActionsCallbackInterface != null)
+                {
+                    @Walk.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnWalk;
+                    @Walk.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnWalk;
+                    @Walk.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnWalk;
+                }
+                m_Wrapper.m_ActionsActionsCallbackInterface = instance;
+                if (instance != null)
+                {
+                    @Walk.started += instance.OnWalk;
+                    @Walk.performed += instance.OnWalk;
+                    @Walk.canceled += instance.OnWalk;
+                }
             }
         }
-    }
-    public ActionsActions @Actions => new ActionsActions(this);
-    private int m_KeyboardSchemeIndex = -1;
-    public InputControlScheme KeyboardScheme
-    {
-        get
+        public ActionsActions @Actions => new ActionsActions(this);
+        private int m_KeyboardSchemeIndex = -1;
+        public InputControlScheme KeyboardScheme
         {
-            if (m_KeyboardSchemeIndex == -1) m_KeyboardSchemeIndex = asset.FindControlSchemeIndex("Keyboard");
-            return asset.controlSchemes[m_KeyboardSchemeIndex];
+            get
+            {
+                if (m_KeyboardSchemeIndex == -1) m_KeyboardSchemeIndex = asset.FindControlSchemeIndex("Keyboard");
+                return asset.controlSchemes[m_KeyboardSchemeIndex];
+            }
         }
-    }
-    public interface IActionsActions
-    {
-        void OnWalk(InputAction.CallbackContext context);
+        public interface IActionsActions
+        {
+            void OnWalk(InputAction.CallbackContext context);
+        }
     }
 }
+
