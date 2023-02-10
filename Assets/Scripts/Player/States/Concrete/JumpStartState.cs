@@ -1,12 +1,17 @@
 using Assets.Scripts.Player.Data;
+using Assets.Scripts.Player.Settings;
 using DragonBones;
 using UnityEngine;
 
-namespace Assets.Scripts.Player.States
+namespace Assets.Scripts.Player.States.Concrete
 {
     public sealed class JumpStartState : StateBase
     {
-        public JumpStartState(GameObject character, StateMachine stateMachine, ref PlayerCollisionData collisionData) : base(character, stateMachine)
+        public JumpStartState(
+            GameObject character,
+            StateMachine stateMachine,
+            PlayerSettings settings, 
+            ref PlayerCollisionData collisionData) : base(character, stateMachine, settings)
         {
             _collisionData = collisionData;
 
@@ -17,8 +22,8 @@ namespace Assets.Scripts.Player.States
         public override void Enter()
         {
             _collisionData.OnGround = false;
-            _armature?.animation.FadeIn("JumpStart", 0.1f, 1);
-            _rigidbody?.AddForce(Vector2.up * 1000);
+            _armature?.animation.FadeIn(_settings.JumpStartAnimationName, _settings.JumpStartStateTransition, 1);
+            _rigidbody?.AddForce(Vector2.up * _settings.JumpForce);
         }
 
         public override void FixedUpdate()

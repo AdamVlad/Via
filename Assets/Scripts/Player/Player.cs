@@ -1,8 +1,11 @@
 using Assets.Scripts.Player.Components;
 using Assets.Scripts.Player.Components.Interfaces;
 using Assets.Scripts.Player.Data;
+using Assets.Scripts.Player.Settings;
 using Assets.Scripts.Player.States;
+using Assets.Scripts.Player.States.Concrete;
 using UnityEngine;
+using Zenject;
 
 namespace Assets.Scripts.Player
 {
@@ -24,7 +27,7 @@ namespace Assets.Scripts.Player
 
         private void FixedUpdate()
         {
-            if(_inputData.JumpButtonPressed && _collisionData.OnGround)
+            if (_inputData.JumpButtonPressed && _collisionData.OnGround)
             {
                 _stateMachine.ChangeState(_jumpStartState);
             }
@@ -32,11 +35,11 @@ namespace Assets.Scripts.Player
             {
                 _stateMachine.ChangeState(_flyingState);
             }
-            if(_inputData.WalkButtonPressed)
+            if (_inputData.WalkButtonPressed)
             {
                 _stateMachine.ChangeState(_walkState);
             }
-            else if(_collisionData.OnGround)
+            else if (_collisionData.OnGround)
             {
                 _stateMachine.ChangeState(_idleState);
             }
@@ -76,10 +79,10 @@ namespace Assets.Scripts.Player
 
             _stateMachine = new StateMachine();
 
-            _idleState = new IdleState(gameObject, _stateMachine, ref _collisionData);
-            _walkState = new WalkState(gameObject, _stateMachine, ref _inputData, ref _collisionData);
-            _jumpStartState = new JumpStartState(gameObject, _stateMachine, ref _collisionData);
-            _flyingState = new FlyingState(gameObject, _stateMachine);
+            _idleState = new IdleState(gameObject, _stateMachine, _settings, ref _collisionData);
+            _walkState = new WalkState(gameObject, _stateMachine, _settings,  ref _inputData, ref _collisionData);
+            _jumpStartState = new JumpStartState(gameObject, _stateMachine, _settings,  ref _collisionData);
+            _flyingState = new FlyingState(gameObject, _stateMachine, _settings);
 
             _stateMachine.Initialize(_idleState);
 
@@ -95,6 +98,8 @@ namespace Assets.Scripts.Player
 
         private PlayerInputData _inputData;
         private PlayerCollisionData _collisionData;
+
+        [Inject] private PlayerSettings _settings;
     }
 }
 

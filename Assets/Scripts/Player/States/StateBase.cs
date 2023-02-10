@@ -1,13 +1,18 @@
+using Assets.Scripts.Player.Settings;
 using UnityEngine;
 
 namespace Assets.Scripts.Player.States
 {
     public abstract class StateBase
     {
-        protected StateBase(GameObject character, StateMachine stateMachine)
+        protected StateBase(
+            GameObject character,
+            StateMachine stateMachine,
+            PlayerSettings settings)
         {
             _character = character;
             _stateMachine = stateMachine;
+            _settings = settings;
         }
 
         public virtual void Enter()
@@ -28,6 +33,7 @@ namespace Assets.Scripts.Player.States
 
         protected GameObject _character;
         protected StateMachine _stateMachine;
+        protected PlayerSettings _settings;
     }
 }
 
