@@ -1,4 +1,4 @@
-namespace Assets.Scripts.Player.Components
+namespace Assets.Scripts.Player.Components.Interfaces
 {
     public interface IInputComponent
     {

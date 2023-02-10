@@ -1,4 +1,4 @@
-﻿using Assets.Configs.InputSystem;
+﻿using Assets.Scripts.Player.Components.Interfaces;
 using Assets.Scripts.Player.Data;
 
 using UnityEngine;
@@ -18,16 +18,45 @@ namespace Assets.Scripts.Player.Components
 
         public void Start()
         {
-            _input.Actions.Walk.started += OnWalkingStarted;
-            _input.Actions.Walk.canceled += OnWalkingCanceled;
+            _input.Actions.Walk.started += OnWalkButtonPressed;
+            _input.Actions.Walk.canceled += OnWalkButtonReleased;
+
+            _input.Actions.Jump.started += OnJumpButtonPressed;
+            _input.Actions.Jump.canceled += OnJumpButtonReleased;
         }
 
         public void Destroy()
         {
-            _input.Actions.Walk.started -= OnWalkingStarted;
-            _input.Actions.Walk.canceled -= OnWalkingCanceled;
+            _input.Actions.Walk.started -= OnWalkButtonPressed;
+            _input.Actions.Walk.canceled -= OnWalkButtonReleased;
+
+            _input.Actions.Jump.started -= OnJumpButtonPressed;
+            _input.Actions.Jump.started -= OnJumpButtonReleased;
         }
 
+        private void OnWalkButtonPressed(InputAction.CallbackContext callbackContext)
+        {
+            _inputData.WalkButtonPressed = true;
+            _inputData.AxisXPressedValue = callbackContext.ReadValue<Vector2>().x;
+            _inputData.LeftWalkButtonPressed = _inputData.AxisXPressedValue < 0;
+        }
+
+        private void OnWalkButtonReleased(InputAction.CallbackContext callbackContext)
+        {
+            _inputData.WalkButtonPressed = false;
+        }
+
+        private void OnJumpButtonPressed(InputAction.CallbackContext callbackContext)
+        {
+            Debug.Log("Jump button pressed");
+            _inputData.JumpButtonPressed = true;
+        }
+
+        private void OnJumpButtonReleased(InputAction.CallbackContext callbackContext)
+        {
+            _inputData.JumpButtonPressed = false;
+        }
+        
         public void InputOn()
         {
             _input.Enable();
@@ -36,18 +65,6 @@ namespace Assets.Scripts.Player.Components
         public void InputOff()
         {
             _input.Disable();
-        }
-
-        private void OnWalkingStarted(InputAction.CallbackContext callbackContext)
-        {
-            _inputData.WalkButtonPressed = true;
-            _inputData.AxisXPressedValue = callbackContext.ReadValue<Vector2>().x;
-            _inputData.LeftWalkButtonPressed = _inputData.AxisXPressedValue < 0;
-        }
-
-        private void OnWalkingCanceled(InputAction.CallbackContext callbackContext)
-        {
-            _inputData.WalkButtonPressed = false;
         }
 
         private MainPlayerInput _input;

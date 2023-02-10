@@ -4,6 +4,8 @@ namespace Assets.Scripts.Player.Data
     {
         public bool WalkButtonPressed { get; set; }
 
+        public bool JumpButtonPressed { get; set; }
+
         public bool LeftWalkButtonPressed { get; set; }
 
         public float AxisXPressedValue { get; set; }
