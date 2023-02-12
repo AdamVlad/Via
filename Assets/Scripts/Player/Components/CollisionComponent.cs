@@ -6,7 +6,7 @@ namespace Assets.Scripts.Player.Components
 {
     public class CollisionComponent : ICollisionComponent
     {
-        public CollisionComponent(ref PlayerCollisionData collisionData)
+        public CollisionComponent(PlayerCollisionData collisionData)
         {
             _collisionData = collisionData;
         }

@@ -9,9 +9,8 @@ namespace Assets.Scripts.Player.States.Concrete
     {
         public IdleState(
             GameObject character,
-            StateMachine stateMachine,
             PlayerSettings settings, 
-            ref PlayerCollisionData collisionData) : base(character, stateMachine, settings)
+            PlayerCollisionData collisionData) : base(character, settings)
         {
             _armature = character.GetComponentInChildren<UnityArmatureComponent>();
             _rigidbody = character.GetComponent<Rigidbody2D>();

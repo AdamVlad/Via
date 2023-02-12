@@ -8,11 +8,9 @@ namespace Assets.Scripts.Player.States.Concrete
     public sealed class WalkState : StateBase
     {
         public WalkState(
-            GameObject character, 
-            StateMachine stateMachine,
+            GameObject character,
             PlayerSettings settings,
-            ref PlayerInputData inputData,
-            ref PlayerCollisionData collisionData) : base(character, stateMachine, settings)
+            PlayerInputData inputData, PlayerCollisionData collisionData) : base(character, settings)
         {
             _inputData = inputData;
             _collisionData = collisionData;

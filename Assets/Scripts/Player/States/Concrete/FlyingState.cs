@@ -8,8 +8,7 @@ namespace Assets.Scripts.Player.States.Concrete
     {
         public FlyingState(
             GameObject character,
-            StateMachine stateMachine,
-            PlayerSettings settings) : base(character, stateMachine, settings)
+            PlayerSettings settings) : base(character, settings)
         {
             _armature = character.GetComponentInChildren<UnityArmatureComponent>();
         }

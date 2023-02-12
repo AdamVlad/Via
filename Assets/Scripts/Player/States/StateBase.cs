@@ -7,11 +7,9 @@ namespace Assets.Scripts.Player.States
     {
         protected StateBase(
             GameObject character,
-            StateMachine stateMachine,
             PlayerSettings settings)
         {
             _character = character;
-            _stateMachine = stateMachine;
             _settings = settings;
         }
 
@@ -32,7 +30,6 @@ namespace Assets.Scripts.Player.States
         }
 
         protected GameObject _character;
-        protected StateMachine _stateMachine;
         protected PlayerSettings _settings;
     }
 }

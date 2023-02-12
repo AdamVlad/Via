@@ -10,7 +10,7 @@ namespace Assets.Scripts.Player.Components
     {
         public InputComponent(
             MainPlayerInput input,
-            ref PlayerInputData inputData)
+            PlayerInputData inputData)
         {
             _input = input;
             _inputData = inputData;
