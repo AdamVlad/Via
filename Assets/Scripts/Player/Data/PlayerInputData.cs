@@ -1,14 +1,59 @@
+using TMPro;
+
 namespace Assets.Scripts.Player.Data
 {
-    public class PlayerInputData
+    public class PlayerInputData : DataBase
     {
-        public bool WalkButtonPressed { get; set; }
+        private bool _walkButtonPressed;
+        public bool WalkButtonPressed
+        {
+            get => _walkButtonPressed;
+            set
+            {
+                if (_walkButtonPressed == value) return;
 
-        public bool JumpButtonPressed { get; set; }
+                _walkButtonPressed = value;
+                OnDataChanged();
+            }
+        }
 
-        public bool LeftWalkButtonPressed { get; set; }
+        private bool _jumpButtonPressed;
+        public bool JumpButtonPressed
+        {
+            get => _jumpButtonPressed;
+            set
+            {
+                if (_jumpButtonPressed == value) return;
 
-        public float AxisXPressedValue { get; set; }
+                _jumpButtonPressed = value;
+                OnDataChanged();
+            }
+        }
+
+        private bool _walkLeftButtonPressed;
+        public bool WalkLeftButtonPressed
+        {
+            get => _walkLeftButtonPressed;
+            set
+            {
+                if (_walkLeftButtonPressed == value) return;
+
+                _walkLeftButtonPressed = value;
+                OnDataChanged();
+            }
+        }
+
+        private float _axisXPressedValue;
+        public float AxisXPressedValue
+        {
+            get => _axisXPressedValue;
+            set
+            {
+                if (_axisXPressedValue == value) return;
+
+                _axisXPressedValue = value;
+                OnDataChanged();
+            }
+        }
     }
 }
-

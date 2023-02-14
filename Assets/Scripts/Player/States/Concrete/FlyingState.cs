@@ -15,9 +15,9 @@ namespace Assets.Scripts.Player.States.Concrete
 
         public override void Enter()
         {
-            _armature?.animation.FadeIn(_settings.FlyingAnimationName, _settings.FlyingStateTransition);
+            _armature.animation.FadeIn(_settings.FlyingAnimationName, _settings.FlyingStateTransition);
         }
 
-        private UnityArmatureComponent _armature;
+        private readonly UnityArmatureComponent _armature;
     }
 }

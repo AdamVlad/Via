@@ -1,11 +1,11 @@
-﻿using Assets.Scripts.Player.Data;
-
-namespace Assets.Scripts.Player.Components.Interfaces
+﻿namespace Assets.Scripts.Player.Components.Interfaces
 {
     public interface IStateComponent
     {
+        void OnEnable();
+        void OnDisable();
         void Start();
-        void FixedUpdate(ref PlayerInputData inputData, ref PlayerCollisionData collisionData);
+        void FixedUpdate();
         void Update();
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Assets.Scripts.Player.Settings;
 using UnityEngine;
 
@@ -9,6 +10,15 @@ namespace Assets.Scripts.Player.States
             GameObject character,
             PlayerSettings settings)
         {
+            if (character == null)
+            {
+                throw new NullReferenceException("StateBase: GameObject not set");
+            }
+            if (settings == null)
+            {
+                throw new NullReferenceException("StateBase: PlayerSettings not set");
+            }
+
             _character = character;
             _settings = settings;
         }

@@ -10,10 +10,11 @@ namespace Assets.Scripts.Player.States.Concrete
         public WalkState(
             GameObject character,
             PlayerSettings settings,
-            PlayerInputData inputData, PlayerCollisionData collisionData) : base(character, settings)
+            PlayerInputData inputData,
+            PlayerCollisionData collisionData) : base(character, settings)
         {
-            _inputData = inputData;
             _collisionData = collisionData;
+            _inputData = inputData;
 
             _armature = character.GetComponentInChildren<UnityArmatureComponent>();
             _rigidbody = character.GetComponent<Rigidbody2D>();
@@ -23,7 +24,7 @@ namespace Assets.Scripts.Player.States.Concrete
         {
             if (_armature == null) return;
 
-            _armature.armature.flipX = _inputData.LeftWalkButtonPressed;
+            _armature.armature.flipX = _inputData.WalkLeftButtonPressed;
 
             if (_collisionData.OnGround)
             {
@@ -33,14 +34,19 @@ namespace Assets.Scripts.Player.States.Concrete
 
         public override void FixedUpdate()
         {
-            _rigidbody?.AddForce(Vector2.right * _inputData.AxisXPressedValue * _settings.MaxSpeed);
+            _rigidbody.AddForce(Vector2.right * _inputData.AxisXPressedValue * _rigidbody.mass * _settings.MaxSpeed);
+
+            if (Mathf.Abs(_rigidbody.velocity.x) > _settings.MaxSpeed)
+            {
+                _rigidbody.velocity = _rigidbody.velocity.normalized * _settings.MaxSpeed;
+            }
         }
 
         private UnityArmatureComponent _armature;
         private Rigidbody2D _rigidbody;
 
-        private PlayerInputData _inputData;
         private PlayerCollisionData _collisionData;
+        private PlayerInputData _inputData;
     }
 }
 

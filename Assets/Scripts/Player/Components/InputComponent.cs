@@ -38,7 +38,7 @@ namespace Assets.Scripts.Player.Components
         {
             _inputData.WalkButtonPressed = true;
             _inputData.AxisXPressedValue = callbackContext.ReadValue<Vector2>().x;
-            _inputData.LeftWalkButtonPressed = _inputData.AxisXPressedValue < 0;
+            _inputData.WalkLeftButtonPressed = _inputData.AxisXPressedValue < 0;
         }
 
         private void OnWalkButtonReleased(InputAction.CallbackContext callbackContext)
@@ -48,7 +48,6 @@ namespace Assets.Scripts.Player.Components
 
         private void OnJumpButtonPressed(InputAction.CallbackContext callbackContext)
         {
-            Debug.Log("Jump button pressed");
             _inputData.JumpButtonPressed = true;
         }
 
@@ -67,7 +66,7 @@ namespace Assets.Scripts.Player.Components
             _input.Disable();
         }
 
-        private MainPlayerInput _input;
-        private PlayerInputData _inputData;
+        private readonly MainPlayerInput _input;
+        private readonly PlayerInputData _inputData;
     }
 }

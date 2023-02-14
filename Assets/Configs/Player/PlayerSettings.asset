@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 570b217ab8c2a5249968483d314a0491, type: 3}
   m_Name: PlayerSettings
   m_EditorClassIdentifier: 
-  _maxSpeed: 30
-  _jumpForce: 500
+  _maxSpeed: 15
+  _jumpForce: 1000
   _idleAnimationName: Idle
   _idleStateTransition: 0.1
   _walkAnimationName: Walk

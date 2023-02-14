@@ -29,16 +29,15 @@ namespace Assets.Scripts.Infrastructure
         public override void InstallBindings()
         {
             InstallPlayerPrefab();
-
             InstallSettings();
-
             InstallData();
-
             InstallStates();
 
             InstallInputComponent();
             InstallCollisionComponent();
             InstallStateComponent();
+
+            Container.Bind<IPhysicComponent>().To<PhysicComponent>().AsSingle();
         }
 
         private void InstallStateComponent()
@@ -77,6 +76,7 @@ namespace Assets.Scripts.Infrastructure
         {
             Container.Bind<PlayerInputData>().AsSingle();
             Container.Bind<PlayerCollisionData>().AsSingle();
+            Container.Bind<PlayerPhysicData>().AsSingle();
         }
 
         private void InstallSettings()

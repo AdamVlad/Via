@@ -24,11 +24,10 @@ namespace Assets.Scripts.Player.Components
             if (collision.gameObject.CompareTag("Ground"))
             {
                 _collisionData.OnGround = false;
-                _collisionData.Flying = false;
             }
         }
 
-        private PlayerCollisionData _collisionData;
+        private readonly PlayerCollisionData _collisionData;
     }
 }
 

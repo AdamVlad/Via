@@ -4,16 +4,14 @@ namespace Assets.Scripts.Player.States
     {
         public StateBase CurrentState { get; private set; }
 
-        public void Initialize(StateBase startState)
+        public void Initialize(ref StateBase startState)
         {
             CurrentState = startState;
             CurrentState.Enter();
         }
 
-        public void ChangeState(StateBase newState)
+        public void ChangeState(ref StateBase newState)
         {
-            if (newState == CurrentState) return;
-
             CurrentState.Exit();
             CurrentState = newState;
             CurrentState.Enter();

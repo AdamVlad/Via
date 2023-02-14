@@ -1,4 +1,3 @@
-using Assets.Scripts.Player.Data;
 using Assets.Scripts.Player.Settings;
 using DragonBones;
 using UnityEngine;
@@ -9,13 +8,10 @@ namespace Assets.Scripts.Player.States.Concrete
     {
         public IdleState(
             GameObject character,
-            PlayerSettings settings, 
-            PlayerCollisionData collisionData) : base(character, settings)
+            PlayerSettings settings) : base(character, settings)
         {
             _armature = character.GetComponentInChildren<UnityArmatureComponent>();
             _rigidbody = character.GetComponent<Rigidbody2D>();
-
-            _collisionData = collisionData;
         }
 
         public override void Enter()
@@ -24,14 +20,9 @@ namespace Assets.Scripts.Player.States.Concrete
 
             _armature.animation.FadeIn(_settings.IdleAnimationName, _settings.IdleStateTransition);
             _rigidbody.velocity = Vector3.zero;
-
-            _collisionData.OnGround = true;
-            _collisionData.Flying = false;
         }
 
-        private PlayerCollisionData _collisionData;
-
-        private UnityArmatureComponent _armature;
-        private Rigidbody2D _rigidbody;
+        private readonly UnityArmatureComponent _armature;
+        private readonly Rigidbody2D _rigidbody;
     }
 }

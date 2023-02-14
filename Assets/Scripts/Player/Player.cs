@@ -1,5 +1,4 @@
 using Assets.Scripts.Player.Components.Interfaces;
-using Assets.Scripts.Player.Data;
 using UnityEngine;
 using Zenject;
 
@@ -13,33 +12,31 @@ namespace Assets.Scripts.Player
             IInputComponent inputComponent,
             ICollisionComponent collisionComponent,
             IStateComponent stateComponent,
-            PlayerInputData inputData,
-            PlayerCollisionData collisionData)
+            IPhysicComponent physicComponent)
         {
             _inputComponent = inputComponent;
             _collisionComponent = collisionComponent;
             _stateComponent = stateComponent;
-
-            _inputData = inputData;
-            _collisionData = collisionData;
+            _physicComponent = physicComponent;
         }
 
         private void OnEnable()
         {
             _inputComponent?.InputOn();
+            _stateComponent.OnEnable();
         }
 
         private void Start()
         {
             _inputComponent.Start();
             _inputComponent.InputOn();
-
             _stateComponent.Start();
         }
 
         private void FixedUpdate()
         {
-            _stateComponent.FixedUpdate(ref _inputData, ref _collisionData);
+            _physicComponent.FixedUpdate();
+            _stateComponent.FixedUpdate();
         }
 
         private void Update()
@@ -60,6 +57,7 @@ namespace Assets.Scripts.Player
         private void OnDisable()
         {
             _inputComponent?.InputOff();
+            _stateComponent?.OnDisable();
         }
 
         private void OnDestroy()
@@ -70,9 +68,7 @@ namespace Assets.Scripts.Player
         private IInputComponent _inputComponent;
         private ICollisionComponent _collisionComponent;
         private IStateComponent _stateComponent;
-
-        private PlayerInputData _inputData;
-        private PlayerCollisionData _collisionData;
+        private IPhysicComponent _physicComponent;
     }
 }
 
