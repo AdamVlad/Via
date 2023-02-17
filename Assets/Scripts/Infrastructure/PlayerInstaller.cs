@@ -1,9 +1,8 @@
-﻿using Assets.Scripts.Player.Components;
+﻿using Assets.Scripts.Player;
+using Assets.Scripts.Player.Components;
 using Assets.Scripts.Player.Components.Interfaces;
 using Assets.Scripts.Player.Data;
 using Assets.Scripts.Player.Settings;
-using Assets.Scripts.Player.States;
-using Assets.Scripts.Player.States.Concrete;
 using UnityEngine;
 using Zenject;
 
@@ -31,30 +30,13 @@ namespace Assets.Scripts.Infrastructure
             InstallPlayerPrefab();
             InstallSettings();
             InstallData();
-            InstallStates();
+            InstallEventBus();
 
             InstallInputComponent();
             InstallCollisionComponent();
             InstallStateComponent();
-
-            Container.Bind<IPhysicComponent>().To<PhysicComponent>().AsSingle();
-        }
-
-        private void InstallStateComponent()
-        {
-            Container.Bind<IStateComponent>().To<StateComponent>().AsSingle();
-        }
-
-        private void InstallCollisionComponent()
-        {
-            Container.Bind<ICollisionComponent>().To<CollisionComponent>().AsSingle();
-        }
-
-        private void InstallInputComponent()
-        {
-            Container.Bind<MainPlayerInput>().AsSingle();
-
-            Container.Bind<IInputComponent>().To<InputComponent>().AsSingle();
+            InstallAnimationComponent();
+            InstallPhysicComponent();
         }
 
         private void InstallPlayerPrefab()
@@ -62,26 +44,47 @@ namespace Assets.Scripts.Infrastructure
             Container.Bind<GameObject>().FromInstance(_playerPrefab).AsSingle();
         }
 
-        private void InstallStates()
+        private void InstallSettings()
         {
-            Container.Bind<StateBase>().WithId("PlayerIdleState").To<IdleState>().AsSingle();
-            Container.Bind<StateBase>().WithId("PlayerWalkState").To<WalkState>().AsSingle();
-            Container.Bind<StateBase>().WithId("PlayerJumpStartState").To<JumpStartState>().AsSingle();
-            Container.Bind<StateBase>().WithId("PlayerFlyingState").To<FlyingState>().AsSingle();
-
-            Container.Bind<StateMachine>().AsSingle();
+            Container.Bind<PlayerSettings>().FromScriptableObject(_playerSettings).AsSingle();
         }
 
         private void InstallData()
         {
-            Container.Bind<PlayerInputData>().AsSingle();
-            Container.Bind<PlayerCollisionData>().AsSingle();
-            Container.Bind<PlayerPhysicData>().AsSingle();
+            Container.Bind<InputData>().AsSingle();
+            Container.Bind<CollisionData>().AsSingle();
+            Container.Bind<PhysicData>().AsSingle();
         }
 
-        private void InstallSettings()
+        private void InstallEventBus()
         {
-            Container.Bind<PlayerSettings>().FromScriptableObject(_playerSettings).AsSingle();
+            Container.Bind<IEventBus<PLayerStates>>().To<EventBus<PLayerStates>>().AsSingle();
+        }
+
+        private void InstallInputComponent()
+        {
+            Container.Bind<MainPlayerInput>().AsSingle();
+            Container.Bind<IInputComponent>().To<InputComponent>().AsSingle();
+        }
+
+        private void InstallCollisionComponent()
+        {
+            Container.Bind<ICollisionComponent>().To<CollisionComponent>().AsSingle();
+        }
+
+        private void InstallStateComponent()
+        {
+            Container.Bind<IStateComponent>().To<StateComponent>().AsSingle();
+        }
+
+        private void InstallAnimationComponent()
+        {
+            Container.Bind<IAnimationComponent>().To<AnimationComponent>().AsSingle();
+        }
+
+        private void InstallPhysicComponent()
+        {
+            Container.Bind<IPhysicComponent>().To<PhysicComponent>().AsSingle();
         }
     }
 }

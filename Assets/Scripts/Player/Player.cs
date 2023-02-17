@@ -10,11 +10,13 @@ namespace Assets.Scripts.Player
         [Inject]
         private void Construct(
             IInputComponent inputComponent,
+            IAnimationComponent animationComponent,
             ICollisionComponent collisionComponent,
             IStateComponent stateComponent,
             IPhysicComponent physicComponent)
         {
             _inputComponent = inputComponent;
+            _animationComponent = animationComponent;
             _collisionComponent = collisionComponent;
             _stateComponent = stateComponent;
             _physicComponent = physicComponent;
@@ -23,25 +25,20 @@ namespace Assets.Scripts.Player
         private void OnEnable()
         {
             _inputComponent?.InputOn();
+            _animationComponent.OnEnable();
             _stateComponent.OnEnable();
+            _physicComponent.OnEnable();
         }
 
         private void Start()
         {
             _inputComponent.Start();
-            _inputComponent.InputOn();
-            _stateComponent.Start();
+            _inputComponent.InputOn();  
         }
 
         private void FixedUpdate()
         {
             _physicComponent.FixedUpdate();
-            _stateComponent.FixedUpdate();
-        }
-
-        private void Update()
-        {
-            _stateComponent.Update();
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -57,17 +54,20 @@ namespace Assets.Scripts.Player
         private void OnDisable()
         {
             _inputComponent?.InputOff();
-            _stateComponent?.OnDisable();
+            _animationComponent.OnDisable();
+            _stateComponent.OnDisable();
+            _physicComponent.OnDisable();
         }
 
         private void OnDestroy()
         {
             _inputComponent.Destroy();
         }
-
+        
         private IInputComponent _inputComponent;
-        private ICollisionComponent _collisionComponent;
+        private IAnimationComponent _animationComponent;
         private IStateComponent _stateComponent;
+        private ICollisionComponent _collisionComponent;
         private IPhysicComponent _physicComponent;
     }
 }

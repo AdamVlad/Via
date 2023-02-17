@@ -1,7 +1,5 @@
 ﻿using Assets.Scripts.Player.Components.Interfaces;
 using Assets.Scripts.Player.Data;
-
-using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Assets.Scripts.Player.Components
@@ -10,7 +8,7 @@ namespace Assets.Scripts.Player.Components
     {
         public InputComponent(
             MainPlayerInput input,
-            PlayerInputData inputData)
+            InputData inputData)
         {
             _input = input;
             _inputData = inputData;
@@ -18,32 +16,46 @@ namespace Assets.Scripts.Player.Components
 
         public void Start()
         {
-            _input.Actions.Walk.started += OnWalkButtonPressed;
-            _input.Actions.Walk.canceled += OnWalkButtonReleased;
+            _input.Actions.MoveLeft.started += OnMoveLeftButtonPressed;
+            _input.Actions.MoveLeft.canceled += OnMoveLeftButtonCanceled;
+
+            _input.Actions.MoveRight.started += OnMoveRightButtonPressed;
+            _input.Actions.MoveRight.canceled += OnMoveRightButtonCanceled;
 
             _input.Actions.Jump.started += OnJumpButtonPressed;
-            _input.Actions.Jump.canceled += OnJumpButtonReleased;
+            _input.Actions.Jump.canceled += OnJumpButtonCanceled;
         }
 
         public void Destroy()
         {
-            _input.Actions.Walk.started -= OnWalkButtonPressed;
-            _input.Actions.Walk.canceled -= OnWalkButtonReleased;
+            _input.Actions.MoveLeft.started -= OnMoveLeftButtonPressed;
+            _input.Actions.MoveLeft.canceled -= OnMoveLeftButtonCanceled;
+
+            _input.Actions.MoveRight.started -= OnMoveRightButtonPressed;
+            _input.Actions.MoveRight.canceled -= OnMoveRightButtonCanceled;
 
             _input.Actions.Jump.started -= OnJumpButtonPressed;
-            _input.Actions.Jump.started -= OnJumpButtonReleased;
+            _input.Actions.Jump.canceled -= OnJumpButtonCanceled;
         }
 
-        private void OnWalkButtonPressed(InputAction.CallbackContext callbackContext)
+        private void OnMoveLeftButtonPressed(InputAction.CallbackContext callbackContext)
         {
-            _inputData.WalkButtonPressed = true;
-            _inputData.AxisXPressedValue = callbackContext.ReadValue<Vector2>().x;
-            _inputData.WalkLeftButtonPressed = _inputData.AxisXPressedValue < 0;
+            _inputData.MoveLeftButtonPressed = true;
         }
 
-        private void OnWalkButtonReleased(InputAction.CallbackContext callbackContext)
+        private void OnMoveLeftButtonCanceled(InputAction.CallbackContext callbackContext)
         {
-            _inputData.WalkButtonPressed = false;
+            _inputData.MoveLeftButtonPressed = false;
+        }
+
+        private void OnMoveRightButtonPressed(InputAction.CallbackContext callbackContext)
+        {
+            _inputData.MoveRightButtonPressed = true;
+        }
+
+        private void OnMoveRightButtonCanceled(InputAction.CallbackContext callbackContext)
+        {
+            _inputData.MoveRightButtonPressed = false;
         }
 
         private void OnJumpButtonPressed(InputAction.CallbackContext callbackContext)
@@ -51,7 +63,7 @@ namespace Assets.Scripts.Player.Components
             _inputData.JumpButtonPressed = true;
         }
 
-        private void OnJumpButtonReleased(InputAction.CallbackContext callbackContext)
+        private void OnJumpButtonCanceled(InputAction.CallbackContext callbackContext)
         {
             _inputData.JumpButtonPressed = false;
         }
@@ -67,6 +79,6 @@ namespace Assets.Scripts.Player.Components
         }
 
         private readonly MainPlayerInput _input;
-        private readonly PlayerInputData _inputData;
+        private readonly InputData _inputData;
     }
 }

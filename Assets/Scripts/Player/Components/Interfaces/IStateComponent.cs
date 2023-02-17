@@ -4,9 +4,6 @@
     {
         void OnEnable();
         void OnDisable();
-        void Start();
-        void FixedUpdate();
-        void Update();
     }
 }
 

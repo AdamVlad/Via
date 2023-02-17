@@ -6,7 +6,7 @@ namespace Assets.Scripts.Player.Components
 {
     public class CollisionComponent : ICollisionComponent
     {
-        public CollisionComponent(PlayerCollisionData collisionData)
+        public CollisionComponent(CollisionData collisionData)
         {
             _collisionData = collisionData;
         }
@@ -27,7 +27,7 @@ namespace Assets.Scripts.Player.Components
             }
         }
 
-        private readonly PlayerCollisionData _collisionData;
+        private readonly CollisionData _collisionData;
     }
 }
 

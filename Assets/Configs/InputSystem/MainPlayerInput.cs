@@ -33,6 +33,22 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""MoveRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""2ed76d89-44a1-40ee-a1f6-cf64c8a8ae10"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""MoveLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""8a91f9dc-ef34-4b5a-9599-62be249b8299"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -101,6 +117,28 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
                     ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1884574e-b836-40cb-8afd-7abf533d0cda"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""MoveRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c8b45800-ec8a-450e-97b1-6ac0b5ac9546"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""MoveLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -123,6 +161,8 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
         m_Actions = asset.FindActionMap("Actions", throwIfNotFound: true);
         m_Actions_Jump = m_Actions.FindAction("Jump", throwIfNotFound: true);
         m_Actions_Walk = m_Actions.FindAction("Walk", throwIfNotFound: true);
+        m_Actions_MoveRight = m_Actions.FindAction("MoveRight", throwIfNotFound: true);
+        m_Actions_MoveLeft = m_Actions.FindAction("MoveLeft", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -174,12 +214,16 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
     private IActionsActions m_ActionsActionsCallbackInterface;
     private readonly InputAction m_Actions_Jump;
     private readonly InputAction m_Actions_Walk;
+    private readonly InputAction m_Actions_MoveRight;
+    private readonly InputAction m_Actions_MoveLeft;
     public struct ActionsActions
     {
         private @MainPlayerInput m_Wrapper;
         public ActionsActions(@MainPlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Jump => m_Wrapper.m_Actions_Jump;
         public InputAction @Walk => m_Wrapper.m_Actions_Walk;
+        public InputAction @MoveRight => m_Wrapper.m_Actions_MoveRight;
+        public InputAction @MoveLeft => m_Wrapper.m_Actions_MoveLeft;
         public InputActionMap Get() { return m_Wrapper.m_Actions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -195,6 +239,12 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
                 @Walk.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnWalk;
                 @Walk.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnWalk;
                 @Walk.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnWalk;
+                @MoveRight.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnMoveRight;
+                @MoveRight.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnMoveRight;
+                @MoveRight.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnMoveRight;
+                @MoveLeft.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnMoveLeft;
+                @MoveLeft.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnMoveLeft;
+                @MoveLeft.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnMoveLeft;
             }
             m_Wrapper.m_ActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -205,6 +255,12 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
                 @Walk.started += instance.OnWalk;
                 @Walk.performed += instance.OnWalk;
                 @Walk.canceled += instance.OnWalk;
+                @MoveRight.started += instance.OnMoveRight;
+                @MoveRight.performed += instance.OnMoveRight;
+                @MoveRight.canceled += instance.OnMoveRight;
+                @MoveLeft.started += instance.OnMoveLeft;
+                @MoveLeft.performed += instance.OnMoveLeft;
+                @MoveLeft.canceled += instance.OnMoveLeft;
             }
         }
     }
@@ -222,5 +278,7 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
     {
         void OnJump(InputAction.CallbackContext context);
         void OnWalk(InputAction.CallbackContext context);
+        void OnMoveRight(InputAction.CallbackContext context);
+        void OnMoveLeft(InputAction.CallbackContext context);
     }
 }

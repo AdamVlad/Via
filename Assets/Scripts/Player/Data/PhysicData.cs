@@ -1,6 +1,6 @@
 namespace Assets.Scripts.Player.Data
 {
-    public class PlayerPhysicData : DataBase
+    public class PhysicData : DataBase
     {
         private bool _falling;
         public bool Falling
