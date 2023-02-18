@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Player.Components;
-using Assets.Scripts.Player.ComponentsData;
+﻿using Assets.Scripts.Player.ComponentsData;
 
 namespace Assets.Scripts.Patterns.Observer
 {

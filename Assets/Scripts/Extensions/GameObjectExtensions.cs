@@ -9,5 +9,10 @@ namespace Assets.Scripts.Extensions
         {
             return gameObject.GetComponent<T>() ?? throw new NullReferenceException($"Game object {gameObject.name} does not have component {typeof(T)}");
         }
+
+        public static T GetComponentInChildrenOrThrowException<T>(this GameObject gameObject) where T : Component
+        {
+            return gameObject.GetComponentInChildren<T>() ?? throw new NullReferenceException($"Game object {gameObject.name} does not have component {typeof(T)} in own child part");
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
-using Assets.Scripts.Patterns;
+using Assets.Scripts.Extensions;
+using Assets.Scripts.Patterns.EventBus;
 using Assets.Scripts.Player.Components.Base;
 using DragonBones;
 using UnityEngine;
@@ -13,7 +14,7 @@ namespace Assets.Scripts.Player.Components
             GameObject character,
             PlayerSettings settings) : base(eventBus)
         {
-            _armature = character.GetComponentInChildren<UnityArmatureComponent>() ?? throw new NullReferenceException("AnimationComponent: UnityArmatureComponent is null");
+            _armature = character.GetComponentInChildrenOrThrowException<UnityArmatureComponent>();
             _settings = settings ?? throw new NullReferenceException("PlayerSettings is null");
         }
 

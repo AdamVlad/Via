@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Patterns;
+﻿using Assets.Scripts.Patterns.EventBus;
 using Assets.Scripts.Patterns.Observer;
 using Assets.Scripts.Player.ComponentsData;
 

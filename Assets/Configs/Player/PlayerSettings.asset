@@ -14,6 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxSpeed: 15
   _jumpForce: 1000
+  _topRayLength: 0.8
+  _bottomRayLength: 0.3
+  _leftRayLength: 1
+  _rightRayLength: 1
   _idleAnimationName: Idle
   _idleStateTransition: 0.1
   _walkAnimationName: Walk

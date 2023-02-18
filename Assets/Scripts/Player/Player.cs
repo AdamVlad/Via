@@ -1,4 +1,5 @@
-using Assets.Scripts.Player.Components.Base;
+using Assets.Scripts.Extensions;
+using Assets.Scripts.Player.Components;
 using UnityEngine;
 using Zenject;
 
@@ -9,16 +10,23 @@ namespace Assets.Scripts.Player
     {
         [Inject]
         private void Construct(
-            [Inject(Id = "inputComponent")] ComponentBase inputComponent,
-            [Inject(Id = "animationComponent")] ComponentBase animationComponent,
-            [Inject(Id = "stateComponent")] ComponentBase stateComponent,
-            [Inject(Id = "jumpComponent")] ComponentBase jumpComponent)
+            InputComponent inputComponent,
+            AnimationComponent animationComponent,
+            StateComponent stateComponent,
+            JumpComponent jumpComponent,
+            CollisionComponent collisionComponent)
         {
             _inputComponent = inputComponent;
             _animationComponent = animationComponent;
             _stateComponent = stateComponent;
             _jumpComponent = jumpComponent;
+            _collisionComponent = collisionComponent;
         }
+
+        [SerializeField] private Transform _bottomRightRayPoint;
+        [SerializeField] private Transform _bottomLeftRayPoint;
+        [SerializeField] private Transform _topLeftRayPoint;
+        [SerializeField] private Transform _topRightRayPoint;
 
         private void OnEnable()
         {
@@ -26,6 +34,7 @@ namespace Assets.Scripts.Player
             _animationComponent.Activate();
             _stateComponent.Activate();
             _jumpComponent.Activate();
+            _collisionComponent.Activate();
         }
 
         private void OnDisable()
@@ -34,12 +43,31 @@ namespace Assets.Scripts.Player
             _animationComponent.Deactivate();
             _stateComponent.Deactivate();
             _jumpComponent.Deactivate();
+            _collisionComponent.Deactivate();
         }
 
-        private ComponentBase _inputComponent;
-        private ComponentBase _animationComponent;
-        private ComponentBase _stateComponent;
-        private ComponentBase _jumpComponent;
+        private void Awake()
+        {
+            _bottomRightRayPoint.IfNullThrowException();
+            _bottomLeftRayPoint.IfNullThrowException();
+            _topLeftRayPoint.IfNullThrowException();
+            _topRightRayPoint.IfNullThrowException();
+        }
+
+        private void Start()
+        {
+            _collisionComponent.Start(
+                _bottomRightRayPoint, 
+                _bottomLeftRayPoint, 
+                _topLeftRayPoint, 
+                _topRightRayPoint);
+        }
+
+        private InputComponent _inputComponent;
+        private AnimationComponent _animationComponent;
+        private StateComponent _stateComponent;
+        private JumpComponent _jumpComponent;
+        private CollisionComponent _collisionComponent;
     }
 }
 

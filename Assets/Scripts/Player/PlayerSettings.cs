@@ -20,6 +20,27 @@ namespace Assets.Scripts.Player
 
         #endregion
 
+        #region Collisions
+
+        [Header("Collisions")]
+        [Space]
+
+        [SerializeField, Range(0,5)] private float _topRayLength ;
+        public float TopRayLength => _topRayLength;
+
+        [SerializeField, Range(0, 5)] private float _bottomRayLength;
+        public float BottomRayLength => _bottomRayLength;
+
+        [SerializeField, Range(0, 5)] private float _leftRayLength;
+        public float LeftRayLength => _leftRayLength;
+
+        [SerializeField, Range(0, 5)] private float _rightRayLength;
+        public float RightRayLength => _rightRayLength;
+
+        [Space]
+
+        #endregion
+
         #region Animation
 
         [Header("Animation")]

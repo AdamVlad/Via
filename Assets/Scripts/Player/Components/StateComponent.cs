@@ -1,8 +1,7 @@
-﻿using Assets.Scripts.Patterns;
+﻿using Assets.Scripts.Patterns.EventBus;
 using Assets.Scripts.Player.Components.Base;
 using Assets.Scripts.Player.ComponentsData;
 using Assets.Scripts.Patterns.Observer;
-using Zenject;
 
 namespace Assets.Scripts.Player.Components
 {
@@ -10,9 +9,9 @@ namespace Assets.Scripts.Player.Components
     {
         public StateComponent(
             IEventBus<PlayerStates> eventBus,
-            [Inject(Id = "inputComponent")] ComponentBase inputComponent) : base(eventBus)
+            InputComponent inputComponent) : base(eventBus)
         {
-            _observable = inputComponent as ObservableComponentDecorator;
+            _observable = inputComponent;
         }
 
         protected override void ActivateInternal()
@@ -54,7 +53,6 @@ namespace Assets.Scripts.Player.Components
                 _eventBus.RaiseEvent(PlayerStates.MoveRight);
                 return;
             }
-
             if (!inputData.MoveLeftButtonPressed &&
                 !inputData.MoveRightButtonPressed &&
                 !inputData.JumpButtonPressed)

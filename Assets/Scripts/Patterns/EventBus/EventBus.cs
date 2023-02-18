@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine.Events;
 
-namespace Assets.Scripts.Patterns
+namespace Assets.Scripts.Patterns.EventBus
 {
     public class EventBus<TEvent> : IEventBus<TEvent>
     {

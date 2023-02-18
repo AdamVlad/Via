@@ -1,6 +1,7 @@
-﻿using Assets.Scripts.Patterns;
-using Assets.Scripts.Player.Components.Base;
+﻿using Assets.Scripts.Player.Components.Base;
 using Assets.Scripts.Player.ComponentsData;
+using System;
+using Assets.Scripts.Patterns.EventBus;
 using UnityEngine.InputSystem;
 
 namespace Assets.Scripts.Player.Components
@@ -11,7 +12,7 @@ namespace Assets.Scripts.Player.Components
             MainPlayerInput input,
             IEventBus<PlayerStates> eventBus) : base(eventBus)
         {
-            _input = input;
+            _input = input ?? throw new NullReferenceException("MainPlayerInput is null");
         }
 
         protected override void ActivateInternal()

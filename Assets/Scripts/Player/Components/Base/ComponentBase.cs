@@ -1,5 +1,5 @@
 using System;
-using Assets.Scripts.Patterns;
+using Assets.Scripts.Patterns.EventBus;
 using Assets.Scripts.Player.Components.Interfaces;
 
 namespace Assets.Scripts.Player.Components.Base

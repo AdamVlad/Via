@@ -1,7 +1,6 @@
-﻿using Assets.Scripts.Patterns;
+﻿using Assets.Scripts.Patterns.EventBus;
 using Assets.Scripts.Player;
 using Assets.Scripts.Player.Components;
-using Assets.Scripts.Player.Components.Base;
 using UnityEngine;
 using Zenject;
 
@@ -34,6 +33,7 @@ namespace Assets.Scripts.Infrastructure
             InstallStateComponent();
             InstallAnimationComponent();
             InstallJumpComponent();
+            InstallCollisionComponent();
         }
 
         private void InstallPlayerPrefab()
@@ -54,22 +54,27 @@ namespace Assets.Scripts.Infrastructure
         private void InstallInputComponent()
         {
             Container.Bind<MainPlayerInput>().AsSingle();
-            Container.Bind<ComponentBase>().WithId("inputComponent").To<InputComponent>().AsSingle();
+            Container.Bind<InputComponent>().AsSingle();
         }
 
         private void InstallStateComponent()
         {
-            Container.Bind<ComponentBase>().WithId("stateComponent").To<StateComponent>().AsSingle();
+            Container.Bind<StateComponent>().AsSingle();
         }
 
         private void InstallAnimationComponent()
         {
-            Container.Bind<ComponentBase>().WithId("animationComponent").To<AnimationComponent>().AsSingle();
+            Container.Bind<AnimationComponent>().AsSingle();
         }
 
         private void InstallJumpComponent()
         {
-            Container.Bind<ComponentBase>().WithId("jumpComponent").To<JumpComponent>().AsSingle();
+            Container.Bind<JumpComponent>().AsSingle();
+        }
+
+        private void InstallCollisionComponent()
+        {
+            Container.Bind(typeof(CollisionComponent), typeof(IFixedTickable)).To<CollisionComponent>().AsSingle();
         }
     }
 }

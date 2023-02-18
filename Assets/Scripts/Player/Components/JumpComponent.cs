@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Extensions;
-using Assets.Scripts.Patterns;
 using Assets.Scripts.Player.Components.Base;
 using System;
+using Assets.Scripts.Patterns.EventBus;
 using UnityEngine;
 
 namespace Assets.Scripts.Player.Components

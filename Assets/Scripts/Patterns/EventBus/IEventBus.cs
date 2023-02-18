@@ -1,6 +1,6 @@
 ﻿using UnityEngine.Events;
 
-namespace Assets.Scripts.Patterns
+namespace Assets.Scripts.Patterns.EventBus
 {
     public interface IEventBus<in TEvent>
     {
