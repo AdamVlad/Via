@@ -1,41 +1,40 @@
 ﻿using System;
-using Assets.Scripts.Player.Components.Interfaces;
-using Assets.Scripts.Player.Settings;
+using Assets.Scripts.Patterns;
+using Assets.Scripts.Player.Components.Base;
 using DragonBones;
 using UnityEngine;
 
 namespace Assets.Scripts.Player.Components
 {
-    public class AnimationComponent : IAnimationComponent
+    public sealed class AnimationComponent : ComponentBase
     {
         public AnimationComponent(
+            IEventBus<PlayerStates> eventBus,
             GameObject character,
-            IEventBus<PLayerStates> eventBus,
-            PlayerSettings settings)
+            PlayerSettings settings) : base(eventBus)
         {
-            _armature = character.GetComponentInChildren<UnityArmatureComponent>() ?? throw new NullReferenceException("AnimationComponent: UnityArmatureComponent is null"); ;
-            _eventBus = eventBus ?? throw new NullReferenceException("AnimationComponent: IEventBus<PLayerStates> is null");
-            _settings = settings ?? throw new NullReferenceException("AnimationComponent: PlayerSettings is null");
+            _armature = character.GetComponentInChildren<UnityArmatureComponent>() ?? throw new NullReferenceException("AnimationComponent: UnityArmatureComponent is null");
+            _settings = settings ?? throw new NullReferenceException("PlayerSettings is null");
         }
 
-        public void OnEnable()
+        protected override void ActivateInternal()
         {
-            _eventBus.Subscribe(PLayerStates.Idle, PlayIdleAnimation);
-            _eventBus.Subscribe(PLayerStates.MoveLeft, PlayMoveAnimation);
-            _eventBus.Subscribe(PLayerStates.MoveRight, PlayMoveAnimation);
-            _eventBus.Subscribe(PLayerStates.JumpStart, PlayJumpStartAnimation);
-            _eventBus.Subscribe(PLayerStates.Fly, PlayFlyingAnimation);
-            _eventBus.Subscribe(PLayerStates.Flip, PlayFlipAnimation);
+            _eventBus.Subscribe(PlayerStates.Idle, PlayIdleAnimation);
+            _eventBus.Subscribe(PlayerStates.MoveLeft, PlayMoveAnimation);
+            _eventBus.Subscribe(PlayerStates.MoveRight, PlayMoveAnimation);
+            _eventBus.Subscribe(PlayerStates.JumpStart, PlayJumpStartAnimation);
+            _eventBus.Subscribe(PlayerStates.Fly, PlayFlyingAnimation);
+            _eventBus.Subscribe(PlayerStates.Flip, PlayFlipAnimation);
         }
 
-        public void OnDisable()
+        protected override void DeactivateInternal()
         {
-            _eventBus.Unsubscribe(PLayerStates.Idle, PlayIdleAnimation);
-            _eventBus.Unsubscribe(PLayerStates.MoveLeft, PlayMoveAnimation);
-            _eventBus.Unsubscribe(PLayerStates.MoveRight, PlayMoveAnimation);
-            _eventBus.Unsubscribe(PLayerStates.JumpStart, PlayJumpStartAnimation);
-            _eventBus.Unsubscribe(PLayerStates.Idle, PlayIdleAnimation);
-            _eventBus.Unsubscribe(PLayerStates.Flip, PlayFlipAnimation);
+            _eventBus.Unsubscribe(PlayerStates.Idle, PlayIdleAnimation);
+            _eventBus.Unsubscribe(PlayerStates.MoveLeft, PlayMoveAnimation);
+            _eventBus.Unsubscribe(PlayerStates.MoveRight, PlayMoveAnimation);
+            _eventBus.Unsubscribe(PlayerStates.JumpStart, PlayJumpStartAnimation);
+            _eventBus.Unsubscribe(PlayerStates.Idle, PlayIdleAnimation);
+            _eventBus.Unsubscribe(PlayerStates.Flip, PlayFlipAnimation);
         }
 
         private void PlayIdleAnimation()
@@ -64,7 +63,6 @@ namespace Assets.Scripts.Player.Components
         }
 
         private readonly UnityArmatureComponent _armature;
-        private readonly IEventBus<PLayerStates> _eventBus;
         private readonly PlayerSettings _settings;
     }
 }

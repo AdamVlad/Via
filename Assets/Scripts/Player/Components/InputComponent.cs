@@ -1,20 +1,20 @@
-﻿using Assets.Scripts.Player.Components.Interfaces;
-using Assets.Scripts.Player.Data;
+﻿using Assets.Scripts.Patterns;
+using Assets.Scripts.Player.Components.Base;
+using Assets.Scripts.Player.ComponentsData;
 using UnityEngine.InputSystem;
 
 namespace Assets.Scripts.Player.Components
 {
-    public class InputComponent : IInputComponent
+    public sealed class InputComponent : ObservableComponentDecorator
     {
         public InputComponent(
             MainPlayerInput input,
-            InputData inputData)
+            IEventBus<PlayerStates> eventBus) : base(eventBus)
         {
             _input = input;
-            _inputData = inputData;
         }
 
-        public void Start()
+        protected override void ActivateInternal()
         {
             _input.Actions.MoveLeft.started += OnMoveLeftButtonPressed;
             _input.Actions.MoveLeft.canceled += OnMoveLeftButtonCanceled;
@@ -24,9 +24,11 @@ namespace Assets.Scripts.Player.Components
 
             _input.Actions.Jump.started += OnJumpButtonPressed;
             _input.Actions.Jump.canceled += OnJumpButtonCanceled;
+
+            _input.Enable();
         }
 
-        public void Destroy()
+        protected override void DeactivateInternal()
         {
             _input.Actions.MoveLeft.started -= OnMoveLeftButtonPressed;
             _input.Actions.MoveLeft.canceled -= OnMoveLeftButtonCanceled;
@@ -36,49 +38,64 @@ namespace Assets.Scripts.Player.Components
 
             _input.Actions.Jump.started -= OnJumpButtonPressed;
             _input.Actions.Jump.canceled -= OnJumpButtonCanceled;
+
+            _input.Disable();
         }
 
         private void OnMoveLeftButtonPressed(InputAction.CallbackContext callbackContext)
         {
-            _inputData.MoveLeftButtonPressed = true;
+            Notify(new InputData
+            {
+                MoveLeftButtonPressed = true,
+                MoveRightButtonPressed = false,
+                JumpButtonPressed = false
+            });
         }
 
         private void OnMoveLeftButtonCanceled(InputAction.CallbackContext callbackContext)
         {
-            _inputData.MoveLeftButtonPressed = false;
+            Notify(new InputData
+            {
+                MoveLeftButtonPressed = false,
+                MoveRightButtonPressed = false,
+                JumpButtonPressed = false
+            });
         }
 
         private void OnMoveRightButtonPressed(InputAction.CallbackContext callbackContext)
         {
-            _inputData.MoveRightButtonPressed = true;
+            Notify(new InputData
+            {
+                MoveLeftButtonPressed = false,
+                MoveRightButtonPressed = true,
+                JumpButtonPressed = false
+            });
         }
 
         private void OnMoveRightButtonCanceled(InputAction.CallbackContext callbackContext)
         {
-            _inputData.MoveRightButtonPressed = false;
+            Notify(new InputData
+            {
+                MoveLeftButtonPressed = false,
+                MoveRightButtonPressed = false,
+                JumpButtonPressed = false
+            });
         }
 
         private void OnJumpButtonPressed(InputAction.CallbackContext callbackContext)
         {
-            _inputData.JumpButtonPressed = true;
+            Notify(new InputData
+            {
+                MoveLeftButtonPressed = false,
+                MoveRightButtonPressed = false,
+                JumpButtonPressed = true
+            });
         }
 
         private void OnJumpButtonCanceled(InputAction.CallbackContext callbackContext)
         {
-            _inputData.JumpButtonPressed = false;
-        }
-        
-        public void InputOn()
-        {
-            _input.Enable();
-        }
-
-        public void InputOff()
-        {
-            _input.Disable();
         }
 
         private readonly MainPlayerInput _input;
-        private readonly InputData _inputData;
     }
 }

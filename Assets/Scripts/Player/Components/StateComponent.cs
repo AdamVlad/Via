@@ -1,80 +1,68 @@
-﻿using Assets.Scripts.Player.Components.Interfaces;
-using Assets.Scripts.Player.Data;
+﻿using Assets.Scripts.Patterns;
+using Assets.Scripts.Player.Components.Base;
+using Assets.Scripts.Player.ComponentsData;
+using Assets.Scripts.Patterns.Observer;
+using Zenject;
 
 namespace Assets.Scripts.Player.Components
 {
-    public class StateComponent : IStateComponent
+    public sealed class StateComponent : ComponentBase, IObserver
     {
         public StateComponent(
-            IEventBus<PLayerStates> eventBus,
-            InputData inputData,
-            CollisionData collisionData,
-            PhysicData physicData)
+            IEventBus<PlayerStates> eventBus,
+            [Inject(Id = "inputComponent")] ComponentBase inputComponent) : base(eventBus)
         {
-            _eventBus = eventBus;
-
-            _inputData = inputData;
-            _collisionData = collisionData;
-            _physicData = physicData;
+            _observable = inputComponent as ObservableComponentDecorator;
         }
 
-        public void OnEnable()
+        protected override void ActivateInternal()
         {
-            _inputData.DataChanged += ChangeState;
-            _physicData.DataChanged += ChangeState;
+            base.ActivateInternal();
+
+            _observable.AddObserver(this);
         }
 
-        public void OnDisable()
+        protected override void DeactivateInternal()
         {
-            _inputData.DataChanged -= ChangeState;
-            _physicData.DataChanged -= ChangeState;
+            base.DeactivateInternal();
+
+            _observable.RemoveObserver(this);
         }
 
-        private void ChangeState()
+        public void Update(ref IData data)
         {
-            if (_inputData.MoveRightButtonPressed && !_lookRight)
+            if (data is InputData inputData)
             {
-                _lookRight = true;
-                _eventBus.RaiseEvent(PLayerStates.Flip);
-            }
-            if (_inputData.MoveLeftButtonPressed && _lookRight)
-            {
-                _lookRight = true;
-                _eventBus.RaiseEvent(PLayerStates.Flip);
-            }
-
-            if (_inputData.JumpButtonPressed && _collisionData.OnGround)
-            {
-                _eventBus.RaiseEvent(PLayerStates.JumpStart);
-                return;
-            }
-            if (_physicData.Falling)
-            {
-                _eventBus.RaiseEvent(PLayerStates.Fly);
-                return;
-            }
-            if (_inputData.MoveLeftButtonPressed)
-            {
-                _eventBus.RaiseEvent(PLayerStates.MoveLeft);
-                return;
-            }
-            if (_inputData.MoveRightButtonPressed)
-            {
-                _eventBus.RaiseEvent(PLayerStates.MoveRight);
-                return;
-            }
-            if (_collisionData.OnGround)
-            {
-                _eventBus.RaiseEvent(PLayerStates.Idle);
+                ChangeState(ref inputData);
             }
         }
 
-        private readonly IEventBus<PLayerStates> _eventBus;
+        private void ChangeState(ref InputData inputData)
+        {
+            if (inputData.JumpButtonPressed)
+            {
+                _eventBus.RaiseEvent(PlayerStates.JumpStart);
+                return;
+            }
+            if (inputData.MoveLeftButtonPressed)
+            {
+                _eventBus.RaiseEvent(PlayerStates.MoveLeft);
+                return;
+            }
+            if (inputData.MoveRightButtonPressed)
+            {
+                _eventBus.RaiseEvent(PlayerStates.MoveRight);
+                return;
+            }
 
-        private readonly InputData _inputData;
-        private readonly CollisionData _collisionData;
-        private readonly PhysicData _physicData;
+            if (!inputData.MoveLeftButtonPressed &&
+                !inputData.MoveRightButtonPressed &&
+                !inputData.JumpButtonPressed)
+            {
+                _eventBus.RaiseEvent(PlayerStates.Idle);
+            }
+        }
 
-        private bool _lookRight = true;
+        private readonly ObservableComponentDecorator _observable;
     }
 }

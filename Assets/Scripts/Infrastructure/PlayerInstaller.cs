@@ -1,8 +1,7 @@
-﻿using Assets.Scripts.Player;
+﻿using Assets.Scripts.Patterns;
+using Assets.Scripts.Player;
 using Assets.Scripts.Player.Components;
-using Assets.Scripts.Player.Components.Interfaces;
-using Assets.Scripts.Player.Data;
-using Assets.Scripts.Player.Settings;
+using Assets.Scripts.Player.Components.Base;
 using UnityEngine;
 using Zenject;
 
@@ -29,14 +28,12 @@ namespace Assets.Scripts.Infrastructure
         {
             InstallPlayerPrefab();
             InstallSettings();
-            InstallData();
             InstallEventBus();
 
             InstallInputComponent();
-            InstallCollisionComponent();
             InstallStateComponent();
             InstallAnimationComponent();
-            InstallPhysicComponent();
+            InstallJumpComponent();
         }
 
         private void InstallPlayerPrefab()
@@ -49,42 +46,30 @@ namespace Assets.Scripts.Infrastructure
             Container.Bind<PlayerSettings>().FromScriptableObject(_playerSettings).AsSingle();
         }
 
-        private void InstallData()
-        {
-            Container.Bind<InputData>().AsSingle();
-            Container.Bind<CollisionData>().AsSingle();
-            Container.Bind<PhysicData>().AsSingle();
-        }
-
         private void InstallEventBus()
         {
-            Container.Bind<IEventBus<PLayerStates>>().To<EventBus<PLayerStates>>().AsSingle();
+            Container.Bind<IEventBus<PlayerStates>>().To<EventBus<PlayerStates>>().AsSingle();
         }
 
         private void InstallInputComponent()
         {
             Container.Bind<MainPlayerInput>().AsSingle();
-            Container.Bind<IInputComponent>().To<InputComponent>().AsSingle();
-        }
-
-        private void InstallCollisionComponent()
-        {
-            Container.Bind<ICollisionComponent>().To<CollisionComponent>().AsSingle();
+            Container.Bind<ComponentBase>().WithId("inputComponent").To<InputComponent>().AsSingle();
         }
 
         private void InstallStateComponent()
         {
-            Container.Bind<IStateComponent>().To<StateComponent>().AsSingle();
+            Container.Bind<ComponentBase>().WithId("stateComponent").To<StateComponent>().AsSingle();
         }
 
         private void InstallAnimationComponent()
         {
-            Container.Bind<IAnimationComponent>().To<AnimationComponent>().AsSingle();
+            Container.Bind<ComponentBase>().WithId("animationComponent").To<AnimationComponent>().AsSingle();
         }
 
-        private void InstallPhysicComponent()
+        private void InstallJumpComponent()
         {
-            Container.Bind<IPhysicComponent>().To<PhysicComponent>().AsSingle();
+            Container.Bind<ComponentBase>().WithId("jumpComponent").To<JumpComponent>().AsSingle();
         }
     }
 }

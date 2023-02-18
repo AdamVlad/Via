@@ -1016,13 +1016,13 @@ namespace Zenject
                     }
 
                     // If it's a generic list then try matching multiple instances to its generic type
-                    if (memberType.IsGenericType()
-                        && (memberType.GetGenericTypeDefinition() == typeof(List<>)
-                            || memberType.GetGenericTypeDefinition() == typeof(IList<>)
+                    ;    if (memberType.IsGenericType()
+                             && (memberType.GetGenericTypeDefinition() == typeof(List<>)
+                                 || memberType.GetGenericTypeDefinition() == typeof(IList<>)
 #if NET_4_6
                             || memberType.GetGenericTypeDefinition() == typeof(IReadOnlyList<>)
 #endif
-                            || memberType.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
+                                 || memberType.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
                     {
                         var subType = memberType.GenericArguments().Single();
 

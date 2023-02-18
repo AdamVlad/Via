@@ -1,6 +1,6 @@
 ﻿namespace Assets.Scripts.Player
 {
-    public enum PLayerStates
+    public enum PlayerStates
     {
         Idle,
         MoveLeft,
