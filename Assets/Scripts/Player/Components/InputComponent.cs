@@ -45,6 +45,8 @@ namespace Assets.Scripts.Player.Components
 
         private void OnMoveLeftButtonPressed(InputAction.CallbackContext callbackContext)
         {
+            _moveLeftButtonPressedHashed = true;
+
             Notify(new InputData
             {
                 MoveLeftButtonPressed = true,
@@ -55,16 +57,20 @@ namespace Assets.Scripts.Player.Components
 
         private void OnMoveLeftButtonCanceled(InputAction.CallbackContext callbackContext)
         {
+            _moveLeftButtonPressedHashed = false;
+
             Notify(new InputData
             {
                 MoveLeftButtonPressed = false,
-                MoveRightButtonPressed = false,
+                MoveRightButtonPressed = _moveRightButtonPressedHashed,
                 JumpButtonPressed = false
             });
         }
 
         private void OnMoveRightButtonPressed(InputAction.CallbackContext callbackContext)
         {
+            _moveRightButtonPressedHashed = true;
+
             Notify(new InputData
             {
                 MoveLeftButtonPressed = false,
@@ -75,9 +81,11 @@ namespace Assets.Scripts.Player.Components
 
         private void OnMoveRightButtonCanceled(InputAction.CallbackContext callbackContext)
         {
+            _moveRightButtonPressedHashed = false;
+
             Notify(new InputData
             {
-                MoveLeftButtonPressed = false,
+                MoveLeftButtonPressed = _moveLeftButtonPressedHashed,
                 MoveRightButtonPressed = false,
                 JumpButtonPressed = false
             });
@@ -87,16 +95,25 @@ namespace Assets.Scripts.Player.Components
         {
             Notify(new InputData
             {
-                MoveLeftButtonPressed = false,
-                MoveRightButtonPressed = false,
+                MoveLeftButtonPressed = _moveLeftButtonPressedHashed,
+                MoveRightButtonPressed = _moveRightButtonPressedHashed,
                 JumpButtonPressed = true
             });
         }
 
         private void OnJumpButtonCanceled(InputAction.CallbackContext callbackContext)
         {
+            Notify(new InputData
+            {
+                MoveLeftButtonPressed = _moveLeftButtonPressedHashed,
+                MoveRightButtonPressed = _moveRightButtonPressedHashed,
+                JumpButtonPressed = false
+            });
         }
 
         private readonly MainPlayerInput _input;
+
+        private bool _moveLeftButtonPressedHashed;
+        private bool _moveRightButtonPressedHashed;
     }
 }

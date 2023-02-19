@@ -14,13 +14,13 @@ namespace Assets.Scripts.Player
             AnimationComponent animationComponent,
             StateComponent stateComponent,
             JumpComponent jumpComponent,
-            CollisionComponent collisionComponent)
+            GroundAndWallCheckerComponent groundAndWallCheckerComponent)
         {
             _inputComponent = inputComponent;
             _animationComponent = animationComponent;
             _stateComponent = stateComponent;
             _jumpComponent = jumpComponent;
-            _collisionComponent = collisionComponent;
+            _groundAndWallCheckerComponent = groundAndWallCheckerComponent;
         }
 
         [SerializeField] private Transform _bottomRightRayPoint;
@@ -34,7 +34,7 @@ namespace Assets.Scripts.Player
             _animationComponent.Activate();
             _stateComponent.Activate();
             _jumpComponent.Activate();
-            _collisionComponent.Activate();
+            _groundAndWallCheckerComponent.Activate();
         }
 
         private void OnDisable()
@@ -43,7 +43,7 @@ namespace Assets.Scripts.Player
             _animationComponent.Deactivate();
             _stateComponent.Deactivate();
             _jumpComponent.Deactivate();
-            _collisionComponent.Deactivate();
+            _groundAndWallCheckerComponent.Deactivate();
         }
 
         private void Awake()
@@ -56,7 +56,7 @@ namespace Assets.Scripts.Player
 
         private void Start()
         {
-            _collisionComponent.Start(
+            _groundAndWallCheckerComponent.Start(
                 _bottomRightRayPoint, 
                 _bottomLeftRayPoint, 
                 _topLeftRayPoint, 
@@ -67,7 +67,7 @@ namespace Assets.Scripts.Player
         private AnimationComponent _animationComponent;
         private StateComponent _stateComponent;
         private JumpComponent _jumpComponent;
-        private CollisionComponent _collisionComponent;
+        private GroundAndWallCheckerComponent _groundAndWallCheckerComponent;
     }
 }
 

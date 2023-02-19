@@ -59,7 +59,7 @@ namespace Assets.Scripts.Infrastructure
 
         private void InstallStateComponent()
         {
-            Container.Bind<StateComponent>().AsSingle();
+            Container.Bind(typeof(StateComponent), typeof(ILateTickable)).To<StateComponent>().AsSingle();
         }
 
         private void InstallAnimationComponent()
@@ -74,7 +74,7 @@ namespace Assets.Scripts.Infrastructure
 
         private void InstallCollisionComponent()
         {
-            Container.Bind(typeof(CollisionComponent), typeof(IFixedTickable)).To<CollisionComponent>().AsSingle();
+            Container.Bind(typeof(GroundAndWallCheckerComponent), typeof(IFixedTickable)).To<GroundAndWallCheckerComponent>().AsSingle();
         }
     }
 }
