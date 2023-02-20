@@ -1,8 +1,9 @@
-﻿using Assets.Scripts.Patterns.EventBus;
+﻿using Zenject;
+
+using Assets.Scripts.Patterns.EventBus;
 using Assets.Scripts.Player.Components.Base;
 using Assets.Scripts.Player.ComponentsData;
 using Assets.Scripts.Patterns.Observer;
-using Zenject;
 
 namespace Assets.Scripts.Player.Components
 {
@@ -62,6 +63,11 @@ namespace Assets.Scripts.Player.Components
 
         private void ChangeState()
         {
+            if (!_inputDataHashed.MoveRightButtonPressed && !_inputDataHashed.MoveLeftButtonPressed && !_isStopped)
+            {
+                _isStopped = true;
+                _eventBus.RaiseEvent(PlayerStates.Stopped);
+            }
             if (_inputDataHashed.JumpButtonPressed && _groundAndWallDataHashed.IsOnGround)
             {
                 _eventBus.RaiseEvent(PlayerStates.JumpStart);
@@ -69,12 +75,18 @@ namespace Assets.Scripts.Player.Components
             }
             if (_inputDataHashed.MoveLeftButtonPressed)
             {
-                _eventBus.RaiseEvent(PlayerStates.MoveLeft);
+                _isStopped = false;
+                _eventBus.RaiseEvent(_groundAndWallDataHashed.IsOnGround
+                    ? PlayerStates.MoveLeft
+                    : PlayerStates.MoveLeftWhenFlying);
                 return;
             }
             if (_inputDataHashed.MoveRightButtonPressed)
             {
-                _eventBus.RaiseEvent(PlayerStates.MoveRight);
+                _isStopped = false;
+                _eventBus.RaiseEvent(_groundAndWallDataHashed.IsOnGround
+                    ? PlayerStates.MoveRight
+                    : PlayerStates.MoveRightWhenFlying);
                 return;
             }
             if (_groundAndWallDataHashed.IsOnGround)
@@ -90,5 +102,7 @@ namespace Assets.Scripts.Player.Components
         private GroundAndWallCheckerData _groundAndWallDataHashed;
 
         private bool _dirty;
+
+        private bool _isStopped;
     }
 }

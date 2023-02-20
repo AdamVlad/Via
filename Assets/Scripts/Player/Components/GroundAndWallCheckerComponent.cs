@@ -1,10 +1,11 @@
-﻿using Assets.Scripts.Extensions;
+﻿using System;
+using UnityEngine;
+using Zenject;
+
+using Assets.Scripts.Extensions;
 using Assets.Scripts.Patterns.EventBus;
 using Assets.Scripts.Player.Components.Base;
 using Assets.Scripts.Player.ComponentsData;
-using System;
-using UnityEngine;
-using Zenject;
 
 namespace Assets.Scripts.Player.Components
 {
@@ -14,7 +15,7 @@ namespace Assets.Scripts.Player.Components
             IEventBus<PlayerStates> eventBus,
             PlayerSettings settings) : base(eventBus)
         {
-            _settings = settings ?? throw new NullReferenceException("PlayerSettings is null"); ;
+            _settings = settings ?? throw new NullReferenceException("PlayerSettings is null");
         }
 
         public void Start(
@@ -67,7 +68,7 @@ namespace Assets.Scripts.Player.Components
                 _topRightRayPoint.right, 
                 _settings.RightRayLength);
 
-            if (DidOneParametersChange())
+            if (DidOneParameterChange())
             {
                 _isOnGroundOld = _isOnGround;
                 _touchedWallOld = _touchedWall;
@@ -117,7 +118,7 @@ namespace Assets.Scripts.Player.Components
             return Physics2D.Raycast(ray.origin, ray.direction, distance);
         }
 
-        private bool DidOneParametersChange()
+        private bool DidOneParameterChange()
         {
             return _isOnGround != _isOnGroundOld || _touchedWall != _touchedWallOld;
         }

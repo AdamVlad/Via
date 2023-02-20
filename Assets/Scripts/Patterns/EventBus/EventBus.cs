@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using UnityEngine.Events;
+﻿using UnityEngine.Events;
+using System.Collections.Generic;
 
 namespace Assets.Scripts.Patterns.EventBus
 {

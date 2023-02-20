@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Extensions
 {
-    public static class ComponentsExtensions
+    public static class GameObjectsComponentsExtensions
     {
         public static void IfNullThrowException<T>(this T component) where T : Component
         {

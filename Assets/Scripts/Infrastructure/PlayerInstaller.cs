@@ -34,6 +34,8 @@ namespace Assets.Scripts.Infrastructure
             InstallAnimationComponent();
             InstallJumpComponent();
             InstallCollisionComponent();
+            InstallFlipComponent();
+            InstallMoveComponent();
         }
 
         private void InstallPlayerPrefab()
@@ -75,6 +77,16 @@ namespace Assets.Scripts.Infrastructure
         private void InstallCollisionComponent()
         {
             Container.Bind(typeof(GroundAndWallCheckerComponent), typeof(IFixedTickable)).To<GroundAndWallCheckerComponent>().AsSingle();
+        }
+
+        private void InstallFlipComponent()
+        {
+            Container.Bind<FlipComponent>().AsSingle();
+        }
+
+        private void InstallMoveComponent()
+        {
+            Container.Bind(typeof(MoveComponent), typeof(IFixedTickable)).To<MoveComponent>().AsSingle();
         }
     }
 }

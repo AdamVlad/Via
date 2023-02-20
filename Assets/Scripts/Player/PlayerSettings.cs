@@ -25,7 +25,7 @@ namespace Assets.Scripts.Player
         [Header("Collisions")]
         [Space]
 
-        [SerializeField, Range(0,5)] private float _topRayLength ;
+        [SerializeField, Range(0,5)] private float _topRayLength;
         public float TopRayLength => _topRayLength;
 
         [SerializeField, Range(0, 5)] private float _bottomRayLength;
@@ -52,6 +52,9 @@ namespace Assets.Scripts.Player
         [SerializeField] private float _idleStateTransition;
         public float IdleStateTransition => _idleStateTransition;
 
+        [SerializeField, Range(-2, 2)] private float _idleStatePlayingSpeed = 1;
+        public float IdleStatePlayingSpeed => _idleStatePlayingSpeed;
+
         [Space]
 
         [SerializeField] private string _walkAnimationName;
@@ -59,6 +62,9 @@ namespace Assets.Scripts.Player
 
         [SerializeField] private float _walkStateTransition;
         public float WalkStateTransition => _walkStateTransition;
+
+        [SerializeField, Range(-2, 2)] private float _walkStatePlayingSpeed = 1;
+        public float WalkStatePlayingSpeed => _walkStatePlayingSpeed;
 
         [Space]
 
@@ -68,6 +74,9 @@ namespace Assets.Scripts.Player
         [SerializeField] private float _jumpStartStateTransition;
         public float JumpStartStateTransition => _jumpStartStateTransition;
 
+        [SerializeField, Range(-2, 2)] private float _jumpStartStatePlayingSpeed = 1;
+        public float JumpStartStatePlayingSpeed => _jumpStartStatePlayingSpeed;
+
         [Space]
 
         [SerializeField] private string _flyingAnimationName;
@@ -75,6 +84,9 @@ namespace Assets.Scripts.Player
 
         [SerializeField] private float _flyingStateTransition;
         public float FlyingStateTransition => _flyingStateTransition;
+
+        [SerializeField, Range(-2, 2)] private float _flyingStatePlayingSpeed = 1;
+        public float FlyingStatePlayingSpeed => _flyingStatePlayingSpeed;
 
         #endregion
     }

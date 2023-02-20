@@ -1,8 +1,9 @@
-﻿using Assets.Scripts.Player.Components.Base;
-using Assets.Scripts.Player.ComponentsData;
-using System;
-using Assets.Scripts.Patterns.EventBus;
+﻿using System;
 using UnityEngine.InputSystem;
+
+using Assets.Scripts.Player.Components.Base;
+using Assets.Scripts.Player.ComponentsData;
+using Assets.Scripts.Patterns.EventBus;
 
 namespace Assets.Scripts.Player.Components
 {
@@ -17,6 +18,8 @@ namespace Assets.Scripts.Player.Components
 
         protected override void ActivateInternal()
         {
+            base.ActivateInternal();
+
             _input.Actions.MoveLeft.started += OnMoveLeftButtonPressed;
             _input.Actions.MoveLeft.canceled += OnMoveLeftButtonCanceled;
 
@@ -31,6 +34,8 @@ namespace Assets.Scripts.Player.Components
 
         protected override void DeactivateInternal()
         {
+            base.DeactivateInternal();
+
             _input.Actions.MoveLeft.started -= OnMoveLeftButtonPressed;
             _input.Actions.MoveLeft.canceled -= OnMoveLeftButtonCanceled;
 

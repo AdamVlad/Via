@@ -1,9 +1,10 @@
 ﻿using System;
+using DragonBones;
+using UnityEngine;
+
 using Assets.Scripts.Extensions;
 using Assets.Scripts.Patterns.EventBus;
 using Assets.Scripts.Player.Components.Base;
-using DragonBones;
-using UnityEngine;
 
 namespace Assets.Scripts.Player.Components
 {
@@ -20,6 +21,8 @@ namespace Assets.Scripts.Player.Components
 
         protected override void ActivateInternal()
         {
+            base.ActivateInternal();
+
             _eventBus.Subscribe(PlayerStates.Idle, PlayIdleAnimation);
             _eventBus.Subscribe(PlayerStates.MoveLeft, PlayMoveAnimation);
             _eventBus.Subscribe(PlayerStates.MoveRight, PlayMoveAnimation);
@@ -30,6 +33,8 @@ namespace Assets.Scripts.Player.Components
 
         protected override void DeactivateInternal()
         {
+            base.DeactivateInternal();
+
             _eventBus.Unsubscribe(PlayerStates.Idle, PlayIdleAnimation);
             _eventBus.Unsubscribe(PlayerStates.MoveLeft, PlayMoveAnimation);
             _eventBus.Unsubscribe(PlayerStates.MoveRight, PlayMoveAnimation);
@@ -41,21 +46,25 @@ namespace Assets.Scripts.Player.Components
         private void PlayIdleAnimation()
         {
             _armature.animation.FadeIn(_settings.IdleAnimationName, _settings.IdleStateTransition);
+            _armature.animation.timeScale = _settings.IdleStatePlayingSpeed;
         }
 
         private void PlayMoveAnimation()
         {
             _armature.animation.FadeIn(_settings.WalkAnimationName, _settings.WalkStateTransition);
+            _armature.animation.timeScale = _settings.WalkStatePlayingSpeed;
         }
 
         private void PlayJumpStartAnimation()
         {
             _armature.animation.FadeIn(_settings.JumpStartAnimationName, _settings.JumpStartStateTransition, 1);
+            _armature.animation.timeScale = _settings.JumpStartStatePlayingSpeed;
         }
         
         private void PlayFlyingAnimation()
         {
             _armature.animation.FadeIn(_settings.FlyingAnimationName, _settings.FlyingStateTransition);
+            _armature.animation.timeScale = _settings.FlyingStatePlayingSpeed;
         }
 
         private void PlayFlipAnimation()

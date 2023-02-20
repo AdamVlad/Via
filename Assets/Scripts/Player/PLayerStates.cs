@@ -5,6 +5,9 @@
         Idle,
         MoveLeft,
         MoveRight,
+        MoveLeftWhenFlying,
+        MoveRightWhenFlying,
+        Stopped,
         JumpStart,
         Fly,
         Flip

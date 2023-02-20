@@ -1,16 +1,17 @@
-﻿using Assets.Scripts.Extensions;
-using Assets.Scripts.Player.Components.Base;
-using System;
-using Assets.Scripts.Patterns.EventBus;
+﻿using System;
 using UnityEngine;
+
+using Assets.Scripts.Extensions;
+using Assets.Scripts.Player.Components.Base;
+using Assets.Scripts.Patterns.EventBus;
 
 namespace Assets.Scripts.Player.Components
 {
     public sealed class JumpComponent : ComponentBase
     {
         public JumpComponent(
-            GameObject player,
             IEventBus<PlayerStates> eventBus,
+            GameObject player,
             PlayerSettings settings) : base(eventBus)
         {
             _rigidbody = player.GetComponentOrThrowException<Rigidbody2D>();
@@ -19,11 +20,15 @@ namespace Assets.Scripts.Player.Components
 
         protected override void ActivateInternal()
         {
+            base.ActivateInternal();
+
             _eventBus.Subscribe(PlayerStates.JumpStart, Jump);
         }
 
         protected override void DeactivateInternal()
         {
+            base.DeactivateInternal();
+
             _eventBus.Unsubscribe(PlayerStates.JumpStart, Jump);
         }
 

@@ -1,7 +1,8 @@
-using Assets.Scripts.Extensions;
-using Assets.Scripts.Player.Components;
 using UnityEngine;
 using Zenject;
+
+using Assets.Scripts.Extensions;
+using Assets.Scripts.Player.Components;
 
 namespace Assets.Scripts.Player
 {
@@ -14,13 +15,17 @@ namespace Assets.Scripts.Player
             AnimationComponent animationComponent,
             StateComponent stateComponent,
             JumpComponent jumpComponent,
-            GroundAndWallCheckerComponent groundAndWallCheckerComponent)
+            GroundAndWallCheckerComponent groundAndWallCheckerComponent,
+            FlipComponent flipComponent,
+            MoveComponent moveComponent)
         {
-            _inputComponent = inputComponent;
-            _animationComponent = animationComponent;
-            _stateComponent = stateComponent;
-            _jumpComponent = jumpComponent;
-            _groundAndWallCheckerComponent = groundAndWallCheckerComponent;
+            _inputComponent = inputComponent.IfNullThrowExceptionOrReturn();
+            _animationComponent = animationComponent.IfNullThrowExceptionOrReturn();
+            _stateComponent = stateComponent.IfNullThrowExceptionOrReturn();
+            _jumpComponent = jumpComponent.IfNullThrowExceptionOrReturn();
+            _groundAndWallCheckerComponent = groundAndWallCheckerComponent.IfNullThrowExceptionOrReturn();
+            _flipComponent = flipComponent.IfNullThrowExceptionOrReturn();
+            _moveComponent = moveComponent.IfNullThrowExceptionOrReturn();
         }
 
         [SerializeField] private Transform _bottomRightRayPoint;
@@ -35,6 +40,8 @@ namespace Assets.Scripts.Player
             _stateComponent.Activate();
             _jumpComponent.Activate();
             _groundAndWallCheckerComponent.Activate();
+            _flipComponent.Activate();
+            _moveComponent.Activate();
         }
 
         private void OnDisable()
@@ -44,6 +51,8 @@ namespace Assets.Scripts.Player
             _stateComponent.Deactivate();
             _jumpComponent.Deactivate();
             _groundAndWallCheckerComponent.Deactivate();
+            _flipComponent.Deactivate();
+            _moveComponent.Deactivate();
         }
 
         private void Awake()
@@ -68,6 +77,8 @@ namespace Assets.Scripts.Player
         private StateComponent _stateComponent;
         private JumpComponent _jumpComponent;
         private GroundAndWallCheckerComponent _groundAndWallCheckerComponent;
+        private FlipComponent _flipComponent;
+        private MoveComponent _moveComponent;
     }
 }
 
