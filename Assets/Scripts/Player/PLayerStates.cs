@@ -9,7 +9,7 @@
         MoveRightWhenFlying,
         Stopped,
         JumpStart,
-        Fly,
+        Fall,
         Flip
     }
 }

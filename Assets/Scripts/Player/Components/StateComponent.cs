@@ -12,10 +12,12 @@ namespace Assets.Scripts.Player.Components
         public StateComponent(
             IEventBus<PlayerStates> eventBus,
             InputComponent inputComponent,
-            GroundAndWallCheckerComponent groundAndWallCheckerObservable) : base(eventBus)
+            GroundAndWallCheckerComponent groundAndWallCheckerObservable,
+            FallTrackingComponent fallTrackingComponent) : base(eventBus)
         {
             _inputObservable = inputComponent;
             _groundAndWallCheckerObservable = groundAndWallCheckerObservable;
+            _fallObservable = fallTrackingComponent;
 
             _inputDataHashed = new InputData();
             _groundAndWallDataHashed = new GroundAndWallCheckerData();
@@ -27,6 +29,7 @@ namespace Assets.Scripts.Player.Components
 
             _inputObservable.AddObserver(this);
             _groundAndWallCheckerObservable.AddObserver(this);
+            _fallObservable.AddObserver(this);
         }
 
         protected override void DeactivateInternal()
@@ -35,6 +38,7 @@ namespace Assets.Scripts.Player.Components
 
             _inputObservable.RemoveObserver(this);
             _groundAndWallCheckerObservable.RemoveObserver(this);
+            _fallObservable.RemoveObserver(this);
         }
 
         public void Update(ref IData data)
@@ -46,6 +50,9 @@ namespace Assets.Scripts.Player.Components
                     break;
                 case GroundAndWallCheckerData groundAndWallCheckerData:
                     _groundAndWallDataHashed = groundAndWallCheckerData;
+                    break;
+                case FallingData fallingData:
+                    _fallingData = fallingData;
                     break;
             }
 
@@ -63,10 +70,16 @@ namespace Assets.Scripts.Player.Components
 
         private void ChangeState()
         {
-            if (!_inputDataHashed.MoveRightButtonPressed && !_inputDataHashed.MoveLeftButtonPressed && !_isStopped)
+            if (!_inputDataHashed.MoveRightButtonPressed && !_inputDataHashed.MoveLeftButtonPressed && !_isPlayerStopped)
             {
-                _isStopped = true;
+                _isPlayerStopped = true;
                 _eventBus.RaiseEvent(PlayerStates.Stopped);
+            }
+            if (_fallingData.IsFalling)
+            {
+                _fallingData.IsFalling = false;
+                _eventBus.RaiseEvent(PlayerStates.Fall);
+                return;
             }
             if (_inputDataHashed.JumpButtonPressed && _groundAndWallDataHashed.IsOnGround)
             {
@@ -75,7 +88,7 @@ namespace Assets.Scripts.Player.Components
             }
             if (_inputDataHashed.MoveLeftButtonPressed)
             {
-                _isStopped = false;
+                _isPlayerStopped = false;
                 _eventBus.RaiseEvent(_groundAndWallDataHashed.IsOnGround
                     ? PlayerStates.MoveLeft
                     : PlayerStates.MoveLeftWhenFlying);
@@ -83,7 +96,7 @@ namespace Assets.Scripts.Player.Components
             }
             if (_inputDataHashed.MoveRightButtonPressed)
             {
-                _isStopped = false;
+                _isPlayerStopped = false;
                 _eventBus.RaiseEvent(_groundAndWallDataHashed.IsOnGround
                     ? PlayerStates.MoveRight
                     : PlayerStates.MoveRightWhenFlying);
@@ -97,12 +110,14 @@ namespace Assets.Scripts.Player.Components
 
         private readonly ObservableComponentDecorator _inputObservable;
         private readonly ObservableComponentDecorator _groundAndWallCheckerObservable;
+        private readonly ObservableComponentDecorator _fallObservable;
 
         private InputData _inputDataHashed;
         private GroundAndWallCheckerData _groundAndWallDataHashed;
+        private FallingData _fallingData;
 
         private bool _dirty;
 
-        private bool _isStopped;
+        private bool _isPlayerStopped;
     }
 }

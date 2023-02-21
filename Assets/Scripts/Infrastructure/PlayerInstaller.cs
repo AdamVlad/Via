@@ -1,8 +1,9 @@
-﻿using Assets.Scripts.Patterns.EventBus;
+﻿using UnityEngine;
+using Zenject;
+
+using Assets.Scripts.Patterns.EventBus;
 using Assets.Scripts.Player;
 using Assets.Scripts.Player.Components;
-using UnityEngine;
-using Zenject;
 
 namespace Assets.Scripts.Infrastructure
 {
@@ -36,6 +37,7 @@ namespace Assets.Scripts.Infrastructure
             InstallCollisionComponent();
             InstallFlipComponent();
             InstallMoveComponent();
+            InstallFallTrackingComponent();
         }
 
         private void InstallPlayerPrefab()
@@ -87,6 +89,11 @@ namespace Assets.Scripts.Infrastructure
         private void InstallMoveComponent()
         {
             Container.Bind(typeof(MoveComponent), typeof(IFixedTickable)).To<MoveComponent>().AsSingle();
+        }
+
+        private void InstallFallTrackingComponent()
+        {
+            Container.Bind(typeof(FallTrackingComponent), typeof(IFixedTickable)).To<FallTrackingComponent>().AsSingle();
         }
     }
 }

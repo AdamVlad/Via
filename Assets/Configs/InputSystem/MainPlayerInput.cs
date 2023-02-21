@@ -35,7 +35,7 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""OnMoveRightState"",
+                    ""name"": ""MoveRight"",
                     ""type"": ""Button"",
                     ""id"": ""2ed76d89-44a1-40ee-a1f6-cf64c8a8ae10"",
                     ""expectedControlType"": ""Button"",
@@ -43,7 +43,7 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""OnMoveLeftState"",
+                    ""name"": ""MoveLeft"",
                     ""type"": ""Button"",
                     ""id"": ""8a91f9dc-ef34-4b5a-9599-62be249b8299"",
                     ""expectedControlType"": ""Button"",
@@ -125,7 +125,7 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""OnMoveRightState"",
+                    ""action"": ""MoveRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -136,7 +136,7 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""OnMoveLeftState"",
+                    ""action"": ""MoveLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -161,8 +161,8 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
         m_Actions = asset.FindActionMap("Actions", throwIfNotFound: true);
         m_Actions_Jump = m_Actions.FindAction("Jump", throwIfNotFound: true);
         m_Actions_Walk = m_Actions.FindAction("Walk", throwIfNotFound: true);
-        m_Actions_MoveRight = m_Actions.FindAction("OnMoveRightState", throwIfNotFound: true);
-        m_Actions_MoveLeft = m_Actions.FindAction("OnMoveLeftState", throwIfNotFound: true);
+        m_Actions_MoveRight = m_Actions.FindAction("MoveRight", throwIfNotFound: true);
+        m_Actions_MoveLeft = m_Actions.FindAction("MoveLeft", throwIfNotFound: true);
     }
 
     public void Dispose()

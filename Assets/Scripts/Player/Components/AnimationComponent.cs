@@ -27,7 +27,7 @@ namespace Assets.Scripts.Player.Components
             _eventBus.Subscribe(PlayerStates.MoveLeft, PlayMoveAnimation);
             _eventBus.Subscribe(PlayerStates.MoveRight, PlayMoveAnimation);
             _eventBus.Subscribe(PlayerStates.JumpStart, PlayJumpStartAnimation);
-            _eventBus.Subscribe(PlayerStates.Fly, PlayFlyingAnimation);
+            _eventBus.Subscribe(PlayerStates.Fall, PlayFallingAnimation);
             _eventBus.Subscribe(PlayerStates.Flip, PlayFlipAnimation);
         }
 
@@ -61,10 +61,10 @@ namespace Assets.Scripts.Player.Components
             _armature.animation.timeScale = _settings.JumpStartStatePlayingSpeed;
         }
         
-        private void PlayFlyingAnimation()
+        private void PlayFallingAnimation()
         {
-            _armature.animation.FadeIn(_settings.FlyingAnimationName, _settings.FlyingStateTransition);
-            _armature.animation.timeScale = _settings.FlyingStatePlayingSpeed;
+            _armature.animation.FadeIn(_settings.FallingAnimationName, _settings.FallingStateTransition);
+            _armature.animation.timeScale = _settings.FallingStatePlayingSpeed;
         }
 
         private void PlayFlipAnimation()

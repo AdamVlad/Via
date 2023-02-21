@@ -79,14 +79,14 @@ namespace Assets.Scripts.Player
 
         [Space]
 
-        [SerializeField] private string _flyingAnimationName;
-        public string FlyingAnimationName => _flyingAnimationName;
+        [SerializeField] private string _fallingAnimationName;
+        public string FallingAnimationName => _fallingAnimationName;
 
-        [SerializeField] private float _flyingStateTransition;
-        public float FlyingStateTransition => _flyingStateTransition;
+        [SerializeField] private float _fallingStateTransition;
+        public float FallingStateTransition => _fallingStateTransition;
 
-        [SerializeField, Range(-2, 2)] private float _flyingStatePlayingSpeed = 1;
-        public float FlyingStatePlayingSpeed => _flyingStatePlayingSpeed;
+        [SerializeField, Range(-2, 2)] private float _fallingStatePlayingSpeed = 1;
+        public float FallingStatePlayingSpeed => _fallingStatePlayingSpeed;
 
         #endregion
     }

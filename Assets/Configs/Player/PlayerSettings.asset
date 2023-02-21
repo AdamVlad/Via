@@ -27,6 +27,6 @@ MonoBehaviour:
   _jumpStartAnimationName: JumpStart
   _jumpStartStateTransition: 0.1
   _jumpStartStatePlayingSpeed: 2
-  _flyingAnimationName: Flying
-  _flyingStateTransition: 0
-  _flyingStatePlayingSpeed: 1
+  _fallingAnimationName: Flying
+  _fallingStateTransition: 0
+  _fallingStatePlayingSpeed: 2
