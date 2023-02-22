@@ -28,7 +28,7 @@ namespace Assets.Scripts.Player.Components
                     IsFalling = true
                 });
             }
-            if (isFalling != _isFallingInPreviousMoment)
+            if (!isFalling.Equals(_isFallingInPreviousMoment))
             {
                 _isFallingInPreviousMoment = isFalling;
             }

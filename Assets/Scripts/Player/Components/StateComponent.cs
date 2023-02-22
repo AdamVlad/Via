@@ -4,6 +4,7 @@ using Assets.Scripts.Patterns.EventBus;
 using Assets.Scripts.Player.Components.Base;
 using Assets.Scripts.Player.ComponentsData;
 using Assets.Scripts.Patterns.Observer;
+using Assets.Scripts.Extensions;
 
 namespace Assets.Scripts.Player.Components
 {
@@ -15,12 +16,13 @@ namespace Assets.Scripts.Player.Components
             GroundAndWallCheckerComponent groundAndWallCheckerObservable,
             FallTrackingComponent fallTrackingComponent) : base(eventBus)
         {
-            _inputObservable = inputComponent;
-            _groundAndWallCheckerObservable = groundAndWallCheckerObservable;
-            _fallObservable = fallTrackingComponent;
+            _inputObservable = inputComponent.IfNullThrowExceptionOrReturn();
+            _groundAndWallCheckerObservable = groundAndWallCheckerObservable.IfNullThrowExceptionOrReturn();
+            _fallObservable = fallTrackingComponent.IfNullThrowExceptionOrReturn();
 
             _inputDataHashed = new InputData();
             _groundAndWallDataHashed = new GroundAndWallCheckerData();
+            _fallingDataHashed = new FallingData();
         }
 
         protected override void ActivateInternal()
@@ -52,7 +54,7 @@ namespace Assets.Scripts.Player.Components
                     _groundAndWallDataHashed = groundAndWallCheckerData;
                     break;
                 case FallingData fallingData:
-                    _fallingData = fallingData;
+                    _fallingDataHashed = fallingData;
                     break;
             }
 
@@ -75,9 +77,9 @@ namespace Assets.Scripts.Player.Components
                 _isPlayerStopped = true;
                 _eventBus.RaiseEvent(PlayerStates.Stopped);
             }
-            if (_fallingData.IsFalling)
+            if (_fallingDataHashed.IsFalling)
             {
-                _fallingData.IsFalling = false;
+                _fallingDataHashed.IsFalling = false;
                 _eventBus.RaiseEvent(PlayerStates.Fall);
                 return;
             }
@@ -114,7 +116,7 @@ namespace Assets.Scripts.Player.Components
 
         private InputData _inputDataHashed;
         private GroundAndWallCheckerData _groundAndWallDataHashed;
-        private FallingData _fallingData;
+        private FallingData _fallingDataHashed;
 
         private bool _dirty;
 

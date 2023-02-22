@@ -28,7 +28,6 @@ namespace Assets.Scripts.Player.Components
             _eventBus.Subscribe(PlayerStates.MoveLeftWhenFlying, PrepareToMoveLeft);
             _eventBus.Subscribe(PlayerStates.MoveRightWhenFlying, PrepareToMoveRight);
             _eventBus.Subscribe(PlayerStates.Stopped, StopMove);
-            
         }
 
         protected override void DeactivateInternal()
