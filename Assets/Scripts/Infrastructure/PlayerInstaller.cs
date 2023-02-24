@@ -36,6 +36,7 @@ namespace Assets.Scripts.Infrastructure
             InstallJumpComponent();
             InstallCollisionComponent();
             InstallFlipComponent();
+            InstallMoveBoostingComponent();
             InstallMoveComponent();
             InstallFallTrackingComponent();
         }
@@ -84,6 +85,11 @@ namespace Assets.Scripts.Infrastructure
         private void InstallFlipComponent()
         {
             Container.Bind<FlipComponent>().AsSingle();
+        }
+
+        private void InstallMoveBoostingComponent()
+        {
+            Container.Bind<MoveBoostComponent>().AsSingle();
         }
 
         private void InstallMoveComponent()

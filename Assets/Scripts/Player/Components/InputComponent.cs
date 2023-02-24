@@ -26,6 +26,9 @@ namespace Assets.Scripts.Player.Components
             _input.Actions.MoveRight.started += OnMoveRightButtonPressed;
             _input.Actions.MoveRight.canceled += OnMoveRightButtonCanceled;
 
+            _input.Actions.MoveBoost.started += OnMoveBoostButtonPressed;
+            _input.Actions.MoveBoost.canceled += OnMoveBoostButtonCanceled;
+
             _input.Actions.Jump.started += OnJumpButtonPressed;
             _input.Actions.Jump.canceled += OnJumpButtonCanceled;
 
@@ -42,6 +45,9 @@ namespace Assets.Scripts.Player.Components
             _input.Actions.MoveRight.started -= OnMoveRightButtonPressed;
             _input.Actions.MoveRight.canceled -= OnMoveRightButtonCanceled;
 
+            _input.Actions.MoveBoost.started -= OnMoveBoostButtonPressed;
+            _input.Actions.MoveBoost.canceled -= OnMoveBoostButtonCanceled;
+
             _input.Actions.Jump.started -= OnJumpButtonPressed;
             _input.Actions.Jump.canceled -= OnJumpButtonCanceled;
 
@@ -51,68 +57,69 @@ namespace Assets.Scripts.Player.Components
         private void OnMoveLeftButtonPressed(InputAction.CallbackContext callbackContext)
         {
             _moveLeftButtonPressedHashed = true;
+            _moveRightButtonPressedHashed = false;
 
-            Notify(new InputData
-            {
-                MoveLeftButtonPressed = true,
-                MoveRightButtonPressed = false,
-                JumpButtonPressed = false
-            });
+            NotifyInternal();
         }
 
         private void OnMoveLeftButtonCanceled(InputAction.CallbackContext callbackContext)
         {
             _moveLeftButtonPressedHashed = false;
 
-            Notify(new InputData
-            {
-                MoveLeftButtonPressed = false,
-                MoveRightButtonPressed = _moveRightButtonPressedHashed,
-                JumpButtonPressed = false
-            });
+            NotifyInternal();
         }
 
         private void OnMoveRightButtonPressed(InputAction.CallbackContext callbackContext)
         {
             _moveRightButtonPressedHashed = true;
+            _moveLeftButtonPressedHashed = false;
 
-            Notify(new InputData
-            {
-                MoveLeftButtonPressed = false,
-                MoveRightButtonPressed = true,
-                JumpButtonPressed = false
-            });
+            NotifyInternal();
         }
 
         private void OnMoveRightButtonCanceled(InputAction.CallbackContext callbackContext)
         {
             _moveRightButtonPressedHashed = false;
 
-            Notify(new InputData
-            {
-                MoveLeftButtonPressed = _moveLeftButtonPressedHashed,
-                MoveRightButtonPressed = false,
-                JumpButtonPressed = false
-            });
+            NotifyInternal();
+        }
+
+        private void OnMoveBoostButtonPressed(InputAction.CallbackContext callbackContext)
+        {
+            _moveBoostButtonPressedHashed = true;
+
+            NotifyInternal();
+        }
+
+        private void OnMoveBoostButtonCanceled(InputAction.CallbackContext callbackContext)
+        {
+            _moveBoostButtonPressedHashed = false;
+
+            NotifyInternal();
         }
 
         private void OnJumpButtonPressed(InputAction.CallbackContext callbackContext)
         {
-            Notify(new InputData
-            {
-                MoveLeftButtonPressed = _moveLeftButtonPressedHashed,
-                MoveRightButtonPressed = _moveRightButtonPressedHashed,
-                JumpButtonPressed = true
-            });
+            _jumpButtonPressedHashed = true;
+
+            NotifyInternal();
         }
 
         private void OnJumpButtonCanceled(InputAction.CallbackContext callbackContext)
+        {
+            _jumpButtonPressedHashed = false;
+
+            NotifyInternal();
+        }
+
+        private void NotifyInternal()
         {
             Notify(new InputData
             {
                 MoveLeftButtonPressed = _moveLeftButtonPressedHashed,
                 MoveRightButtonPressed = _moveRightButtonPressedHashed,
-                JumpButtonPressed = false
+                MoveBoostButtonPressed = _moveBoostButtonPressedHashed,
+                JumpButtonPressed = _jumpButtonPressedHashed
             });
         }
 
@@ -120,5 +127,7 @@ namespace Assets.Scripts.Player.Components
 
         private bool _moveLeftButtonPressedHashed;
         private bool _moveRightButtonPressedHashed;
+        private bool _moveBoostButtonPressedHashed;
+        private bool _jumpButtonPressedHashed;
     }
 }

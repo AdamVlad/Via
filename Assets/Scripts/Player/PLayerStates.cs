@@ -7,7 +7,9 @@
         MoveRight,
         MoveLeftWhenFlying,
         MoveRightWhenFlying,
-        Stopped,
+        MoveStopped,
+        MoveBoost,
+        MoveBoostStopped,
         JumpStart,
         Fall,
         Flip

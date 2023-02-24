@@ -21,17 +21,15 @@ namespace Assets.Scripts.Player.Components
         {
             var isFalling = _rigidbody.velocity.y < 0;
 
-            if (isFalling && !_isFallingInPreviousMoment)
+            if (!isFalling.Equals(_isFallingInPreviousMoment))
             {
                 Notify(new FallingData
                 {
-                    IsFalling = true
+                    IsFalling = isFalling
                 });
             }
-            if (!isFalling.Equals(_isFallingInPreviousMoment))
-            {
-                _isFallingInPreviousMoment = isFalling;
-            }
+
+            _isFallingInPreviousMoment = isFalling;
         }
 
         private readonly Rigidbody2D _rigidbody;

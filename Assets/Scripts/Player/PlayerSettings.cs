@@ -10,8 +10,11 @@ namespace Assets.Scripts.Player
         [Header("Physic")]
         [Space]
 
-        [SerializeField] private float _maxSpeed;
-        public float MaxSpeed => _maxSpeed;
+        [SerializeField] private float _normalSpeed;
+        public float NormalSpeed => _normalSpeed;
+
+        [SerializeField, Range(1,3)] private float _boostSpeedMultiplier;
+        public float BoostSpeedMultiplier => _boostSpeedMultiplier;
 
         [SerializeField] private float _jumpForce;
         public float JumpForce => _jumpForce;
@@ -52,8 +55,8 @@ namespace Assets.Scripts.Player
         [SerializeField] private float _idleStateTransition;
         public float IdleStateTransition => _idleStateTransition;
 
-        [SerializeField, Range(-2, 2)] private float _idleStatePlayingSpeed = 1;
-        public float IdleStatePlayingSpeed => _idleStatePlayingSpeed;
+        [SerializeField, Range(-2, 2)] private float _idleAnimationPlayingSpeed = 1;
+        public float idleAnimationPlayingSpeed => _idleAnimationPlayingSpeed;
 
         [Space]
 
@@ -63,8 +66,8 @@ namespace Assets.Scripts.Player
         [SerializeField] private float _walkStateTransition;
         public float WalkStateTransition => _walkStateTransition;
 
-        [SerializeField, Range(-2, 2)] private float _walkStatePlayingSpeed = 1;
-        public float WalkStatePlayingSpeed => _walkStatePlayingSpeed;
+        [SerializeField, Range(-2, 2)] private float _walkAnimationPlayingSpeed = 1;
+        public float walkAnimationPlayingSpeed => _walkAnimationPlayingSpeed;
 
         [Space]
 
@@ -74,8 +77,8 @@ namespace Assets.Scripts.Player
         [SerializeField] private float _jumpStartStateTransition;
         public float JumpStartStateTransition => _jumpStartStateTransition;
 
-        [SerializeField, Range(-2, 2)] private float _jumpStartStatePlayingSpeed = 1;
-        public float JumpStartStatePlayingSpeed => _jumpStartStatePlayingSpeed;
+        [SerializeField, Range(-2, 2)] private float _jumpStartAnimationPlayingSpeed = 1;
+        public float jumpStartAnimationPlayingSpeed => _jumpStartAnimationPlayingSpeed;
 
         [Space]
 
@@ -85,8 +88,19 @@ namespace Assets.Scripts.Player
         [SerializeField] private float _fallingStateTransition;
         public float FallingStateTransition => _fallingStateTransition;
 
-        [SerializeField, Range(-2, 2)] private float _fallingStatePlayingSpeed = 1;
-        public float FallingStatePlayingSpeed => _fallingStatePlayingSpeed;
+        [SerializeField, Range(-2, 2)] private float _fallingAnimationPlayingSpeed = 1;
+        public float fallingAnimationPlayingSpeed => _fallingAnimationPlayingSpeed;
+
+        [Space]
+
+        [SerializeField] private string _moveBoostingAnimationName;
+        public string MoveBoostingAnimationName => _moveBoostingAnimationName;
+
+        [SerializeField] private float _moveBoostingStateTransition;
+        public float MoveBoostingStateTransition => _moveBoostingStateTransition;
+
+        [SerializeField, Range(-2, 2)] private float _moveBoostingAnimationPlayingSpeed = 1;
+        public float MoveBoostingAnimationPlayingSpeed => _moveBoostingAnimationPlayingSpeed;
 
         #endregion
     }

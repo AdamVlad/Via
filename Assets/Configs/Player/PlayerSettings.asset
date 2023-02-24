@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 570b217ab8c2a5249968483d314a0491, type: 3}
   m_Name: PlayerSettings
   m_EditorClassIdentifier: 
-  _maxSpeed: 5
+  _normalSpeed: 15
+  _boostSpeedMultiplier: 2
   _jumpForce: 1000
   _topRayLength: 0.8
   _bottomRayLength: 0.5
@@ -20,13 +21,16 @@ MonoBehaviour:
   _rightRayLength: 1
   _idleAnimationName: Idle
   _idleStateTransition: 0.1
-  _idleStatePlayingSpeed: 1.3
+  _idleAnimationPlayingSpeed: 1.8
   _walkAnimationName: Walk
   _walkStateTransition: 0.1
-  _walkStatePlayingSpeed: 1.5
+  _walkAnimationPlayingSpeed: 2
   _jumpStartAnimationName: JumpStart
   _jumpStartStateTransition: 0.1
-  _jumpStartStatePlayingSpeed: 2
+  _jumpStartAnimationPlayingSpeed: 1
   _fallingAnimationName: Flying
   _fallingStateTransition: 0
-  _fallingStatePlayingSpeed: 2
+  _fallingAnimationPlayingSpeed: 2
+  _moveBoostingAnimationName: Run
+  _moveBoostingStateTransition: 0.1
+  _moveBoostingAnimationPlayingSpeed: 1
