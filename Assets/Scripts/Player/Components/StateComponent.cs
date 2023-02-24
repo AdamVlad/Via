@@ -81,6 +81,11 @@ namespace Assets.Scripts.Player.Components
                 StopMove();
             }
 
+            if (!_inputDataHashed.MoveBoostButtonPressed)
+            {
+                StopBoost();
+            }
+
             if (_inputDataHashed.JumpButtonPressed && 
                 _groundAndWallDataHashed.IsOnGround &&
                 _currentState != PlayerStates.JumpStart)
@@ -90,7 +95,8 @@ namespace Assets.Scripts.Player.Components
             }
 
             if (_fallingDataHashed.IsFalling &&
-                _currentState != PlayerStates.MoveBoost &&
+                _currentState != PlayerStates.MoveLeftBoost &&
+                _currentState != PlayerStates.MoveRightBoost &&
                 _currentState != PlayerStates.Fall &&
                 _currentState != PlayerStates.SimpleAttack)
             {
@@ -131,10 +137,17 @@ namespace Assets.Scripts.Player.Components
             _eventBus.RaiseEvent(PlayerStates.MoveStopped);
         }
 
+        private void StopBoost()
+        {
+            _eventBus.RaiseEvent(PlayerStates.MoveBoostStopped);
+        }
+
         private void Jump()
         {
             _currentState = PlayerStates.JumpStart;
-            _eventBus.RaiseEvent(PlayerStates.JumpStart);
+            _eventBus.RaiseEvent(_inputDataHashed.MoveBoostButtonPressed
+                ? PlayerStates.JumpStartWhenBoosted
+                : PlayerStates.JumpStart);
         }
 
         private void Fall()
@@ -145,17 +158,19 @@ namespace Assets.Scripts.Player.Components
 
         private void MoveLeft()
         {
-            _currentState = PlayerStates.MoveLeft;
-
             if (_inputDataHashed.MoveBoostButtonPressed)
             {
-                _currentState = PlayerStates.MoveBoost;
-                _eventBus.RaiseEvent(PlayerStates.MoveBoost);
-                _eventBus.RaiseEvent(PlayerStates.MoveLeftWhenFlying);
+                if (_currentState != PlayerStates.MoveLeftBoost)
+                {
+                    _currentState = PlayerStates.MoveLeftBoost;
+                    _eventBus.RaiseEvent(PlayerStates.MoveLeftBoost);
+                    _eventBus.RaiseEvent(PlayerStates.MoveLeftWhenFlying);
+                }
                 return;
             }
 
-            _eventBus.RaiseEvent(PlayerStates.MoveBoostStopped);
+            _currentState = PlayerStates.MoveLeft;
+
             _eventBus.RaiseEvent(_groundAndWallDataHashed.IsOnGround
                 ? PlayerStates.MoveLeft
                 : PlayerStates.MoveLeftWhenFlying);
@@ -163,17 +178,20 @@ namespace Assets.Scripts.Player.Components
 
         private void MoveRight()
         {
-            _currentState = PlayerStates.MoveRight;
-
             if (_inputDataHashed.MoveBoostButtonPressed)
             {
-                _currentState = PlayerStates.MoveBoost;
-                _eventBus.RaiseEvent(PlayerStates.MoveBoost);
-                _eventBus.RaiseEvent(PlayerStates.MoveRightWhenFlying);
+                if (_currentState != PlayerStates.MoveRightBoost)
+                {
+                    _currentState = PlayerStates.MoveRightBoost;
+                    _eventBus.RaiseEvent(PlayerStates.MoveRightBoost);
+                    _eventBus.RaiseEvent(PlayerStates.MoveRightWhenFlying);
+                }
+
                 return;
             }
 
-            _eventBus.RaiseEvent(PlayerStates.MoveBoostStopped);
+            _currentState = PlayerStates.MoveRight;
+
             _eventBus.RaiseEvent(_groundAndWallDataHashed.IsOnGround
                 ? PlayerStates.MoveRight
                 : PlayerStates.MoveRightWhenFlying);

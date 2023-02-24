@@ -20,7 +20,8 @@ namespace Assets.Scripts.Player.Components
         {
             base.ActivateInternal();
 
-            _eventBus.Subscribe(PlayerStates.MoveBoost, BoostingMove);
+            _eventBus.Subscribe(PlayerStates.MoveLeftBoost, BoostingMove);
+            _eventBus.Subscribe(PlayerStates.MoveRightBoost, BoostingMove);
             _eventBus.Subscribe(PlayerStates.MoveBoostStopped, StopBoost);
         }
 
@@ -28,7 +29,8 @@ namespace Assets.Scripts.Player.Components
         {
             base.DeactivateInternal();
 
-            _eventBus.Unsubscribe(PlayerStates.MoveBoost, BoostingMove);
+            _eventBus.Unsubscribe(PlayerStates.MoveLeftBoost, BoostingMove);
+            _eventBus.Unsubscribe(PlayerStates.MoveRightBoost, BoostingMove);
             _eventBus.Unsubscribe(PlayerStates.MoveBoostStopped, StopBoost);
         }
 

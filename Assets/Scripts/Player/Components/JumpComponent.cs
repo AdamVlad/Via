@@ -23,6 +23,7 @@ namespace Assets.Scripts.Player.Components
             base.ActivateInternal();
 
             _eventBus.Subscribe(PlayerStates.JumpStart, Jump);
+            _eventBus.Subscribe(PlayerStates.JumpStartWhenBoosted, Jump);
         }
 
         protected override void DeactivateInternal()
@@ -30,6 +31,7 @@ namespace Assets.Scripts.Player.Components
             base.DeactivateInternal();
 
             _eventBus.Unsubscribe(PlayerStates.JumpStart, Jump);
+            _eventBus.Unsubscribe(PlayerStates.JumpStartWhenBoosted, Jump);
         }
 
         public void Jump()

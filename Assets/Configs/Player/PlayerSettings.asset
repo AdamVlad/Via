@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 570b217ab8c2a5249968483d314a0491, type: 3}
   m_Name: PlayerSettings
   m_EditorClassIdentifier: 
-  _normalSpeed: 15
-  _boostSpeedMultiplier: 2
+  _normalSpeed: 10
+  _boostSpeedMultiplier: 2.3
   _jumpForce: 1000
   _topRayLength: 0.8
   _bottomRayLength: 0.5

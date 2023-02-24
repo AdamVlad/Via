@@ -29,7 +29,8 @@ namespace Assets.Scripts.Player.Components
             _eventBus.Subscribe(PlayerStates.JumpStart, PlayJumpStartAnimation);
             _eventBus.Subscribe(PlayerStates.Fall, PlayFallingAnimation);
             _eventBus.Subscribe(PlayerStates.Flip, PlayFlipAnimation);
-            _eventBus.Subscribe(PlayerStates.MoveBoost, PlayBoostAnimation);
+            _eventBus.Subscribe(PlayerStates.MoveLeftBoost, PlayBoostAnimation);
+            _eventBus.Subscribe(PlayerStates.MoveRightBoost, PlayBoostAnimation);
             _eventBus.Subscribe(PlayerStates.SimpleAttack, PlaySimpleAttackAnimation);
         }
 
@@ -43,7 +44,8 @@ namespace Assets.Scripts.Player.Components
             _eventBus.Unsubscribe(PlayerStates.JumpStart, PlayJumpStartAnimation);
             _eventBus.Unsubscribe(PlayerStates.Idle, PlayIdleAnimation);
             _eventBus.Unsubscribe(PlayerStates.Flip, PlayFlipAnimation);
-            _eventBus.Unsubscribe(PlayerStates.MoveBoost, PlayBoostAnimation);
+            _eventBus.Unsubscribe(PlayerStates.MoveLeftBoost, PlayBoostAnimation);
+            _eventBus.Unsubscribe(PlayerStates.MoveRightBoost, PlayBoostAnimation);
             _eventBus.Unsubscribe(PlayerStates.SimpleAttack, PlaySimpleAttackAnimation);
         }
 

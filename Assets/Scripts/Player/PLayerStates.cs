@@ -8,9 +8,11 @@
         MoveLeftWhenFlying,
         MoveRightWhenFlying,
         MoveStopped,
-        MoveBoost,
+        MoveLeftBoost,
+        MoveRightBoost,
         MoveBoostStopped,
         JumpStart,
+        JumpStartWhenBoosted,
         Fall,
         Flip,
         SimpleAttack
