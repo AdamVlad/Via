@@ -102,6 +102,17 @@ namespace Assets.Scripts.Player
         [SerializeField, Range(-2, 2)] private float _moveBoostingAnimationPlayingSpeed = 1;
         public float MoveBoostingAnimationPlayingSpeed => _moveBoostingAnimationPlayingSpeed;
 
+        [Space]
+
+        [SerializeField] private string _simpleAttackAnimationName;
+        public string SimpleAttackAnimationName => _simpleAttackAnimationName;
+
+        [SerializeField] private float _simpleAttackStateTransition;
+        public float SimpleAttackStateTransition => _simpleAttackStateTransition;
+
+        [SerializeField, Range(-2, 2)] private float _simpleAttackAnimationPlayingSpeed = 1;
+        public float SimpleAttackAnimationPlayingSpeed => _simpleAttackAnimationPlayingSpeed;
+
         #endregion
     }
 }

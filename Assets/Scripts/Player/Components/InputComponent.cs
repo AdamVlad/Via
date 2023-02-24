@@ -32,6 +32,8 @@ namespace Assets.Scripts.Player.Components
             _input.Actions.Jump.started += OnJumpButtonPressed;
             _input.Actions.Jump.canceled += OnJumpButtonCanceled;
 
+            _input.Actions.SimpleAttack.started += OnSimpleAttackPressed;
+
             _input.Enable();
         }
 
@@ -50,6 +52,9 @@ namespace Assets.Scripts.Player.Components
 
             _input.Actions.Jump.started -= OnJumpButtonPressed;
             _input.Actions.Jump.canceled -= OnJumpButtonCanceled;
+
+            _input.Actions.SimpleAttack.started -= OnSimpleAttackPressed;
+
 
             _input.Disable();
         }
@@ -112,6 +117,15 @@ namespace Assets.Scripts.Player.Components
             NotifyInternal();
         }
 
+        private void OnSimpleAttackPressed(InputAction.CallbackContext callbackContext)
+        {
+            _simpleAttackButtonPressed = true;
+
+            NotifyInternal();
+
+            _simpleAttackButtonPressed = false;
+        }
+
         private void NotifyInternal()
         {
             Notify(new InputData
@@ -119,7 +133,8 @@ namespace Assets.Scripts.Player.Components
                 MoveLeftButtonPressed = _moveLeftButtonPressedHashed,
                 MoveRightButtonPressed = _moveRightButtonPressedHashed,
                 MoveBoostButtonPressed = _moveBoostButtonPressedHashed,
-                JumpButtonPressed = _jumpButtonPressedHashed
+                JumpButtonPressed = _jumpButtonPressedHashed,
+                SimpleAttackButtonPressed = _simpleAttackButtonPressed
             });
         }
 
@@ -129,5 +144,6 @@ namespace Assets.Scripts.Player.Components
         private bool _moveRightButtonPressedHashed;
         private bool _moveBoostButtonPressedHashed;
         private bool _jumpButtonPressedHashed;
+        private bool _simpleAttackButtonPressed;
     }
 }

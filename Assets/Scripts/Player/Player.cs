@@ -19,7 +19,8 @@ namespace Assets.Scripts.Player
             FlipComponent flipComponent,
             MoveComponent moveComponent,
             FallTrackingComponent fallTrackingComponent,
-            MoveBoostComponent moveBoostComponent)
+            MoveBoostComponent moveBoostComponent,
+            AttackComponent attackComponent)
         {
             _inputComponent = inputComponent.IfNullThrowExceptionOrReturn();
             _animationComponent = animationComponent.IfNullThrowExceptionOrReturn();
@@ -30,6 +31,7 @@ namespace Assets.Scripts.Player
             _moveComponent = moveComponent.IfNullThrowExceptionOrReturn();
             _fallTrackingComponent = fallTrackingComponent.IfNullThrowExceptionOrReturn();
             _moveBoostComponent = moveBoostComponent.IfNullThrowExceptionOrReturn();
+            _attackComponent = attackComponent.IfNullThrowExceptionOrReturn();
         }
 
         [SerializeField] private Transform _bottomRightRayPoint;
@@ -48,6 +50,7 @@ namespace Assets.Scripts.Player
             _moveComponent.Activate();
             _fallTrackingComponent.Activate();
             _moveBoostComponent.Activate();
+            _attackComponent.Activate();
         }
 
         private void OnDisable()
@@ -61,6 +64,7 @@ namespace Assets.Scripts.Player
             _moveComponent.Deactivate();
             _fallTrackingComponent.Deactivate();
             _moveBoostComponent.Deactivate();
+            _attackComponent.Deactivate();
         }
 
         private void Awake()
@@ -89,6 +93,7 @@ namespace Assets.Scripts.Player
         private MoveComponent _moveComponent;
         private FallTrackingComponent _fallTrackingComponent;
         private MoveBoostComponent _moveBoostComponent;
+        private AttackComponent _attackComponent;
     }
 }
 

@@ -5,6 +5,7 @@ using Assets.Scripts.Player.Components.Base;
 using Assets.Scripts.Player.ComponentsData;
 using Assets.Scripts.Patterns.Observer;
 using Assets.Scripts.Extensions;
+using Assets.Scripts.Player.ComponentsData.Interfaces;
 
 namespace Assets.Scripts.Player.Components
 {
@@ -77,70 +78,117 @@ namespace Assets.Scripts.Player.Components
             if (!_inputDataHashed.MoveRightButtonPressed &&
                 !_inputDataHashed.MoveLeftButtonPressed)
             {
-                _eventBus.RaiseEvent(PlayerStates.MoveStopped);
+                StopMove();
             }
 
             if (_inputDataHashed.JumpButtonPressed && 
                 _groundAndWallDataHashed.IsOnGround &&
                 _currentState != PlayerStates.JumpStart)
             {
-                _currentState = PlayerStates.JumpStart;
-                _eventBus.RaiseEvent(PlayerStates.JumpStart);
+                Jump();
                 return;
             }
 
             if (_fallingDataHashed.IsFalling &&
                 _currentState != PlayerStates.MoveBoost &&
-                _currentState != PlayerStates.Fall)
+                _currentState != PlayerStates.Fall &&
+                _currentState != PlayerStates.SimpleAttack)
             {
-                _currentState = PlayerStates.Fall;
-                _eventBus.RaiseEvent(PlayerStates.Fall);
+                Fall();
                 return;
             }
 
             if (_inputDataHashed.MoveLeftButtonPressed)
             {
-                _currentState = PlayerStates.MoveLeft;
-
-                if (_inputDataHashed.MoveBoostButtonPressed)
-                {
-                    _currentState = PlayerStates.MoveBoost;
-                    _eventBus.RaiseEvent(PlayerStates.MoveBoost);
-                    _eventBus.RaiseEvent(PlayerStates.MoveLeftWhenFlying);
-                    return;
-                }
-
-                _eventBus.RaiseEvent(PlayerStates.MoveBoostStopped);
-                _eventBus.RaiseEvent(_groundAndWallDataHashed.IsOnGround
-                    ? PlayerStates.MoveLeft
-                    : PlayerStates.MoveLeftWhenFlying);
+                MoveLeft();
                 return;
             }
 
             if (_inputDataHashed.MoveRightButtonPressed)
             {
-                _currentState = PlayerStates.MoveRight;
-
-                if (_inputDataHashed.MoveBoostButtonPressed)
-                {
-                    _currentState = PlayerStates.MoveBoost;
-                    _eventBus.RaiseEvent(PlayerStates.MoveBoost);
-                    _eventBus.RaiseEvent(PlayerStates.MoveRightWhenFlying);
-                    return;
-                }
-
-                _eventBus.RaiseEvent(PlayerStates.MoveBoostStopped);
-                _eventBus.RaiseEvent(_groundAndWallDataHashed.IsOnGround
-                    ? PlayerStates.MoveRight
-                    : PlayerStates.MoveRightWhenFlying);
+                MoveRight();
                 return;
             }
 
-            if (_groundAndWallDataHashed.IsOnGround && _currentState != PlayerStates.Idle)
+            if (_inputDataHashed.SimpleAttackButtonPressed &&
+                _currentState != PlayerStates.JumpStart &&
+                _currentState != PlayerStates.Fall &&
+                _groundAndWallDataHashed.IsOnGround)
             {
-                _currentState = PlayerStates.Idle;
-                _eventBus.RaiseEvent(PlayerStates.Idle);
+                SimpleAttack();
+                return;
             }
+
+            if (_groundAndWallDataHashed.IsOnGround &&
+                _currentState != PlayerStates.Idle)
+            {
+                Idle();
+            }
+        }
+
+        private void StopMove()
+        {
+            _eventBus.RaiseEvent(PlayerStates.MoveStopped);
+        }
+
+        private void Jump()
+        {
+            _currentState = PlayerStates.JumpStart;
+            _eventBus.RaiseEvent(PlayerStates.JumpStart);
+        }
+
+        private void Fall()
+        {
+            _currentState = PlayerStates.Fall;
+            _eventBus.RaiseEvent(PlayerStates.Fall);
+        }
+
+        private void MoveLeft()
+        {
+            _currentState = PlayerStates.MoveLeft;
+
+            if (_inputDataHashed.MoveBoostButtonPressed)
+            {
+                _currentState = PlayerStates.MoveBoost;
+                _eventBus.RaiseEvent(PlayerStates.MoveBoost);
+                _eventBus.RaiseEvent(PlayerStates.MoveLeftWhenFlying);
+                return;
+            }
+
+            _eventBus.RaiseEvent(PlayerStates.MoveBoostStopped);
+            _eventBus.RaiseEvent(_groundAndWallDataHashed.IsOnGround
+                ? PlayerStates.MoveLeft
+                : PlayerStates.MoveLeftWhenFlying);
+        }
+
+        private void MoveRight()
+        {
+            _currentState = PlayerStates.MoveRight;
+
+            if (_inputDataHashed.MoveBoostButtonPressed)
+            {
+                _currentState = PlayerStates.MoveBoost;
+                _eventBus.RaiseEvent(PlayerStates.MoveBoost);
+                _eventBus.RaiseEvent(PlayerStates.MoveRightWhenFlying);
+                return;
+            }
+
+            _eventBus.RaiseEvent(PlayerStates.MoveBoostStopped);
+            _eventBus.RaiseEvent(_groundAndWallDataHashed.IsOnGround
+                ? PlayerStates.MoveRight
+                : PlayerStates.MoveRightWhenFlying);
+        }
+
+        private void SimpleAttack()
+        {
+            _currentState = PlayerStates.SimpleAttack;
+            _eventBus.RaiseEvent(PlayerStates.SimpleAttack);
+        }
+
+        private void Idle()
+        {
+            _currentState = PlayerStates.Idle;
+            _eventBus.RaiseEvent(PlayerStates.Idle);
         }
 
         private readonly ObservableComponentDecorator _inputObservable;

@@ -34,3 +34,6 @@ MonoBehaviour:
   _moveBoostingAnimationName: Run
   _moveBoostingStateTransition: 0.1
   _moveBoostingAnimationPlayingSpeed: 1
+  _simpleAttackAnimationName: SimpleAttack
+  _simpleAttackStateTransition: 0
+  _simpleAttackAnimationPlayingSpeed: 2

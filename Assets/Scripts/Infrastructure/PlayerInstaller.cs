@@ -39,6 +39,7 @@ namespace Assets.Scripts.Infrastructure
             InstallMoveBoostingComponent();
             InstallMoveComponent();
             InstallFallTrackingComponent();
+            InstallAttackComponent();
         }
 
         private void InstallPlayerPrefab()
@@ -100,6 +101,11 @@ namespace Assets.Scripts.Infrastructure
         private void InstallFallTrackingComponent()
         {
             Container.Bind(typeof(FallTrackingComponent), typeof(IFixedTickable)).To<FallTrackingComponent>().AsSingle();
+        }
+
+        private void InstallAttackComponent()
+        {
+            Container.Bind<AttackComponent>().AsSingle();
         }
     }
 }

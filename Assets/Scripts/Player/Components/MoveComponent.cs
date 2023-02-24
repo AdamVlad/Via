@@ -7,6 +7,7 @@ using Assets.Scripts.Patterns.EventBus;
 using Assets.Scripts.Patterns.Observer;
 using Assets.Scripts.Player.Components.Base;
 using Assets.Scripts.Player.ComponentsData;
+using Assets.Scripts.Player.ComponentsData.Interfaces;
 
 namespace Assets.Scripts.Player.Components
 {

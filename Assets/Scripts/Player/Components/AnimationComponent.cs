@@ -30,6 +30,7 @@ namespace Assets.Scripts.Player.Components
             _eventBus.Subscribe(PlayerStates.Fall, PlayFallingAnimation);
             _eventBus.Subscribe(PlayerStates.Flip, PlayFlipAnimation);
             _eventBus.Subscribe(PlayerStates.MoveBoost, PlayBoostAnimation);
+            _eventBus.Subscribe(PlayerStates.SimpleAttack, PlaySimpleAttackAnimation);
         }
 
         protected override void DeactivateInternal()
@@ -43,29 +44,43 @@ namespace Assets.Scripts.Player.Components
             _eventBus.Unsubscribe(PlayerStates.Idle, PlayIdleAnimation);
             _eventBus.Unsubscribe(PlayerStates.Flip, PlayFlipAnimation);
             _eventBus.Unsubscribe(PlayerStates.MoveBoost, PlayBoostAnimation);
+            _eventBus.Unsubscribe(PlayerStates.SimpleAttack, PlaySimpleAttackAnimation);
         }
 
         private void PlayIdleAnimation()
         {
-            _armature.animation.FadeIn(_settings.IdleAnimationName, _settings.IdleStateTransition);
+            _armature.animation.FadeIn(
+                _settings.IdleAnimationName,
+                _settings.IdleStateTransition);
+
             _armature.animation.timeScale = _settings.idleAnimationPlayingSpeed;
         }
 
         private void PlayMoveAnimation()
         {
-            _armature.animation.FadeIn(_settings.WalkAnimationName, _settings.WalkStateTransition);
+            _armature.animation.FadeIn(
+                _settings.WalkAnimationName,
+                _settings.WalkStateTransition);
+
             _armature.animation.timeScale = _settings.walkAnimationPlayingSpeed;
         }
 
         private void PlayJumpStartAnimation()
         {
-            _armature.animation.FadeIn(_settings.JumpStartAnimationName, _settings.JumpStartStateTransition, 1);
+            _armature.animation.FadeIn(
+                _settings.JumpStartAnimationName,
+                _settings.JumpStartStateTransition,
+                1);
+
             _armature.animation.timeScale = _settings.jumpStartAnimationPlayingSpeed;
         }
         
         private void PlayFallingAnimation()
         {
-            _armature.animation.FadeIn(_settings.FallingAnimationName, _settings.FallingStateTransition);
+            _armature.animation.FadeIn(
+                _settings.FallingAnimationName,
+                _settings.FallingStateTransition);
+
             _armature.animation.timeScale = _settings.fallingAnimationPlayingSpeed;
         }
 
@@ -76,8 +91,20 @@ namespace Assets.Scripts.Player.Components
 
         private void PlayBoostAnimation()
         {
-            _armature.animation.FadeIn(_settings.MoveBoostingAnimationName, _settings.MoveBoostingStateTransition);
+            _armature.animation.FadeIn(
+                _settings.MoveBoostingAnimationName,
+                _settings.MoveBoostingStateTransition);
+
             _armature.animation.timeScale = _settings.MoveBoostingAnimationPlayingSpeed;
+        }
+        private void PlaySimpleAttackAnimation()
+        {
+            _armature.animation.FadeIn(
+                _settings.SimpleAttackAnimationName,
+                _settings.SimpleAttackStateTransition,
+                1);
+
+            _armature.animation.timeScale = _settings.SimpleAttackAnimationPlayingSpeed;
         }
 
         private readonly UnityArmatureComponent _armature;

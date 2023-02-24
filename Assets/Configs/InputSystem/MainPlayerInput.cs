@@ -57,6 +57,14 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""SimpleAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""e8ef5ab1-2652-41dc-9135-1a3f44d8120d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -158,6 +166,17 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
                     ""action"": ""MoveBoost"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ee482abd-84fb-40db-bd67-a2b796c4e843"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse"",
+                    ""action"": ""SimpleAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -173,6 +192,17 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
                     ""isOR"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Mouse"",
+            ""bindingGroup"": ""Mouse"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Mouse>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
         }
     ]
 }");
@@ -183,6 +213,7 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
         m_Actions_MoveRight = m_Actions.FindAction("MoveRight", throwIfNotFound: true);
         m_Actions_MoveLeft = m_Actions.FindAction("MoveLeft", throwIfNotFound: true);
         m_Actions_MoveBoost = m_Actions.FindAction("MoveBoost", throwIfNotFound: true);
+        m_Actions_SimpleAttack = m_Actions.FindAction("SimpleAttack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -237,6 +268,7 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Actions_MoveRight;
     private readonly InputAction m_Actions_MoveLeft;
     private readonly InputAction m_Actions_MoveBoost;
+    private readonly InputAction m_Actions_SimpleAttack;
     public struct ActionsActions
     {
         private @MainPlayerInput m_Wrapper;
@@ -246,6 +278,7 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
         public InputAction @MoveRight => m_Wrapper.m_Actions_MoveRight;
         public InputAction @MoveLeft => m_Wrapper.m_Actions_MoveLeft;
         public InputAction @MoveBoost => m_Wrapper.m_Actions_MoveBoost;
+        public InputAction @SimpleAttack => m_Wrapper.m_Actions_SimpleAttack;
         public InputActionMap Get() { return m_Wrapper.m_Actions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -270,6 +303,9 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
                 @MoveBoost.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnMoveBoost;
                 @MoveBoost.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnMoveBoost;
                 @MoveBoost.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnMoveBoost;
+                @SimpleAttack.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnSimpleAttack;
+                @SimpleAttack.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnSimpleAttack;
+                @SimpleAttack.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnSimpleAttack;
             }
             m_Wrapper.m_ActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -289,6 +325,9 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
                 @MoveBoost.started += instance.OnMoveBoost;
                 @MoveBoost.performed += instance.OnMoveBoost;
                 @MoveBoost.canceled += instance.OnMoveBoost;
+                @SimpleAttack.started += instance.OnSimpleAttack;
+                @SimpleAttack.performed += instance.OnSimpleAttack;
+                @SimpleAttack.canceled += instance.OnSimpleAttack;
             }
         }
     }
@@ -302,6 +341,15 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
             return asset.controlSchemes[m_KeyboardSchemeIndex];
         }
     }
+    private int m_MouseSchemeIndex = -1;
+    public InputControlScheme MouseScheme
+    {
+        get
+        {
+            if (m_MouseSchemeIndex == -1) m_MouseSchemeIndex = asset.FindControlSchemeIndex("Mouse");
+            return asset.controlSchemes[m_MouseSchemeIndex];
+        }
+    }
     public interface IActionsActions
     {
         void OnJump(InputAction.CallbackContext context);
@@ -309,5 +357,6 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
         void OnMoveRight(InputAction.CallbackContext context);
         void OnMoveLeft(InputAction.CallbackContext context);
         void OnMoveBoost(InputAction.CallbackContext context);
+        void OnSimpleAttack(InputAction.CallbackContext context);
     }
 }

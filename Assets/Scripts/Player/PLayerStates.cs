@@ -12,6 +12,7 @@
         MoveBoostStopped,
         JumpStart,
         Fall,
-        Flip
+        Flip,
+        SimpleAttack
     }
 }
