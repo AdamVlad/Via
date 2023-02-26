@@ -5,13 +5,15 @@ using UnityEngine;
 using Assets.Scripts.Extensions;
 using Assets.Scripts.Patterns.EventBus;
 using Assets.Scripts.Player.Components.Base;
+using System.Threading.Tasks;
+using Assets.Scripts.Player.ComponentsData;
 
 namespace Assets.Scripts.Player.Components
 {
-    public sealed class AnimationComponent : ComponentBase
+    public sealed class AnimationComponent : ObservableComponentDecorator
     {
         public AnimationComponent(
-            IEventBus<PlayerStates> eventBus,
+            IEventBus<PlayerEvents> eventBus,
             GameObject character,
             PlayerSettings settings) : base(eventBus)
         {
@@ -23,30 +25,32 @@ namespace Assets.Scripts.Player.Components
         {
             base.ActivateInternal();
 
-            _eventBus.Subscribe(PlayerStates.Idle, PlayIdleAnimation);
-            _eventBus.Subscribe(PlayerStates.MoveLeft, PlayMoveAnimation);
-            _eventBus.Subscribe(PlayerStates.MoveRight, PlayMoveAnimation);
-            _eventBus.Subscribe(PlayerStates.JumpStart, PlayJumpStartAnimation);
-            _eventBus.Subscribe(PlayerStates.Fall, PlayFallingAnimation);
-            _eventBus.Subscribe(PlayerStates.Flip, PlayFlipAnimation);
-            _eventBus.Subscribe(PlayerStates.MoveLeftBoost, PlayBoostAnimation);
-            _eventBus.Subscribe(PlayerStates.MoveRightBoost, PlayBoostAnimation);
-            _eventBus.Subscribe(PlayerStates.SimpleAttack, PlaySimpleAttackAnimation);
+            _eventBus.Subscribe(PlayerEvents.OnIdleStateEnter, PlayIdleAnimation);
+            _eventBus.Subscribe(PlayerEvents.OnMoveLeftStateEnter, PlayMoveAnimation);
+            _eventBus.Subscribe(PlayerEvents.OnMoveRightStateEnter, PlayMoveAnimation);
+            _eventBus.Subscribe(PlayerEvents.OnJumpStartStateEnter, PlayJumpStartAnimation);
+            _eventBus.Subscribe(PlayerEvents.OnFallStateEnter, PlayFallingAnimation);
+            _eventBus.Subscribe(PlayerEvents.Flip, PlayFlipAnimation);
+            _eventBus.Subscribe(PlayerEvents.MoveLeftBoost, PlayBoostAnimation);
+            _eventBus.Subscribe(PlayerEvents.MoveRightBoost, PlayBoostAnimation);
+            _eventBus.Subscribe(PlayerEvents.SimpleAttackStart, PlaySimpleAttackStartAnimation);
+            _eventBus.Subscribe(PlayerEvents.SimpleAttackEnd, PlaySimpleAttackEndAnimation);
         }
 
         protected override void DeactivateInternal()
         {
             base.DeactivateInternal();
 
-            _eventBus.Unsubscribe(PlayerStates.Idle, PlayIdleAnimation);
-            _eventBus.Unsubscribe(PlayerStates.MoveLeft, PlayMoveAnimation);
-            _eventBus.Unsubscribe(PlayerStates.MoveRight, PlayMoveAnimation);
-            _eventBus.Unsubscribe(PlayerStates.JumpStart, PlayJumpStartAnimation);
-            _eventBus.Unsubscribe(PlayerStates.Idle, PlayIdleAnimation);
-            _eventBus.Unsubscribe(PlayerStates.Flip, PlayFlipAnimation);
-            _eventBus.Unsubscribe(PlayerStates.MoveLeftBoost, PlayBoostAnimation);
-            _eventBus.Unsubscribe(PlayerStates.MoveRightBoost, PlayBoostAnimation);
-            _eventBus.Unsubscribe(PlayerStates.SimpleAttack, PlaySimpleAttackAnimation);
+            _eventBus.Unsubscribe(PlayerEvents.OnIdleStateEnter, PlayIdleAnimation);
+            _eventBus.Unsubscribe(PlayerEvents.OnMoveLeftStateEnter, PlayMoveAnimation);
+            _eventBus.Unsubscribe(PlayerEvents.OnMoveRightStateEnter, PlayMoveAnimation);
+            _eventBus.Unsubscribe(PlayerEvents.OnJumpStartStateEnter, PlayJumpStartAnimation);
+            _eventBus.Unsubscribe(PlayerEvents.OnIdleStateEnter, PlayIdleAnimation);
+            _eventBus.Unsubscribe(PlayerEvents.Flip, PlayFlipAnimation);
+            _eventBus.Unsubscribe(PlayerEvents.MoveLeftBoost, PlayBoostAnimation);
+            _eventBus.Unsubscribe(PlayerEvents.MoveRightBoost, PlayBoostAnimation);
+            _eventBus.Unsubscribe(PlayerEvents.SimpleAttackStart, PlaySimpleAttackStartAnimation);
+            _eventBus.Unsubscribe(PlayerEvents.SimpleAttackEnd, PlaySimpleAttackEndAnimation);
         }
 
         private void PlayIdleAnimation()
@@ -99,14 +103,36 @@ namespace Assets.Scripts.Player.Components
 
             _armature.animation.timeScale = _settings.MoveBoostingAnimationPlayingSpeed;
         }
-        private void PlaySimpleAttackAnimation()
+        private void PlaySimpleAttackStartAnimation()
         {
             _armature.animation.FadeIn(
-                _settings.SimpleAttackAnimationName,
-                _settings.SimpleAttackStateTransition,
+                _settings.simpleAttackStartAnimationName,
+                _settings.simpleAttackStartStateTransition,
                 1);
 
-            _armature.animation.timeScale = _settings.SimpleAttackAnimationPlayingSpeed;
+            _armature.animation.timeScale = _settings.simpleAttackStartAnimationPlayingSpeed;
+        }
+
+        private void PlaySimpleAttackEndAnimation()
+        {
+            var animationState = _armature.animation.FadeIn(
+                _settings.simpleAttackEndAnimationName,
+                _settings.simpleAttackEndStateTransition,
+                1);
+
+            _armature.animation.timeScale = _settings.simpleAttackEndAnimationPlayingSpeed;
+
+            Task.Factory.StartNew(() => WaitForAnimationEnd(animationState));
+        }
+
+        private void WaitForAnimationEnd(DragonBones.AnimationState animationState)
+        {
+            while (!animationState.isCompleted)
+            {
+            }
+
+            Debug.Log("1");
+            Notify(new NullData());
         }
 
         private readonly UnityArmatureComponent _armature;

@@ -7,9 +7,9 @@ namespace Assets.Scripts.Player.Components.Base
 {
     public abstract class ComponentBase : IPlayerComponent
     {
-        protected ComponentBase(IEventBus<PlayerStates> eventBus)
+        protected ComponentBase(IEventBus<PlayerEvents> eventBus)
         {
-            _eventBus = eventBus ?? throw new NullReferenceException("IEventBus<PlayerStates> is null");
+            _eventBus = eventBus ?? throw new NullReferenceException("IEventBus<PlayerEvents> is null");
         }
 
         public void Activate()
@@ -30,6 +30,6 @@ namespace Assets.Scripts.Player.Components.Base
         {
         }
 
-        protected IEventBus<PlayerStates> _eventBus;
+        protected IEventBus<PlayerEvents> _eventBus;
     }
 }

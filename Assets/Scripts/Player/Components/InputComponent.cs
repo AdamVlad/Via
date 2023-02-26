@@ -11,7 +11,7 @@ namespace Assets.Scripts.Player.Components
     {
         public InputComponent(
             MainPlayerInput input,
-            IEventBus<PlayerStates> eventBus) : base(eventBus)
+            IEventBus<PlayerEvents> eventBus) : base(eventBus)
         {
             _input = input ?? throw new NullReferenceException("MainPlayerInput is null");
         }
@@ -33,6 +33,7 @@ namespace Assets.Scripts.Player.Components
             _input.Actions.Jump.canceled += OnJumpButtonCanceled;
 
             _input.Actions.SimpleAttack.started += OnSimpleAttackPressed;
+            _input.Actions.SimpleAttack.canceled += OnSimpleAttackCanceled;
 
             _input.Enable();
         }
@@ -54,7 +55,7 @@ namespace Assets.Scripts.Player.Components
             _input.Actions.Jump.canceled -= OnJumpButtonCanceled;
 
             _input.Actions.SimpleAttack.started -= OnSimpleAttackPressed;
-
+            _input.Actions.SimpleAttack.canceled -= OnSimpleAttackCanceled;
 
             _input.Disable();
         }
@@ -122,8 +123,13 @@ namespace Assets.Scripts.Player.Components
             _simpleAttackButtonPressed = true;
 
             NotifyInternal();
+        }
 
+        private void OnSimpleAttackCanceled(InputAction.CallbackContext callbackContext)
+        {
             _simpleAttackButtonPressed = false;
+
+            NotifyInternal();
         }
 
         private void NotifyInternal()

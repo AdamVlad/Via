@@ -30,6 +30,7 @@ namespace Assets.Scripts.Infrastructure
             InstallSettings();
             InstallEventBus();
 
+            InstallDataComponent();
             InstallInputComponent();
             InstallStateComponent();
             InstallAnimationComponent();
@@ -54,7 +55,12 @@ namespace Assets.Scripts.Infrastructure
 
         private void InstallEventBus()
         {
-            Container.Bind<IEventBus<PlayerStates>>().To<EventBus<PlayerStates>>().AsSingle();
+            Container.Bind<IEventBus<PlayerEvents>>().To<EventBus<PlayerEvents>>().AsSingle();
+        }
+
+        private void InstallDataComponent()
+        {
+            Container.Bind<DataComponent>().AsSingle();
         }
 
         private void InstallInputComponent()
@@ -65,7 +71,7 @@ namespace Assets.Scripts.Infrastructure
 
         private void InstallStateComponent()
         {
-            Container.Bind(typeof(StateComponent), typeof(ILateTickable)).To<StateComponent>().AsSingle();
+            Container.Bind<StateComponent>().AsSingle();
         }
 
         private void InstallAnimationComponent()

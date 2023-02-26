@@ -7,7 +7,7 @@ namespace Assets.Scripts.Player.Components.Base
 {
     public abstract class ObservableComponentDecorator : ComponentBase
     {
-        protected ObservableComponentDecorator(IEventBus<PlayerStates> eventBus) : base(eventBus)
+        protected ObservableComponentDecorator(IEventBus<PlayerEvents> eventBus) : base(eventBus)
         {
             _observable = new Observable();
         }

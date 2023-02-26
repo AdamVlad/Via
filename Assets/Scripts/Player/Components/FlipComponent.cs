@@ -6,7 +6,7 @@ namespace Assets.Scripts.Player.Components
     public sealed class FlipComponent : ComponentBase
     {
         // Потом в файлах сохранения персонажа запоминать его поворот и передавать в конструкторе. Не забудь!
-        public FlipComponent(IEventBus<PlayerStates> eventBus) : base(eventBus)
+        public FlipComponent(IEventBus<PlayerEvents> eventBus) : base(eventBus)
         {
         }
 
@@ -14,20 +14,20 @@ namespace Assets.Scripts.Player.Components
         {
             base.ActivateInternal();
 
-            _eventBus.Subscribe(PlayerStates.MoveLeft, StartToMoveLeft);
-            _eventBus.Subscribe(PlayerStates.MoveRight, StartToMoveRight);
-            _eventBus.Subscribe(PlayerStates.MoveLeftWhenFlying, StartToMoveLeft);
-            _eventBus.Subscribe(PlayerStates.MoveRightWhenFlying, StartToMoveRight);
+            _eventBus.Subscribe(PlayerEvents.OnMoveLeftStateEnter, StartToMoveLeft);
+            _eventBus.Subscribe(PlayerEvents.OnMoveRightStateEnter, StartToMoveRight);
+            _eventBus.Subscribe(PlayerEvents.OnMoveLeftWhenFallingStateEnter, StartToMoveLeft);
+            _eventBus.Subscribe(PlayerEvents.OnMoveRightWhenFallingStateEnter, StartToMoveRight);
         }
 
         protected override void DeactivateInternal()
         {
             base.DeactivateInternal();
 
-            _eventBus.Unsubscribe(PlayerStates.MoveLeft, StartToMoveLeft);
-            _eventBus.Unsubscribe(PlayerStates.MoveRight, StartToMoveRight);
-            _eventBus.Unsubscribe(PlayerStates.MoveLeftWhenFlying, StartToMoveLeft);
-            _eventBus.Unsubscribe(PlayerStates.MoveRightWhenFlying, StartToMoveRight);
+            _eventBus.Unsubscribe(PlayerEvents.OnMoveLeftStateEnter, StartToMoveLeft);
+            _eventBus.Unsubscribe(PlayerEvents.OnMoveRightStateEnter, StartToMoveRight);
+            _eventBus.Unsubscribe(PlayerEvents.OnMoveLeftWhenFallingStateEnter, StartToMoveLeft);
+            _eventBus.Unsubscribe(PlayerEvents.OnMoveRightWhenFallingStateEnter, StartToMoveRight);
         }
 
         private void StartToMoveLeft()
@@ -35,7 +35,7 @@ namespace Assets.Scripts.Player.Components
             if (!_isLookOnLeft)
             {
                 _isLookOnLeft = true;
-                _eventBus.RaiseEvent(PlayerStates.Flip);
+                _eventBus.RaiseEvent(PlayerEvents.Flip);
             }
         }
 
@@ -44,7 +44,7 @@ namespace Assets.Scripts.Player.Components
             if (_isLookOnLeft)
             {
                 _isLookOnLeft = false;
-                _eventBus.RaiseEvent(PlayerStates.Flip);
+                _eventBus.RaiseEvent(PlayerEvents.Flip);
             }
         }
 

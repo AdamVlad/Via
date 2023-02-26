@@ -14,7 +14,7 @@ namespace Assets.Scripts.Player.Components
     public sealed class MoveComponent : ComponentBase, IObserver, IFixedTickable
     {
         public MoveComponent(
-            IEventBus<PlayerStates> eventBus,
+            IEventBus<PlayerEvents> eventBus,
             MoveBoostComponent moveBoostComponent,
             GameObject player,
             PlayerSettings settings) : base(eventBus)
@@ -30,11 +30,11 @@ namespace Assets.Scripts.Player.Components
 
             _boostingObservable.AddObserver(this);
 
-            _eventBus.Subscribe(PlayerStates.MoveLeft, PrepareToMoveLeft);
-            _eventBus.Subscribe(PlayerStates.MoveRight, PrepareToMoveRight);
-            _eventBus.Subscribe(PlayerStates.MoveLeftWhenFlying, PrepareToMoveLeft);
-            _eventBus.Subscribe(PlayerStates.MoveRightWhenFlying, PrepareToMoveRight);
-            _eventBus.Subscribe(PlayerStates.MoveStopped, StopMove);
+            _eventBus.Subscribe(PlayerEvents.OnMoveLeftStateEnter, PrepareToMoveLeft);
+            _eventBus.Subscribe(PlayerEvents.OnMoveRightStateEnter, PrepareToMoveRight);
+            _eventBus.Subscribe(PlayerEvents.OnMoveLeftWhenFallingStateEnter, PrepareToMoveLeft);
+            _eventBus.Subscribe(PlayerEvents.OnMoveRightWhenFallingStateEnter, PrepareToMoveRight);
+            _eventBus.Subscribe(PlayerEvents.StopMove, StopMove);
         }
 
         protected override void DeactivateInternal()
@@ -43,11 +43,11 @@ namespace Assets.Scripts.Player.Components
 
             _boostingObservable.RemoveObserver(this);
 
-            _eventBus.Unsubscribe(PlayerStates.MoveLeft, PrepareToMoveLeft);
-            _eventBus.Unsubscribe(PlayerStates.MoveRight, PrepareToMoveRight);
-            _eventBus.Unsubscribe(PlayerStates.MoveLeftWhenFlying, PrepareToMoveLeft);
-            _eventBus.Unsubscribe(PlayerStates.MoveRightWhenFlying, PrepareToMoveRight);
-            _eventBus.Unsubscribe(PlayerStates.MoveStopped, StopMove);
+            _eventBus.Unsubscribe(PlayerEvents.OnMoveLeftStateEnter, PrepareToMoveLeft);
+            _eventBus.Unsubscribe(PlayerEvents.OnMoveRightStateEnter, PrepareToMoveRight);
+            _eventBus.Unsubscribe(PlayerEvents.OnMoveLeftWhenFallingStateEnter, PrepareToMoveLeft);
+            _eventBus.Unsubscribe(PlayerEvents.OnMoveRightWhenFallingStateEnter, PrepareToMoveRight);
+            _eventBus.Unsubscribe(PlayerEvents.StopMove, StopMove);
         }
 
         public void FixedTick()
@@ -58,7 +58,6 @@ namespace Assets.Scripts.Player.Components
                     Vector3.right * 
                     _direction * 
                     _settings.NormalSpeed *
-                    _moveBoostDataHashed.BoostMultiplier *
                     Time.fixedDeltaTime);
             }
         }

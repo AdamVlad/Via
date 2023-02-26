@@ -104,14 +104,25 @@ namespace Assets.Scripts.Player
 
         [Space]
 
-        [SerializeField] private string _simpleAttackAnimationName;
-        public string SimpleAttackAnimationName => _simpleAttackAnimationName;
+        [SerializeField] private string _simpleAttackStartAnimationName;
+        public string simpleAttackStartAnimationName => _simpleAttackStartAnimationName;
 
-        [SerializeField] private float _simpleAttackStateTransition;
-        public float SimpleAttackStateTransition => _simpleAttackStateTransition;
+        [SerializeField] private float _simpleAttackStartStateTransition;
+        public float simpleAttackStartStateTransition => _simpleAttackStartStateTransition;
 
-        [SerializeField, Range(-2, 2)] private float _simpleAttackAnimationPlayingSpeed = 1;
-        public float SimpleAttackAnimationPlayingSpeed => _simpleAttackAnimationPlayingSpeed;
+        [SerializeField, Range(-2, 2)] private float _simpleAttackStartAnimationPlayingSpeed = 1;
+        public float simpleAttackStartAnimationPlayingSpeed => _simpleAttackStartAnimationPlayingSpeed;
+
+        [Space]
+
+        [SerializeField] private string _simpleAttackEndAnimationName;
+        public string simpleAttackEndAnimationName => _simpleAttackEndAnimationName;
+
+        [SerializeField] private float _simpleAttackEndStateTransition;
+        public float simpleAttackEndStateTransition => _simpleAttackEndStateTransition;
+
+        [SerializeField, Range(-2, 2)] private float _simpleAttackEndAnimationPlayingSpeed = 1;
+        public float simpleAttackEndAnimationPlayingSpeed => _simpleAttackEndAnimationPlayingSpeed;
 
         #endregion
     }

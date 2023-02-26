@@ -12,7 +12,7 @@ namespace Assets.Scripts.Player.Components
     public sealed class GroundAndWallCheckerComponent : ObservableComponentDecorator, IFixedTickable
     {
         public GroundAndWallCheckerComponent(
-            IEventBus<PlayerStates> eventBus,
+            IEventBus<PlayerEvents> eventBus,
             PlayerSettings settings) : base(eventBus)
         {
             _settings = settings ?? throw new NullReferenceException("PlayerSettings is null");

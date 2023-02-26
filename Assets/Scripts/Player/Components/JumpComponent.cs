@@ -10,7 +10,7 @@ namespace Assets.Scripts.Player.Components
     public sealed class JumpComponent : ComponentBase
     {
         public JumpComponent(
-            IEventBus<PlayerStates> eventBus,
+            IEventBus<PlayerEvents> eventBus,
             GameObject player,
             PlayerSettings settings) : base(eventBus)
         {
@@ -22,16 +22,16 @@ namespace Assets.Scripts.Player.Components
         {
             base.ActivateInternal();
 
-            _eventBus.Subscribe(PlayerStates.JumpStart, Jump);
-            _eventBus.Subscribe(PlayerStates.JumpStartWhenBoosted, Jump);
+            _eventBus.Subscribe(PlayerEvents.OnJumpStartStateEnter, Jump);
+            _eventBus.Subscribe(PlayerEvents.JumpStartWhenBoosted, Jump);
         }
 
         protected override void DeactivateInternal()
         {
             base.DeactivateInternal();
 
-            _eventBus.Unsubscribe(PlayerStates.JumpStart, Jump);
-            _eventBus.Unsubscribe(PlayerStates.JumpStartWhenBoosted, Jump);
+            _eventBus.Unsubscribe(PlayerEvents.OnJumpStartStateEnter, Jump);
+            _eventBus.Unsubscribe(PlayerEvents.JumpStartWhenBoosted, Jump);
         }
 
         public void Jump()

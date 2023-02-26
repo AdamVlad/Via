@@ -5,7 +5,7 @@ namespace Assets.Scripts.Player.Components
 {
     public class AttackComponent : ComponentBase
     {
-        public AttackComponent(IEventBus<PlayerStates> eventBus) : base(eventBus)
+        public AttackComponent(IEventBus<PlayerEvents> eventBus) : base(eventBus)
         {
         }
     }

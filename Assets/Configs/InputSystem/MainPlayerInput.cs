@@ -35,7 +35,7 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""MoveRight"",
+                    ""name"": ""OnMoveRightStateEnter"",
                     ""type"": ""Button"",
                     ""id"": ""2ed76d89-44a1-40ee-a1f6-cf64c8a8ae10"",
                     ""expectedControlType"": ""Button"",
@@ -43,7 +43,7 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""MoveLeft"",
+                    ""name"": ""OnMoveLeftStateEnter"",
                     ""type"": ""Button"",
                     ""id"": ""8a91f9dc-ef34-4b5a-9599-62be249b8299"",
                     ""expectedControlType"": ""Button"",
@@ -59,7 +59,7 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""SimpleAttack"",
+                    ""name"": ""SimpleAttackStart"",
                     ""type"": ""Button"",
                     ""id"": ""e8ef5ab1-2652-41dc-9135-1a3f44d8120d"",
                     ""expectedControlType"": ""Button"",
@@ -141,7 +141,7 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""MoveRight"",
+                    ""action"": ""OnMoveRightStateEnter"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -152,7 +152,7 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""MoveLeft"",
+                    ""action"": ""OnMoveLeftStateEnter"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -174,7 +174,7 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Mouse"",
-                    ""action"": ""SimpleAttack"",
+                    ""action"": ""SimpleAttackStart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -210,10 +210,10 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
         m_Actions = asset.FindActionMap("Actions", throwIfNotFound: true);
         m_Actions_Jump = m_Actions.FindAction("Jump", throwIfNotFound: true);
         m_Actions_Walk = m_Actions.FindAction("Walk", throwIfNotFound: true);
-        m_Actions_MoveRight = m_Actions.FindAction("MoveRight", throwIfNotFound: true);
-        m_Actions_MoveLeft = m_Actions.FindAction("MoveLeft", throwIfNotFound: true);
+        m_Actions_MoveRight = m_Actions.FindAction("OnMoveRightStateEnter", throwIfNotFound: true);
+        m_Actions_MoveLeft = m_Actions.FindAction("OnMoveLeftStateEnter", throwIfNotFound: true);
         m_Actions_MoveBoost = m_Actions.FindAction("MoveBoost", throwIfNotFound: true);
-        m_Actions_SimpleAttack = m_Actions.FindAction("SimpleAttack", throwIfNotFound: true);
+        m_Actions_SimpleAttack = m_Actions.FindAction("SimpleAttackStart", throwIfNotFound: true);
     }
 
     public void Dispose()

@@ -11,7 +11,7 @@ namespace Assets.Scripts.Player.Components
     public sealed class FallTrackingComponent : ObservableComponentDecorator, IFixedTickable
     {
         public FallTrackingComponent(
-            IEventBus<PlayerStates> eventBus,
+            IEventBus<PlayerEvents> eventBus,
             GameObject player) : base(eventBus)
         {
             _rigidbody = player.GetComponentOrThrowException<Rigidbody2D>();

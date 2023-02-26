@@ -1,0 +1,77 @@
+﻿using Assets.Scripts.Extensions;
+using Assets.Scripts.Patterns.EventBus;
+using Assets.Scripts.Patterns.Observer;
+using Assets.Scripts.Player.Components.Base;
+using Assets.Scripts.Player.ComponentsData;
+using Assets.Scripts.Player.ComponentsData.Interfaces;
+
+namespace Assets.Scripts.Player.Components
+{
+    public class DataComponent : ObservableComponentDecorator, IObserver
+    {
+        public DataComponent(
+            IEventBus<PlayerEvents> eventBus,
+            InputComponent inputComponent,
+            GroundAndWallCheckerComponent groundAndWallCheckerObservable,
+            FallTrackingComponent fallTrackingComponent,
+            AnimationComponent animationComponent) : base(eventBus)
+        {
+            _inputObservable = inputComponent.IfNullThrowExceptionOrReturn();
+            _groundAndWallCheckerObservable = groundAndWallCheckerObservable.IfNullThrowExceptionOrReturn();
+            _fallObservable = fallTrackingComponent.IfNullThrowExceptionOrReturn();
+            _animationObservable = animationComponent.IfNullThrowExceptionOrReturn();
+
+            InputDataHashed = new InputData();
+            GroundAndWallDataHashed = new GroundAndWallCheckerData();
+            FallingDataHashed = new FallingData();
+        }
+
+        public InputData InputDataHashed { get; private set; }
+        public GroundAndWallCheckerData GroundAndWallDataHashed { get; private set; }
+        public FallingData FallingDataHashed { get; private set; }
+
+        protected override void ActivateInternal()
+        {
+            base.ActivateInternal();
+
+            _inputObservable.AddObserver(this);
+            _groundAndWallCheckerObservable.AddObserver(this);
+            _fallObservable.AddObserver(this);
+            _animationObservable.AddObserver(this);
+        }
+
+        protected override void DeactivateInternal()
+        {
+            base.DeactivateInternal();
+
+            _inputObservable.RemoveObserver(this);
+            _groundAndWallCheckerObservable.RemoveObserver(this);
+            _fallObservable.RemoveObserver(this);
+            _animationObservable.RemoveObserver(this);
+        }
+
+        public void Update(ref IData data)
+        {
+            switch (data)
+            {
+                case InputData inputData:
+                    InputDataHashed = inputData;
+                    break;
+                case GroundAndWallCheckerData groundAndWallCheckerData:
+                    GroundAndWallDataHashed = groundAndWallCheckerData;
+                    break;
+                case FallingData fallingData:
+                    FallingDataHashed = fallingData;
+                    break;
+            }
+
+            Notify(new NullData());
+        }
+
+        private readonly ObservableComponentDecorator _inputObservable;
+        private readonly ObservableComponentDecorator _groundAndWallCheckerObservable;
+        private readonly ObservableComponentDecorator _fallObservable;
+        private readonly ObservableComponentDecorator _animationObservable;
+    }
+}
+
