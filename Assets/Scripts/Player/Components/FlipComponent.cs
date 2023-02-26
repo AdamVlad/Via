@@ -18,6 +18,8 @@ namespace Assets.Scripts.Player.Components
             _eventBus.Subscribe(PlayerEvents.OnMoveRightStateEnter, StartToMoveRight);
             _eventBus.Subscribe(PlayerEvents.OnMoveLeftWhenFallingStateEnter, StartToMoveLeft);
             _eventBus.Subscribe(PlayerEvents.OnMoveRightWhenFallingStateEnter, StartToMoveRight);
+            _eventBus.Subscribe(PlayerEvents.OnBoostedMoveLeftStateEnter, StartToMoveLeft);
+            _eventBus.Subscribe(PlayerEvents.OnBoostedMoveRightStateEnter, StartToMoveRight);
         }
 
         protected override void DeactivateInternal()
@@ -28,6 +30,8 @@ namespace Assets.Scripts.Player.Components
             _eventBus.Unsubscribe(PlayerEvents.OnMoveRightStateEnter, StartToMoveRight);
             _eventBus.Unsubscribe(PlayerEvents.OnMoveLeftWhenFallingStateEnter, StartToMoveLeft);
             _eventBus.Unsubscribe(PlayerEvents.OnMoveRightWhenFallingStateEnter, StartToMoveRight);
+            _eventBus.Unsubscribe(PlayerEvents.OnBoostedMoveLeftStateEnter, StartToMoveLeft);
+            _eventBus.Unsubscribe(PlayerEvents.OnBoostedMoveRightStateEnter, StartToMoveRight);
         }
 
         private void StartToMoveLeft()
@@ -35,7 +39,7 @@ namespace Assets.Scripts.Player.Components
             if (!_isLookOnLeft)
             {
                 _isLookOnLeft = true;
-                _eventBus.RaiseEvent(PlayerEvents.Flip);
+                _eventBus.RaiseEvent(PlayerEvents.OnFlipPlayerPicture);
             }
         }
 
@@ -44,7 +48,7 @@ namespace Assets.Scripts.Player.Components
             if (_isLookOnLeft)
             {
                 _isLookOnLeft = false;
-                _eventBus.RaiseEvent(PlayerEvents.Flip);
+                _eventBus.RaiseEvent(PlayerEvents.OnFlipPlayerPicture);
             }
         }
 

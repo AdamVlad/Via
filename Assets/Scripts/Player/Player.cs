@@ -49,9 +49,9 @@ namespace Assets.Scripts.Player
             _jumpComponent.Activate();
             _groundAndWallCheckerComponent.Activate();
             _flipComponent.Activate();
+            _moveBoostComponent.Activate();
             _moveComponent.Activate();
             _fallTrackingComponent.Activate();
-            _moveBoostComponent.Activate();
             _attackComponent.Activate();
             _dataComponent.Activate();
         }
@@ -64,9 +64,9 @@ namespace Assets.Scripts.Player
             _jumpComponent.Deactivate();
             _groundAndWallCheckerComponent.Deactivate();
             _flipComponent.Deactivate();
+            _moveBoostComponent.Deactivate();
             _moveComponent.Deactivate();
             _fallTrackingComponent.Deactivate();
-            _moveBoostComponent.Deactivate();
             _attackComponent.Deactivate();
             _dataComponent.Deactivate();
         }

@@ -3,26 +3,23 @@
     public enum PlayerEvents
     {
         OnIdleStateEnter,
+
         OnMoveLeftStateEnter,
         OnMoveRightStateEnter,
-
         OnMoveLeftWhenFallingStateEnter,
         OnMoveRightWhenFallingStateEnter,
-
-        MoveLeftBoost,
-        MoveRightBoost,
-        MoveBoostStopped,
+        OnBoostedMoveLeftStateEnter,
+        OnBoostedMoveRightStateEnter,
+        OnStoppingMove,
 
         OnJumpStartStateEnter,
-
-        JumpStartWhenBoosted,
+        OnJumpStartWhenBoostedStateEnter,
 
         OnFallStateEnter,
 
-        Flip,
+        OnFlipPlayerPicture,
+
         SimpleAttackStart,
         SimpleAttackEnd,
-
-        StopMove
     }
 }

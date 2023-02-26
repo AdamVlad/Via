@@ -30,9 +30,9 @@ namespace Assets.Scripts.Player.Components
             _eventBus.Subscribe(PlayerEvents.OnMoveRightStateEnter, PlayMoveAnimation);
             _eventBus.Subscribe(PlayerEvents.OnJumpStartStateEnter, PlayJumpStartAnimation);
             _eventBus.Subscribe(PlayerEvents.OnFallStateEnter, PlayFallingAnimation);
-            _eventBus.Subscribe(PlayerEvents.Flip, PlayFlipAnimation);
-            _eventBus.Subscribe(PlayerEvents.MoveLeftBoost, PlayBoostAnimation);
-            _eventBus.Subscribe(PlayerEvents.MoveRightBoost, PlayBoostAnimation);
+            _eventBus.Subscribe(PlayerEvents.OnFlipPlayerPicture, PlayFlipAnimation);
+            _eventBus.Subscribe(PlayerEvents.OnBoostedMoveLeftStateEnter, PlayBoostAnimation);
+            _eventBus.Subscribe(PlayerEvents.OnBoostedMoveRightStateEnter, PlayBoostAnimation);
             _eventBus.Subscribe(PlayerEvents.SimpleAttackStart, PlaySimpleAttackStartAnimation);
             _eventBus.Subscribe(PlayerEvents.SimpleAttackEnd, PlaySimpleAttackEndAnimation);
         }
@@ -46,9 +46,9 @@ namespace Assets.Scripts.Player.Components
             _eventBus.Unsubscribe(PlayerEvents.OnMoveRightStateEnter, PlayMoveAnimation);
             _eventBus.Unsubscribe(PlayerEvents.OnJumpStartStateEnter, PlayJumpStartAnimation);
             _eventBus.Unsubscribe(PlayerEvents.OnIdleStateEnter, PlayIdleAnimation);
-            _eventBus.Unsubscribe(PlayerEvents.Flip, PlayFlipAnimation);
-            _eventBus.Unsubscribe(PlayerEvents.MoveLeftBoost, PlayBoostAnimation);
-            _eventBus.Unsubscribe(PlayerEvents.MoveRightBoost, PlayBoostAnimation);
+            _eventBus.Unsubscribe(PlayerEvents.OnFlipPlayerPicture, PlayFlipAnimation);
+            _eventBus.Unsubscribe(PlayerEvents.OnBoostedMoveLeftStateEnter, PlayBoostAnimation);
+            _eventBus.Unsubscribe(PlayerEvents.OnBoostedMoveRightStateEnter, PlayBoostAnimation);
             _eventBus.Unsubscribe(PlayerEvents.SimpleAttackStart, PlaySimpleAttackStartAnimation);
             _eventBus.Unsubscribe(PlayerEvents.SimpleAttackEnd, PlaySimpleAttackEndAnimation);
         }

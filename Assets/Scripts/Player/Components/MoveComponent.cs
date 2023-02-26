@@ -34,7 +34,9 @@ namespace Assets.Scripts.Player.Components
             _eventBus.Subscribe(PlayerEvents.OnMoveRightStateEnter, PrepareToMoveRight);
             _eventBus.Subscribe(PlayerEvents.OnMoveLeftWhenFallingStateEnter, PrepareToMoveLeft);
             _eventBus.Subscribe(PlayerEvents.OnMoveRightWhenFallingStateEnter, PrepareToMoveRight);
-            _eventBus.Subscribe(PlayerEvents.StopMove, StopMove);
+            _eventBus.Subscribe(PlayerEvents.OnBoostedMoveLeftStateEnter, PrepareToMoveLeft);
+            _eventBus.Subscribe(PlayerEvents.OnBoostedMoveRightStateEnter, PrepareToMoveRight);
+            _eventBus.Subscribe(PlayerEvents.OnStoppingMove, StopMove);
         }
 
         protected override void DeactivateInternal()
@@ -47,7 +49,9 @@ namespace Assets.Scripts.Player.Components
             _eventBus.Unsubscribe(PlayerEvents.OnMoveRightStateEnter, PrepareToMoveRight);
             _eventBus.Unsubscribe(PlayerEvents.OnMoveLeftWhenFallingStateEnter, PrepareToMoveLeft);
             _eventBus.Unsubscribe(PlayerEvents.OnMoveRightWhenFallingStateEnter, PrepareToMoveRight);
-            _eventBus.Unsubscribe(PlayerEvents.StopMove, StopMove);
+            _eventBus.Unsubscribe(PlayerEvents.OnBoostedMoveLeftStateEnter, PrepareToMoveLeft);
+            _eventBus.Unsubscribe(PlayerEvents.OnBoostedMoveRightStateEnter, PrepareToMoveRight);
+            _eventBus.Unsubscribe(PlayerEvents.OnStoppingMove, StopMove);
         }
 
         public void FixedTick()
@@ -56,7 +60,8 @@ namespace Assets.Scripts.Player.Components
             {
                 _transform.Translate(
                     Vector3.right * 
-                    _direction * 
+                    _direction *
+                    _moveBoostDataHashed.BoostMultiplier *
                     _settings.NormalSpeed *
                     Time.fixedDeltaTime);
             }

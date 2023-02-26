@@ -29,7 +29,7 @@ MonoBehaviour:
   _jumpStartStateTransition: 0.1
   _jumpStartAnimationPlayingSpeed: 1
   _fallingAnimationName: Flying
-  _fallingStateTransition: 0
+  _fallingStateTransition: 0.4
   _fallingAnimationPlayingSpeed: 2
   _moveBoostingAnimationName: Run
   _moveBoostingStateTransition: 0.1

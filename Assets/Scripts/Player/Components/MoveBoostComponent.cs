@@ -19,18 +19,24 @@ namespace Assets.Scripts.Player.Components
         {
             base.ActivateInternal();
 
-            _eventBus.Subscribe(PlayerEvents.MoveLeftBoost, BoostingMove);
-            _eventBus.Subscribe(PlayerEvents.MoveRightBoost, BoostingMove);
-            _eventBus.Subscribe(PlayerEvents.MoveBoostStopped, StopBoost);
+            _eventBus.Subscribe(PlayerEvents.OnBoostedMoveLeftStateEnter, BoostingMove);
+            _eventBus.Subscribe(PlayerEvents.OnBoostedMoveRightStateEnter, BoostingMove);
+            _eventBus.Subscribe(PlayerEvents.OnMoveLeftStateEnter, StopBoost);
+            _eventBus.Subscribe(PlayerEvents.OnMoveRightStateEnter, StopBoost);
+            _eventBus.Subscribe(PlayerEvents.OnMoveLeftWhenFallingStateEnter, StopBoost);
+            _eventBus.Subscribe(PlayerEvents.OnMoveRightWhenFallingStateEnter, StopBoost);
         }
 
         protected override void DeactivateInternal()
         {
             base.DeactivateInternal();
 
-            _eventBus.Unsubscribe(PlayerEvents.MoveLeftBoost, BoostingMove);
-            _eventBus.Unsubscribe(PlayerEvents.MoveRightBoost, BoostingMove);
-            _eventBus.Unsubscribe(PlayerEvents.MoveBoostStopped, StopBoost);
+            _eventBus.Unsubscribe(PlayerEvents.OnBoostedMoveLeftStateEnter, BoostingMove);
+            _eventBus.Unsubscribe(PlayerEvents.OnBoostedMoveRightStateEnter, BoostingMove);
+            _eventBus.Unsubscribe(PlayerEvents.OnMoveLeftStateEnter, StopBoost);
+            _eventBus.Unsubscribe(PlayerEvents.OnMoveRightStateEnter, StopBoost);
+            _eventBus.Unsubscribe(PlayerEvents.OnMoveLeftWhenFallingStateEnter, StopBoost);
+            _eventBus.Unsubscribe(PlayerEvents.OnMoveRightWhenFallingStateEnter, StopBoost);
         }
 
         private void BoostingMove()

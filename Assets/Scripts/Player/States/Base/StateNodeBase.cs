@@ -20,9 +20,12 @@ namespace Assets.Scripts.Player.States.Base
 
         public abstract void Enter();
 
-        public void SetChild(ref StateNodeBase child)
+        public void SetLinks(params StateNodeBase[] linkedStates)
         {
-            _childs.Add(child);
+            foreach (var state in linkedStates)
+            {
+                _links.Add(state);
+            }
         }
 
         public bool CanEnter(ref DataComponent data)
@@ -32,7 +35,7 @@ namespace Assets.Scripts.Player.States.Base
 
         public void EnterNextState(ref DataComponent data)
         {
-            foreach (var state in _childs)
+            foreach (var state in _links)
             {
                 if (state.CanEnter(ref data))
                 {
@@ -45,7 +48,7 @@ namespace Assets.Scripts.Player.States.Base
 
         protected StateMachine _stateMachine;
         protected IEventBus<PlayerEvents> _eventBus;
-        protected IList<StateNodeBase> _childs = new List<StateNodeBase>();
+        protected IList<StateNodeBase> _links = new List<StateNodeBase>();
         protected readonly Predicate<DataComponent> _condition;
     }
 }
