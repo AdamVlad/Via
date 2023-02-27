@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 using Assets.Scripts.Patterns.EventBus;
 using Assets.Scripts.Player.Components;
@@ -10,37 +11,34 @@ namespace Assets.Scripts.Player.States.Base
     {
         protected StateNodeBase(
             ref StateMachine stateMachine,
-            ref IEventBus<PlayerEvents> eventBus,
-            Predicate<DataComponent> conditionForEnter)
+            ref IEventBus<PlayerEvents> eventBus)
         {
             _stateMachine = stateMachine;
             _eventBus = eventBus;
-            _condition = conditionForEnter;
         }
 
         public abstract void Enter();
 
-        public void SetLinks(params StateNodeBase[] linkedStates)
+        public void SetLink(ref StateNodeBase linkedState, Predicate<DataComponent> conditionForEnter)
         {
-            foreach (var state in linkedStates)
+            try
             {
-                _links.Add(state);
+                _links.Add(linkedState, conditionForEnter);
             }
-        }
-
-        public bool CanEnter(ref DataComponent data)
-        {
-            return _condition(data);
+            catch (ArgumentException ex)
+            {
+                Debug.LogError($"StateNodeBase: SetLink exception {ex}");
+            }
         }
 
         public void EnterNextState(ref DataComponent data)
         {
             foreach (var state in _links)
             {
-                if (state.CanEnter(ref data))
+                if (state.Value(data))
                 {
-                    _stateMachine.CurrentState = state;
-                    state.Enter();
+                    _stateMachine.CurrentState = state.Key;
+                    _stateMachine.CurrentState.Enter();
                     return;
                 }
             }
@@ -48,7 +46,6 @@ namespace Assets.Scripts.Player.States.Base
 
         protected StateMachine _stateMachine;
         protected IEventBus<PlayerEvents> _eventBus;
-        protected IList<StateNodeBase> _links = new List<StateNodeBase>();
-        protected readonly Predicate<DataComponent> _condition;
+        protected IDictionary<StateNodeBase, Predicate<DataComponent>> _links = new Dictionary<StateNodeBase, Predicate<DataComponent>>();
     }
 }

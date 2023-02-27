@@ -1,7 +1,4 @@
-﻿using System;
-
-using Assets.Scripts.Patterns.EventBus;
-using Assets.Scripts.Player.Components;
+﻿using Assets.Scripts.Patterns.EventBus;
 using Assets.Scripts.Player.States.Base;
 
 namespace Assets.Scripts.Player.States
@@ -10,8 +7,7 @@ namespace Assets.Scripts.Player.States
     {
         public MoveLeftState(
             ref StateMachine stateMachine,
-            ref IEventBus<PlayerEvents> eventBus,
-            Predicate<DataComponent> conditionForEnter) : base(ref stateMachine, ref eventBus, conditionForEnter)
+            ref IEventBus<PlayerEvents> eventBus) : base(ref stateMachine, ref eventBus)
         {
         }
 

@@ -51,165 +51,453 @@ namespace Assets.Scripts.Player.Components
 
         private void InitializeStates()
         {
-            _idleState = new IdleState(
-                ref _stateMachine,
-                ref _eventBus,
-                data =>
-                    data.GroundAndWallDataHashed.IsOnGround &&
-                    !data.InputDataHashed.MoveRightButtonPressed &&
-                    !data.InputDataHashed.MoveLeftButtonPressed);
-
-            _jumpStartState = new JumpStartState(
-                ref _stateMachine,
-                ref _eventBus,
-                data =>
-                    data.InputDataHashed.JumpButtonPressed &&
-                    !data.InputDataHashed.MoveBoostButtonPressed);
-
-            _jumpStartWhenBoostedState = new JumpStartWhenBoostedState(
-                ref _stateMachine,
-                ref _eventBus,
-                data =>
-                    data.InputDataHashed.JumpButtonPressed &&
-                    data.InputDataHashed.MoveBoostButtonPressed &&
-                    data.GroundAndWallDataHashed.IsOnGround);
-
-            _fallState = new FallState(
-                ref _stateMachine,
-                ref _eventBus,
-                data =>
-                    data.FallingDataHashed.IsFalling &&
-                    !(data.InputDataHashed.MoveBoostButtonPressed && data.InputDataHashed.MoveLeftButtonPressed ||
-                      data.InputDataHashed.MoveBoostButtonPressed && data.InputDataHashed.MoveRightButtonPressed));
-
-            _moveRightState = new MoveRightState(
-                ref _stateMachine,
-                ref _eventBus,
-                data => data.InputDataHashed.MoveRightButtonPressed &&
-                        !data.InputDataHashed.MoveBoostButtonPressed &&
-                        data.GroundAndWallDataHashed.IsOnGround);
-
-            _moveLeftState = new MoveLeftState(
-                ref _stateMachine,
-                ref _eventBus,
-                data =>
-                    data.InputDataHashed.MoveLeftButtonPressed &&
-                    !data.InputDataHashed.MoveBoostButtonPressed &&
-                    data.GroundAndWallDataHashed.IsOnGround);
-
-            _moveLeftWhenFallingState = new MoveLeftWhenFallingState(
-                ref _stateMachine,
-                ref _eventBus,
-                data =>
-                    data.InputDataHashed.MoveLeftButtonPressed &&
-                    !data.InputDataHashed.MoveBoostButtonPressed &&
-                    !data.GroundAndWallDataHashed.IsOnGround);
-
-            _moveRightWhenFallingState = new MoveRightWhenFallingState(
-                ref _stateMachine,
-                ref _eventBus,
-                data => data.InputDataHashed.MoveRightButtonPressed &&
-                        !data.InputDataHashed.MoveBoostButtonPressed &&
-                        !data.GroundAndWallDataHashed.IsOnGround);
-
-            _boostedMoveLeftState = new BoostedMoveLeftState(
-                ref _stateMachine,
-                ref _eventBus,
-                data =>
-                    data.InputDataHashed.MoveLeftButtonPressed &&
-                    data.InputDataHashed.MoveBoostButtonPressed);
-
-            _boostedMoveRightState = new BoostedMoveRightState(
-                ref _stateMachine,
-                ref _eventBus,
-                data =>
-                    data.InputDataHashed.MoveRightButtonPressed &&
-                    data.InputDataHashed.MoveBoostButtonPressed);
+            _idleState = new IdleState(ref _stateMachine, ref _eventBus);
+            _jumpStartState = new JumpStartState(ref _stateMachine, ref _eventBus);
+            _jumpStartWhenBoostedState = new JumpStartWhenBoostedState(ref _stateMachine, ref _eventBus);
+            _fallState = new FallState(ref _stateMachine, ref _eventBus);
+            _moveRightState = new MoveRightState(ref _stateMachine, ref _eventBus);
+            _moveLeftState = new MoveLeftState(ref _stateMachine, ref _eventBus);
+            _moveLeftWhenFallingState = new MoveLeftWhenFallingState(ref _stateMachine, ref _eventBus);
+            _moveRightWhenFallingState = new MoveRightWhenFallingState(ref _stateMachine, ref _eventBus);
+            _boostedMoveLeftState = new BoostedMoveLeftState(ref _stateMachine, ref _eventBus);
+            _boostedMoveRightState = new BoostedMoveRightState(ref _stateMachine, ref _eventBus);
         }
 
         private void ConfigureStatesLinks()
         {
-            _idleState.SetLinks(
-                _jumpStartState,
-                _moveRightState, 
-                _moveLeftState,
-                _boostedMoveLeftState,
-                _boostedMoveRightState);
+            SetLinksForIdleState();
+            SetLinksForJumpStartState();
+            SetLinksForJumpStartWhenBoostedState();
+            SetLinksForFallState();
+            SetLinksForMoveRightState();
+            SetLinksForMoveLeftState();
+            SetLinksForMoveLeftWhenFallingState();
+            SetLinksForMoveRightWhenFallingState();
+            SetLinksForBoostedMoveLeftState();
+            SetLinksForBoostedMoveRightState();
+        }
 
-            _jumpStartState.SetLinks(
-                _fallState, 
-                _moveRightWhenFallingState, 
-                _moveLeftWhenFallingState,
-                _boostedMoveLeftState, 
-                _boostedMoveRightState);
+        private void SetLinksForIdleState()
+        {
+            _idleState.SetLink(
+                ref _jumpStartState, 
+                data =>
+                    data.InputDataHashed.JumpButtonPressed);
 
-            _jumpStartWhenBoostedState.SetLinks(
-                _fallState,
-                _moveRightWhenFallingState,
-                _moveLeftWhenFallingState,
-                _boostedMoveLeftState,
-                _boostedMoveRightState);
+            _idleState.SetLink(
+                ref _moveRightState,
+                data => 
+                    data.InputDataHashed.MoveRightButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
 
-            _fallState.SetLinks(
-                _idleState,
-                _moveLeftState,
-                _moveRightState, 
-                _moveLeftWhenFallingState, 
-                _moveRightWhenFallingState,
-                _boostedMoveLeftState, 
-                _boostedMoveRightState);
+            _idleState.SetLink(
+                ref _moveLeftState,
+                data => 
+                    data.InputDataHashed.MoveLeftButtonPressed && 
+                    !data.InputDataHashed.MoveBoostButtonPressed);
 
-            _moveRightState.SetLinks(
-                _idleState,
-                _jumpStartState,
-                _moveLeftState, 
-                _boostedMoveLeftState,
-                _boostedMoveRightState);
+            _idleState.SetLink(
+                ref _boostedMoveRightState,
+                data => 
+                    data.InputDataHashed.MoveRightButtonPressed &&
+                    data.InputDataHashed.MoveBoostButtonPressed);
 
-            _moveLeftState.SetLinks(
-                _idleState,
-                _jumpStartState, 
-                _moveRightState, 
-                _boostedMoveLeftState,
-                _boostedMoveRightState);
+            _idleState.SetLink(
+                ref _boostedMoveLeftState,
+                data => 
+                    data.InputDataHashed.MoveLeftButtonPressed && 
+                    data.InputDataHashed.MoveBoostButtonPressed);
+        }
 
-            _moveLeftWhenFallingState.SetLinks(
-                _idleState,
-                _moveRightWhenFallingState,
-                _fallState,
-                _moveLeftState,
-                _moveRightState, 
-                _boostedMoveLeftState, 
-                _boostedMoveRightState);
+        private void SetLinksForJumpStartState()
+        {
+            _jumpStartState.SetLink(
+                ref _fallState, 
+                data => 
+                    data.FallingDataHashed.IsFalling);
 
-            _moveRightWhenFallingState.SetLinks(
-                _idleState, 
-                _moveLeftWhenFallingState,
-                _fallState, 
-                _moveLeftState,
-                _moveRightState, 
-                _boostedMoveLeftState, 
-                _boostedMoveRightState);
+            _jumpStartState.SetLink(
+                ref _moveRightWhenFallingState,
+                data =>
+                    data.InputDataHashed.MoveRightButtonPressed && 
+                    !data.InputDataHashed.MoveBoostButtonPressed);
 
-            _boostedMoveLeftState.SetLinks(
-                _idleState,
-                _jumpStartWhenBoostedState,
-                _fallState,
-                _moveRightState, 
-                _moveLeftState,
-                _moveLeftWhenFallingState,
-                _moveRightWhenFallingState,
-                _boostedMoveRightState);
+            _jumpStartState.SetLink(
+                ref _moveLeftWhenFallingState,
+                data => 
+                    data.InputDataHashed.MoveLeftButtonPressed && 
+                    !data.InputDataHashed.MoveBoostButtonPressed);
 
-            _boostedMoveRightState.SetLinks(
-                _idleState,
-                _jumpStartWhenBoostedState,
-                _fallState,
-                _moveRightState, 
-                _moveLeftState,
-                _moveLeftWhenFallingState, 
-                _moveRightWhenFallingState,
-                _boostedMoveLeftState);
+            _jumpStartState.SetLink(
+                ref _boostedMoveRightState,
+                data => 
+                    data.InputDataHashed.MoveRightButtonPressed && 
+                    data.InputDataHashed.MoveBoostButtonPressed);
+
+            _jumpStartState.SetLink(
+                ref _boostedMoveLeftState,
+                data => 
+                    data.InputDataHashed.MoveLeftButtonPressed && 
+                    data.InputDataHashed.MoveBoostButtonPressed);
+        }
+
+        private void SetLinksForJumpStartWhenBoostedState()
+        {
+            _jumpStartWhenBoostedState.SetLink(
+                ref _fallState,
+                data =>
+                    data.FallingDataHashed.IsFalling && 
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _jumpStartWhenBoostedState.SetLink(
+                ref _moveRightWhenFallingState,
+                data =>
+                    data.InputDataHashed.MoveRightButtonPressed && 
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _jumpStartWhenBoostedState.SetLink(
+                ref _moveLeftWhenFallingState,
+                data => 
+                    data.InputDataHashed.MoveLeftButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _jumpStartWhenBoostedState.SetLink(
+                ref _boostedMoveRightState,
+                data => 
+                    data.InputDataHashed.MoveRightButtonPressed && 
+                    data.InputDataHashed.MoveBoostButtonPressed);
+
+            _jumpStartWhenBoostedState.SetLink(
+                ref _boostedMoveLeftState,
+                data => 
+                    data.InputDataHashed.MoveLeftButtonPressed && 
+                    data.InputDataHashed.MoveBoostButtonPressed);
+        }
+
+        private void SetLinksForFallState()
+        {
+            _fallState.SetLink(
+                ref _idleState,
+                data => 
+                    data.GroundAndWallDataHashed.IsOnGround && 
+                    !data.InputDataHashed.MoveLeftButtonPressed &&
+                    !data.InputDataHashed.MoveRightButtonPressed);
+
+            _fallState.SetLink(
+                ref _moveLeftState,
+                data => 
+                    data.GroundAndWallDataHashed.IsOnGround && 
+                    data.InputDataHashed.MoveLeftButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _fallState.SetLink(
+                ref _moveRightState,
+                data => 
+                    data.GroundAndWallDataHashed.IsOnGround && 
+                    data.InputDataHashed.MoveRightButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _fallState.SetLink(
+                ref _moveLeftWhenFallingState,
+                data => 
+                    !data.GroundAndWallDataHashed.IsOnGround && 
+                    data.InputDataHashed.MoveLeftButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _fallState.SetLink(
+                ref _moveRightWhenFallingState,
+                data => 
+                    !data.GroundAndWallDataHashed.IsOnGround && 
+                    data.InputDataHashed.MoveRightButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _fallState.SetLink(
+                ref _boostedMoveLeftState,
+                data =>
+                    data.InputDataHashed.MoveLeftButtonPressed && 
+                    data.InputDataHashed.MoveBoostButtonPressed);
+
+            _fallState.SetLink(
+                ref _boostedMoveRightState,
+                data => 
+                    data.InputDataHashed.MoveRightButtonPressed && 
+                    data.InputDataHashed.MoveBoostButtonPressed);
+        }
+
+        private void SetLinksForMoveRightState()
+        {
+            _moveRightState.SetLink(
+                ref _idleState,
+                data => 
+                    !data.InputDataHashed.MoveLeftButtonPressed && 
+                    !data.InputDataHashed.MoveRightButtonPressed);
+
+            _moveRightState.SetLink(
+                ref _jumpStartState, 
+                data =>
+                    data.InputDataHashed.JumpButtonPressed);
+
+            _moveRightState.SetLink(
+                ref _moveLeftState,
+                data => 
+                    data.InputDataHashed.MoveLeftButtonPressed && 
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _moveRightState.SetLink(
+                ref _boostedMoveLeftState,
+                data => 
+                    data.InputDataHashed.MoveLeftButtonPressed &&
+                    data.InputDataHashed.MoveBoostButtonPressed);
+
+            _moveRightState.SetLink(
+                ref _boostedMoveRightState,
+                data => 
+                    data.InputDataHashed.MoveRightButtonPressed && 
+                    data.InputDataHashed.MoveBoostButtonPressed);
+        }
+
+        private void SetLinksForMoveLeftState()
+        {
+            _moveLeftState.SetLink(
+                ref _idleState,
+                data => 
+                    !data.InputDataHashed.MoveLeftButtonPressed && 
+                    !data.InputDataHashed.MoveRightButtonPressed);
+
+            _moveLeftState.SetLink(
+                ref _jumpStartState, 
+                data => 
+                    data.InputDataHashed.JumpButtonPressed);
+
+            _moveLeftState.SetLink(
+                ref _moveRightState,
+                data => 
+                    data.InputDataHashed.MoveRightButtonPressed && 
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _moveLeftState.SetLink(
+                ref _boostedMoveLeftState,
+                data => 
+                    data.InputDataHashed.MoveLeftButtonPressed && 
+                    data.InputDataHashed.MoveBoostButtonPressed);
+
+            _moveLeftState.SetLink(
+                ref _boostedMoveRightState,
+                data => 
+                    data.InputDataHashed.MoveRightButtonPressed && 
+                    data.InputDataHashed.MoveBoostButtonPressed);
+        }
+
+        private void SetLinksForMoveLeftWhenFallingState()
+        {
+            _moveLeftWhenFallingState.SetLink(
+                ref _idleState,
+                data => 
+                    data.GroundAndWallDataHashed.IsOnGround && 
+                    !data.InputDataHashed.MoveLeftButtonPressed &&
+                    !data.InputDataHashed.MoveRightButtonPressed);
+
+            _moveLeftWhenFallingState.SetLink(
+                ref _moveRightWhenFallingState,
+                data => 
+                    !data.GroundAndWallDataHashed.IsOnGround && 
+                    data.InputDataHashed.MoveRightButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _moveLeftWhenFallingState.SetLink(
+                ref _moveLeftState,
+                data => 
+                    data.GroundAndWallDataHashed.IsOnGround && 
+                    data.InputDataHashed.MoveLeftButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _moveLeftWhenFallingState.SetLink(
+                ref _moveRightState,
+                data => 
+                    data.GroundAndWallDataHashed.IsOnGround && 
+                    data.InputDataHashed.MoveRightButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _moveLeftWhenFallingState.SetLink(
+                ref _boostedMoveLeftState,
+                data => 
+                    data.InputDataHashed.MoveLeftButtonPressed && 
+                    data.InputDataHashed.MoveBoostButtonPressed);
+
+            _moveLeftWhenFallingState.SetLink(
+                ref _boostedMoveRightState,
+                data => 
+                    data.InputDataHashed.MoveRightButtonPressed && 
+                    data.InputDataHashed.MoveBoostButtonPressed);
+
+            _moveLeftWhenFallingState.SetLink(
+                ref _fallState,
+                data => 
+                    data.FallingDataHashed.IsFalling && 
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+        }
+
+        private void SetLinksForMoveRightWhenFallingState()
+        {
+            _moveRightWhenFallingState.SetLink(
+                ref _idleState,
+                data =>
+                    data.GroundAndWallDataHashed.IsOnGround && 
+                    !data.InputDataHashed.MoveLeftButtonPressed &&
+                    !data.InputDataHashed.MoveRightButtonPressed);
+
+            _moveRightWhenFallingState.SetLink(
+                ref _moveLeftWhenFallingState,
+                data => 
+                    !data.GroundAndWallDataHashed.IsOnGround && 
+                    data.InputDataHashed.MoveLeftButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _moveRightWhenFallingState.SetLink(
+                ref _moveLeftState,
+                data => 
+                    data.GroundAndWallDataHashed.IsOnGround && 
+                    data.InputDataHashed.MoveLeftButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _moveRightWhenFallingState.SetLink(
+                ref _moveRightState,
+                data => 
+                    data.GroundAndWallDataHashed.IsOnGround && 
+                    data.InputDataHashed.MoveRightButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _moveRightWhenFallingState.SetLink(
+                ref _boostedMoveLeftState,
+                data => 
+                    data.InputDataHashed.MoveLeftButtonPressed && 
+                    data.InputDataHashed.MoveBoostButtonPressed);
+
+            _moveRightWhenFallingState.SetLink(
+                ref _boostedMoveRightState,
+                data => 
+                    data.InputDataHashed.MoveRightButtonPressed && 
+                    data.InputDataHashed.MoveBoostButtonPressed);
+
+            _moveRightWhenFallingState.SetLink(
+                ref _fallState,
+                data => 
+                    data.FallingDataHashed.IsFalling && 
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+        }
+
+        private void SetLinksForBoostedMoveLeftState()
+        {
+            _boostedMoveLeftState.SetLink(
+                ref _idleState,
+                data =>
+                    data.GroundAndWallDataHashed.IsOnGround && 
+                    !data.InputDataHashed.MoveLeftButtonPressed &&
+                    !data.InputDataHashed.MoveRightButtonPressed);
+
+            _boostedMoveLeftState.SetLink(
+                ref _jumpStartWhenBoostedState,
+                data => 
+                    data.GroundAndWallDataHashed.IsOnGround && 
+                    data.InputDataHashed.JumpButtonPressed &&
+                    data.InputDataHashed.MoveBoostButtonPressed);
+
+            _boostedMoveLeftState.SetLink(
+                ref _moveLeftState,
+                data => 
+                    data.GroundAndWallDataHashed.IsOnGround && 
+                    data.InputDataHashed.MoveLeftButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _boostedMoveLeftState.SetLink(
+                ref _moveRightState,
+                data => 
+                    data.GroundAndWallDataHashed.IsOnGround && 
+                    data.InputDataHashed.MoveRightButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _boostedMoveLeftState.SetLink(
+                ref _moveLeftWhenFallingState,
+                data => 
+                    !data.GroundAndWallDataHashed.IsOnGround && 
+                    data.InputDataHashed.MoveLeftButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _boostedMoveLeftState.SetLink(
+                ref _moveRightWhenFallingState,
+                data => 
+                    !data.GroundAndWallDataHashed.IsOnGround && 
+                    data.InputDataHashed.MoveRightButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _boostedMoveLeftState.SetLink(
+                ref _fallState,
+                data =>
+                    data.FallingDataHashed.IsFalling && 
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _boostedMoveLeftState.SetLink(
+                ref _boostedMoveRightState,
+                data =>
+                    data.InputDataHashed.MoveRightButtonPressed && 
+                    data.InputDataHashed.MoveBoostButtonPressed);
+        }
+
+        private void SetLinksForBoostedMoveRightState()
+        {
+            _boostedMoveRightState.SetLink(
+                ref _idleState,
+                data =>
+                    data.GroundAndWallDataHashed.IsOnGround && 
+                    !data.InputDataHashed.MoveLeftButtonPressed &&
+                    !data.InputDataHashed.MoveRightButtonPressed);
+
+            _boostedMoveRightState.SetLink(
+                ref _jumpStartWhenBoostedState,
+                data => 
+                    data.GroundAndWallDataHashed.IsOnGround && 
+                    data.InputDataHashed.JumpButtonPressed &&
+                    data.InputDataHashed.MoveBoostButtonPressed);
+
+            _boostedMoveRightState.SetLink(
+                ref _moveLeftState,
+                data => 
+                    data.GroundAndWallDataHashed.IsOnGround && 
+                    data.InputDataHashed.MoveLeftButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _boostedMoveRightState.SetLink(
+                ref _moveRightState,
+                data => 
+                    data.GroundAndWallDataHashed.IsOnGround && 
+                    data.InputDataHashed.MoveRightButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _boostedMoveRightState.SetLink(
+                ref _moveLeftWhenFallingState,
+                data => 
+                    !data.GroundAndWallDataHashed.IsOnGround && 
+                    data.InputDataHashed.MoveLeftButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _boostedMoveRightState.SetLink(
+                ref _moveRightWhenFallingState,
+                data => 
+                    !data.GroundAndWallDataHashed.IsOnGround && 
+                    data.InputDataHashed.MoveRightButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _boostedMoveRightState.SetLink(
+                ref _fallState,
+                data => 
+                    data.FallingDataHashed.IsFalling && 
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _boostedMoveRightState.SetLink(
+                ref _boostedMoveLeftState,
+                data => 
+                    data.InputDataHashed.MoveLeftButtonPressed && 
+                    data.InputDataHashed.MoveBoostButtonPressed);
         }
 
         private DataComponent _dataComponent;
