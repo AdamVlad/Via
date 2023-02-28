@@ -33,8 +33,8 @@ namespace Assets.Scripts.Player.Components
             _eventBus.Subscribe(PlayerEvents.OnFlipPlayerPicture, PlayFlipAnimation);
             _eventBus.Subscribe(PlayerEvents.OnBoostedMoveLeftStateEnter, PlayBoostAnimation);
             _eventBus.Subscribe(PlayerEvents.OnBoostedMoveRightStateEnter, PlayBoostAnimation);
-            _eventBus.Subscribe(PlayerEvents.SimpleAttackStart, PlaySimpleAttackStartAnimation);
-            _eventBus.Subscribe(PlayerEvents.SimpleAttackEnd, PlaySimpleAttackEndAnimation);
+            _eventBus.Subscribe(PlayerEvents.OnSimpleAttackStartStateEnter, PlaySimpleAttackStartAnimation);
+            _eventBus.Subscribe(PlayerEvents.OnSimpleAttackEndStateEnter, PlaySimpleAttackEndAnimation);
         }
 
         protected override void DeactivateInternal()
@@ -49,8 +49,8 @@ namespace Assets.Scripts.Player.Components
             _eventBus.Unsubscribe(PlayerEvents.OnFlipPlayerPicture, PlayFlipAnimation);
             _eventBus.Unsubscribe(PlayerEvents.OnBoostedMoveLeftStateEnter, PlayBoostAnimation);
             _eventBus.Unsubscribe(PlayerEvents.OnBoostedMoveRightStateEnter, PlayBoostAnimation);
-            _eventBus.Unsubscribe(PlayerEvents.SimpleAttackStart, PlaySimpleAttackStartAnimation);
-            _eventBus.Unsubscribe(PlayerEvents.SimpleAttackEnd, PlaySimpleAttackEndAnimation);
+            _eventBus.Unsubscribe(PlayerEvents.OnSimpleAttackStartStateEnter, PlaySimpleAttackStartAnimation);
+            _eventBus.Unsubscribe(PlayerEvents.OnSimpleAttackEndStateEnter, PlaySimpleAttackEndAnimation);
         }
 
         private void PlayIdleAnimation()
@@ -131,8 +131,10 @@ namespace Assets.Scripts.Player.Components
             {
             }
 
-            Debug.Log("1");
-            Notify(new NullData());
+            Notify(new AttackData
+            {
+                IsAttackEnded = true
+            });
         }
 
         private readonly UnityArmatureComponent _armature;

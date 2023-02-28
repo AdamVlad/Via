@@ -59,7 +59,7 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""SimpleAttackStart"",
+                    ""name"": ""SimpleAttackStartState"",
                     ""type"": ""Button"",
                     ""id"": ""e8ef5ab1-2652-41dc-9135-1a3f44d8120d"",
                     ""expectedControlType"": ""Button"",
@@ -174,7 +174,7 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Mouse"",
-                    ""action"": ""SimpleAttackStart"",
+                    ""action"": ""SimpleAttackStartState"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -213,7 +213,7 @@ public class @MainPlayerInput : IInputActionCollection, IDisposable
         m_Actions_MoveRight = m_Actions.FindAction("OnMoveRightStateEnter", throwIfNotFound: true);
         m_Actions_MoveLeft = m_Actions.FindAction("OnMoveLeftStateEnter", throwIfNotFound: true);
         m_Actions_MoveBoost = m_Actions.FindAction("MoveBoost", throwIfNotFound: true);
-        m_Actions_SimpleAttack = m_Actions.FindAction("SimpleAttackStart", throwIfNotFound: true);
+        m_Actions_SimpleAttack = m_Actions.FindAction("SimpleAttackStartState", throwIfNotFound: true);
     }
 
     public void Dispose()

@@ -19,6 +19,24 @@ namespace Assets.Scripts.Player.Components
             ConstructStates();
         }
 
+        private DataComponent _dataComponent;
+
+        private StateMachine _stateMachine;
+
+        private StateNodeBase
+            _idleState,
+            _jumpStartState,
+            _jumpStartWhenBoostedState,
+            _fallState,
+            _moveRightState,
+            _moveLeftState,
+            _moveLeftWhenFallingState,
+            _moveRightWhenFallingState,
+            _boostedMoveLeftState,
+            _boostedMoveRightState,
+            _simpleAttackStartState,
+            _simpleAttackEndState;
+
         protected override void ActivateInternal()
         {
             base.ActivateInternal();
@@ -61,11 +79,15 @@ namespace Assets.Scripts.Player.Components
             _moveRightWhenFallingState = new MoveRightWhenFallingState(ref _stateMachine, ref _eventBus);
             _boostedMoveLeftState = new BoostedMoveLeftState(ref _stateMachine, ref _eventBus);
             _boostedMoveRightState = new BoostedMoveRightState(ref _stateMachine, ref _eventBus);
+            _simpleAttackStartState = new SimpleAttackStartState(ref _stateMachine, ref _eventBus);
+            _simpleAttackEndState = new SimpleAttackEndState(ref _stateMachine, ref _eventBus);
         }
 
         private void ConfigureStatesLinks()
         {
             SetLinksForIdleState();
+            SetLinksForSimpleAttackStartState();
+            SetLinksForSimpleAttackEndState();
             SetLinksForJumpStartState();
             SetLinksForJumpStartWhenBoostedState();
             SetLinksForFallState();
@@ -106,6 +128,58 @@ namespace Assets.Scripts.Player.Components
                 ref _boostedMoveLeftState,
                 data => 
                     data.InputDataHashed.MoveLeftButtonPressed && 
+                    data.InputDataHashed.MoveBoostButtonPressed);
+
+            _idleState.SetLink(
+                ref _simpleAttackStartState,
+                data => 
+                    data.InputDataHashed.SimpleAttackButtonPressed);
+        }
+
+        private void SetLinksForSimpleAttackStartState()
+        {
+            _simpleAttackStartState.SetLink(
+                ref _simpleAttackEndState,
+                data => 
+                    !data.InputDataHashed.SimpleAttackButtonPressed);
+        }
+
+        private void SetLinksForSimpleAttackEndState()
+        {
+            _simpleAttackEndState.SetLink(
+                ref _idleState,
+                data =>
+                    data.AttackDataHashed.IsAttackEnded &&
+                    !data.InputDataHashed.MoveRightButtonPressed &&
+                    !data.InputDataHashed.MoveLeftButtonPressed &&
+                    !data.InputDataHashed.JumpButtonPressed);
+
+            _simpleAttackEndState.SetLink(
+                ref _moveLeftState,
+                data =>
+                    data.AttackDataHashed.IsAttackEnded &&
+                    data.InputDataHashed.MoveLeftButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _simpleAttackEndState.SetLink(
+                ref _moveRightState,
+                data =>
+                    data.AttackDataHashed.IsAttackEnded &&
+                    data.InputDataHashed.MoveRightButtonPressed &&
+                    !data.InputDataHashed.MoveBoostButtonPressed);
+
+            _simpleAttackEndState.SetLink(
+                ref _boostedMoveLeftState,
+                data =>
+                    data.AttackDataHashed.IsAttackEnded &&
+                    data.InputDataHashed.MoveLeftButtonPressed &&
+                    data.InputDataHashed.MoveBoostButtonPressed);
+
+            _simpleAttackEndState.SetLink(
+                ref _boostedMoveRightState,
+                data =>
+                    data.AttackDataHashed.IsAttackEnded &&
+                    data.InputDataHashed.MoveRightButtonPressed &&
                     data.InputDataHashed.MoveBoostButtonPressed);
         }
 
@@ -254,6 +328,11 @@ namespace Assets.Scripts.Player.Components
                 data => 
                     data.InputDataHashed.MoveRightButtonPressed && 
                     data.InputDataHashed.MoveBoostButtonPressed);
+
+            _moveRightState.SetLink(
+                ref _simpleAttackStartState,
+                data =>
+                    data.InputDataHashed.SimpleAttackButtonPressed);
         }
 
         private void SetLinksForMoveLeftState()
@@ -286,6 +365,11 @@ namespace Assets.Scripts.Player.Components
                 data => 
                     data.InputDataHashed.MoveRightButtonPressed && 
                     data.InputDataHashed.MoveBoostButtonPressed);
+
+            _moveLeftState.SetLink(
+                ref _simpleAttackStartState,
+                data =>
+                    data.InputDataHashed.SimpleAttackButtonPressed);
         }
 
         private void SetLinksForMoveLeftWhenFallingState()
@@ -441,6 +525,12 @@ namespace Assets.Scripts.Player.Components
                 data =>
                     data.InputDataHashed.MoveRightButtonPressed && 
                     data.InputDataHashed.MoveBoostButtonPressed);
+
+            _boostedMoveLeftState.SetLink(
+                ref _simpleAttackStartState,
+                data =>
+                    data.InputDataHashed.SimpleAttackButtonPressed &&
+                    data.GroundAndWallDataHashed.IsOnGround);
         }
 
         private void SetLinksForBoostedMoveRightState()
@@ -498,22 +588,12 @@ namespace Assets.Scripts.Player.Components
                 data => 
                     data.InputDataHashed.MoveLeftButtonPressed && 
                     data.InputDataHashed.MoveBoostButtonPressed);
+
+            _boostedMoveRightState.SetLink(
+                ref _simpleAttackStartState,
+                data =>
+                    data.InputDataHashed.SimpleAttackButtonPressed &&
+                    data.GroundAndWallDataHashed.IsOnGround);
         }
-
-        private DataComponent _dataComponent;
-
-        private StateMachine _stateMachine;
-
-        private StateNodeBase 
-            _idleState,
-            _jumpStartState,
-            _jumpStartWhenBoostedState,
-            _fallState, 
-            _moveRightState, 
-            _moveLeftState,
-            _moveLeftWhenFallingState,
-            _moveRightWhenFallingState,
-            _boostedMoveLeftState,
-            _boostedMoveRightState;
     }
 }

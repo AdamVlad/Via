@@ -26,9 +26,10 @@ namespace Assets.Scripts.Player.Components
             FallingDataHashed = new FallingData();
         }
 
-        public InputData InputDataHashed { get; private set; }
-        public GroundAndWallCheckerData GroundAndWallDataHashed { get; private set; }
-        public FallingData FallingDataHashed { get; private set; }
+        public InputData InputDataHashed;
+        public GroundAndWallCheckerData GroundAndWallDataHashed;
+        public FallingData FallingDataHashed;
+        public AttackData AttackDataHashed;
 
         protected override void ActivateInternal()
         {
@@ -55,17 +56,29 @@ namespace Assets.Scripts.Player.Components
             switch (data)
             {
                 case InputData inputData:
+
                     InputDataHashed = inputData;
+                    Notify(new NullData());
                     break;
+
                 case GroundAndWallCheckerData groundAndWallCheckerData:
+
                     GroundAndWallDataHashed = groundAndWallCheckerData;
+                    Notify(new NullData());
                     break;
+
                 case FallingData fallingData:
                     FallingDataHashed = fallingData;
+                    Notify(new NullData());
+                    break;
+
+                case AttackData attackData:
+
+                    AttackDataHashed = attackData;
+                    Notify(new NullData());
+                    AttackDataHashed.IsAttackEnded = false;
                     break;
             }
-
-            Notify(new NullData());
         }
 
         private readonly ObservableComponentDecorator _inputObservable;
