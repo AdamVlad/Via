@@ -41,6 +41,7 @@ namespace Assets.Scripts.Infrastructure
             InstallMoveComponent();
             InstallFallTrackingComponent();
             InstallAttackComponent();
+            InstallStaffEffectsComponent();
         }
 
         private void InstallPlayerPrefab()
@@ -112,6 +113,11 @@ namespace Assets.Scripts.Infrastructure
         private void InstallAttackComponent()
         {
             Container.Bind<AttackComponent>().AsSingle();
+        }
+
+        private void InstallStaffEffectsComponent()
+        {
+            Container.Bind<StaffEffectsComponent>().AsSingle();
         }
     }
 }

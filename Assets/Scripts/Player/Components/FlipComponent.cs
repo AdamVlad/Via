@@ -5,7 +5,6 @@ namespace Assets.Scripts.Player.Components
 {
     public sealed class FlipComponent : ComponentBase
     {
-        // Потом в файлах сохранения персонажа запоминать его поворот и передавать в конструкторе. Не забудь!
         public FlipComponent(IEventBus<PlayerEvents> eventBus) : base(eventBus)
         {
         }

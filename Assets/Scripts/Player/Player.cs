@@ -21,7 +21,8 @@ namespace Assets.Scripts.Player
             FallTrackingComponent fallTrackingComponent,
             MoveBoostComponent moveBoostComponent,
             AttackComponent attackComponent,
-            DataComponent dataComponent)
+            DataComponent dataComponent,
+            StaffEffectsComponent staffEffectsComponent)
         {
             _inputComponent = inputComponent.IfNullThrowExceptionOrReturn();
             _animationComponent = animationComponent.IfNullThrowExceptionOrReturn();
@@ -34,12 +35,15 @@ namespace Assets.Scripts.Player
             _moveBoostComponent = moveBoostComponent.IfNullThrowExceptionOrReturn();
             _attackComponent = attackComponent.IfNullThrowExceptionOrReturn();
             _dataComponent = dataComponent.IfNullThrowExceptionOrReturn();
+            _staffEffectsComponent = staffEffectsComponent.IfNullThrowExceptionOrReturn();
         }
 
         [SerializeField] private Transform _bottomRightRayPoint;
         [SerializeField] private Transform _bottomLeftRayPoint;
         [SerializeField] private Transform _topLeftRayPoint;
         [SerializeField] private Transform _topRightRayPoint;
+
+        [SerializeField] private Transform _staffEffectsPoint;
 
         private void OnEnable()
         {
@@ -54,6 +58,7 @@ namespace Assets.Scripts.Player
             _fallTrackingComponent.Activate();
             _attackComponent.Activate();
             _dataComponent.Activate();
+            _staffEffectsComponent.Activate();
         }
 
         private void OnDisable()
@@ -69,6 +74,7 @@ namespace Assets.Scripts.Player
             _fallTrackingComponent.Deactivate();
             _attackComponent.Deactivate();
             _dataComponent.Deactivate();
+            _staffEffectsComponent.Deactivate();
         }
 
         private void Awake()
@@ -77,6 +83,8 @@ namespace Assets.Scripts.Player
             _bottomLeftRayPoint.IfNullThrowException();
             _topLeftRayPoint.IfNullThrowException();
             _topRightRayPoint.IfNullThrowException();
+
+            _staffEffectsPoint.IfNullThrowException();
         }
 
         private void Start()
@@ -86,6 +94,8 @@ namespace Assets.Scripts.Player
                 _bottomLeftRayPoint, 
                 _topLeftRayPoint, 
                 _topRightRayPoint);
+
+            _staffEffectsComponent.Start(_staffEffectsPoint);
         }
 
         private InputComponent _inputComponent;
@@ -99,6 +109,8 @@ namespace Assets.Scripts.Player
         private MoveBoostComponent _moveBoostComponent;
         private AttackComponent _attackComponent;
         private DataComponent _dataComponent;
+
+        private StaffEffectsComponent _staffEffectsComponent;
     }
 }
 

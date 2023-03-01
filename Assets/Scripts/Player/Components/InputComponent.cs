@@ -120,14 +120,14 @@ namespace Assets.Scripts.Player.Components
 
         private void OnSimpleAttackPressed(InputAction.CallbackContext callbackContext)
         {
-            _simpleAttackButtonPressed = true;
+            _simpleAttackButtonPressedHashed = true;
 
             NotifyInternal();
         }
 
         private void OnSimpleAttackCanceled(InputAction.CallbackContext callbackContext)
         {
-            _simpleAttackButtonPressed = false;
+            _simpleAttackButtonPressedHashed = false;
 
             NotifyInternal();
         }
@@ -140,7 +140,7 @@ namespace Assets.Scripts.Player.Components
                 MoveRightButtonPressed = _moveRightButtonPressedHashed,
                 MoveBoostButtonPressed = _moveBoostButtonPressedHashed,
                 JumpButtonPressed = _jumpButtonPressedHashed,
-                SimpleAttackButtonPressed = _simpleAttackButtonPressed
+                SimpleAttackButtonPressed = _simpleAttackButtonPressedHashed
             });
         }
 
@@ -150,6 +150,6 @@ namespace Assets.Scripts.Player.Components
         private bool _moveRightButtonPressedHashed;
         private bool _moveBoostButtonPressedHashed;
         private bool _jumpButtonPressedHashed;
-        private bool _simpleAttackButtonPressed;
+        private bool _simpleAttackButtonPressedHashed;
     }
 }

@@ -25,6 +25,7 @@ namespace Assets.Scripts.Player.Components
             _eventBus.Subscribe(PlayerEvents.OnMoveRightStateEnter, StopBoost);
             _eventBus.Subscribe(PlayerEvents.OnMoveLeftWhenFallingStateEnter, StopBoost);
             _eventBus.Subscribe(PlayerEvents.OnMoveRightWhenFallingStateEnter, StopBoost);
+            _eventBus.Subscribe(PlayerEvents.OnFallStateEnter, StopBoost);
         }
 
         protected override void DeactivateInternal()
@@ -37,6 +38,7 @@ namespace Assets.Scripts.Player.Components
             _eventBus.Unsubscribe(PlayerEvents.OnMoveRightStateEnter, StopBoost);
             _eventBus.Unsubscribe(PlayerEvents.OnMoveLeftWhenFallingStateEnter, StopBoost);
             _eventBus.Unsubscribe(PlayerEvents.OnMoveRightWhenFallingStateEnter, StopBoost);
+            _eventBus.Unsubscribe(PlayerEvents.OnFallStateEnter, StopBoost);
         }
 
         private void BoostingMove()
