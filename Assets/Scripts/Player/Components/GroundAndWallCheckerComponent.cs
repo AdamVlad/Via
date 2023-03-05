@@ -1,11 +1,10 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
 using Assets.Scripts.Extensions;
-using Assets.Scripts.Patterns.EventBus;
 using Assets.Scripts.Player.Components.Base;
 using Assets.Scripts.Player.ComponentsData;
+using Assets.Scripts.Utils.EventBus;
 
 namespace Assets.Scripts.Player.Components
 {
@@ -13,9 +12,8 @@ namespace Assets.Scripts.Player.Components
     {
         public GroundAndWallCheckerComponent(
             IEventBus<PlayerEvents> eventBus,
-            PlayerSettings settings) : base(eventBus)
+            PlayerSettings settings) : base(eventBus, settings)
         {
-            _settings = settings ?? throw new NullReferenceException("PlayerSettings is null");
         }
 
         public void Start(
@@ -42,11 +40,11 @@ namespace Assets.Scripts.Player.Components
                 _bottomLeftRayPoint.up * -1,
                 _settings.BottomRayLength);
             CheckGroundIfIsOnGroundEqualsFalse(
-                _topLeftRayPoint.position, 
-                _topLeftRayPoint.up, 
+                _topLeftRayPoint.position,
+                _topLeftRayPoint.up,
                 _settings.TopRayLength);
             CheckGroundIfIsOnGroundEqualsFalse(
-                _topRightRayPoint.position, 
+                _topRightRayPoint.position,
                 _topRightRayPoint.up,
                 _settings.TopRayLength);
 
@@ -56,16 +54,16 @@ namespace Assets.Scripts.Player.Components
                 _settings.RightRayLength);
 
             CheckWallIfTouchedWallEqualsFalse(
-                _bottomLeftRayPoint.position, 
-                _bottomLeftRayPoint.right * -1, 
+                _bottomLeftRayPoint.position,
+                _bottomLeftRayPoint.right * -1,
                 _settings.LeftRayLength);
             CheckWallIfTouchedWallEqualsFalse(
-                _topLeftRayPoint.position, 
-                _topLeftRayPoint.right * -1, 
+                _topLeftRayPoint.position,
+                _topLeftRayPoint.right * -1,
                 _settings.LeftRayLength);
             CheckWallIfTouchedWallEqualsFalse(
-                _topRightRayPoint.position, 
-                _topRightRayPoint.right, 
+                _topRightRayPoint.position,
+                _topRightRayPoint.right,
                 _settings.RightRayLength);
 
             if (DidOneParameterChange())
@@ -124,7 +122,6 @@ namespace Assets.Scripts.Player.Components
         }
 
         private Transform _bottomRightRayPoint, _bottomLeftRayPoint, _topLeftRayPoint, _topRightRayPoint;
-        private readonly PlayerSettings _settings;
 
         private bool _isOnGround;
         private bool _touchedWall;

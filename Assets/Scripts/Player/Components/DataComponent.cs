@@ -1,9 +1,9 @@
 ﻿using Assets.Scripts.Extensions;
-using Assets.Scripts.Patterns.EventBus;
-using Assets.Scripts.Patterns.Observer;
 using Assets.Scripts.Player.Components.Base;
 using Assets.Scripts.Player.ComponentsData;
 using Assets.Scripts.Player.ComponentsData.Interfaces;
+using Assets.Scripts.Utils.EventBus;
+using Assets.Scripts.Utils.Observer;
 
 namespace Assets.Scripts.Player.Components
 {
@@ -11,10 +11,11 @@ namespace Assets.Scripts.Player.Components
     {
         public DataComponent(
             IEventBus<PlayerEvents> eventBus,
+            PlayerSettings settings,
             InputComponent inputComponent,
             GroundAndWallCheckerComponent groundAndWallCheckerObservable,
             FallTrackingComponent fallTrackingComponent,
-            AnimationComponent animationComponent) : base(eventBus)
+            AnimationComponent animationComponent) : base(eventBus, settings)
         {
             _inputObservable = inputComponent.IfNullThrowExceptionOrReturn();
             _groundAndWallCheckerObservable = groundAndWallCheckerObservable.IfNullThrowExceptionOrReturn();
@@ -24,6 +25,7 @@ namespace Assets.Scripts.Player.Components
             InputDataHashed = new InputData();
             GroundAndWallDataHashed = new GroundAndWallCheckerData();
             FallingDataHashed = new FallingData();
+            AttackDataHashed = new AttackData();
         }
 
         public InputData InputDataHashed;
@@ -87,4 +89,3 @@ namespace Assets.Scripts.Player.Components
         private readonly ObservableComponentDecorator _animationObservable;
     }
 }
-

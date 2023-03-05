@@ -1,5 +1,5 @@
-﻿using Assets.Scripts.Patterns.EventBus;
-using Assets.Scripts.Player.States.Base;
+﻿using Assets.Scripts.Player.States.Base;
+using Assets.Scripts.Utils.EventBus;
 
 namespace Assets.Scripts.Player.States
 {

@@ -5,6 +5,9 @@ namespace Assets.Scripts.Player
     [CreateAssetMenu(fileName = "Settings", menuName = "Player/Settings")]
     public class PlayerSettings : ScriptableObject
     {
+        [SerializeField] private Player _playerPrefab;
+        public Player PlayerPrefab => _playerPrefab;
+
         #region Physic
 
         [Header("Physic")]

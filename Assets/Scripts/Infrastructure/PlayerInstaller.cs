@@ -1,23 +1,18 @@
 ﻿using UnityEngine;
 using Zenject;
 
-using Assets.Scripts.Patterns.EventBus;
 using Assets.Scripts.Player;
 using Assets.Scripts.Player.Components;
+using Assets.Scripts.Utils.EventBus;
 
 namespace Assets.Scripts.Infrastructure
 {
     public sealed class PlayerInstaller : MonoInstaller
     {
-        [SerializeField] private GameObject _playerPrefab;
         [SerializeField] private PlayerSettings _playerSettings;
 
         private void Awake()
         {
-            if (_playerPrefab == null)
-            {
-                Debug.LogError("PlayerInstaller: player prefab not set");
-            }
             if (_playerSettings == null)
             {
                 Debug.LogError("PlayerInstaller: player settings not set");
@@ -26,27 +21,21 @@ namespace Assets.Scripts.Infrastructure
 
         public override void InstallBindings()
         {
-            InstallPlayerPrefab();
-            InstallSettings();
             InstallEventBus();
-
+            InstallSettings();
+            
             InstallDataComponent();
             InstallInputComponent();
             InstallStateComponent();
             InstallAnimationComponent();
             InstallJumpComponent();
-            InstallCollisionComponent();
+            InstallGroundAndWallCheckerComponent();
             InstallFlipComponent();
             InstallMoveBoostingComponent();
             InstallMoveComponent();
             InstallFallTrackingComponent();
             InstallAttackComponent();
             InstallStaffEffectsComponent();
-        }
-
-        private void InstallPlayerPrefab()
-        {
-            Container.Bind<GameObject>().FromInstance(_playerPrefab).AsSingle();
         }
 
         private void InstallSettings()
@@ -66,7 +55,6 @@ namespace Assets.Scripts.Infrastructure
 
         private void InstallInputComponent()
         {
-            Container.Bind<MainPlayerInput>().AsSingle();
             Container.Bind<InputComponent>().AsSingle();
         }
 
@@ -85,7 +73,7 @@ namespace Assets.Scripts.Infrastructure
             Container.Bind<JumpComponent>().AsSingle();
         }
 
-        private void InstallCollisionComponent()
+        private void InstallGroundAndWallCheckerComponent()
         {
             Container.Bind(typeof(GroundAndWallCheckerComponent), typeof(IFixedTickable)).To<GroundAndWallCheckerComponent>().AsSingle();
         }

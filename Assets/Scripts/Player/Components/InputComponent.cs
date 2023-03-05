@@ -1,19 +1,18 @@
-﻿using System;
-using UnityEngine.InputSystem;
+﻿using UnityEngine.InputSystem;
 
 using Assets.Scripts.Player.Components.Base;
 using Assets.Scripts.Player.ComponentsData;
-using Assets.Scripts.Patterns.EventBus;
+using Assets.Scripts.Utils.EventBus;
 
 namespace Assets.Scripts.Player.Components
 {
     public sealed class InputComponent : ObservableComponentDecorator
     {
         public InputComponent(
-            MainPlayerInput input,
-            IEventBus<PlayerEvents> eventBus) : base(eventBus)
+            IEventBus<PlayerEvents> eventBus,
+            PlayerSettings settings) : base(eventBus, settings)
         {
-            _input = input ?? throw new NullReferenceException("MainPlayerInput is null");
+            _input = new MainPlayerInput();
         }
 
         protected override void ActivateInternal()

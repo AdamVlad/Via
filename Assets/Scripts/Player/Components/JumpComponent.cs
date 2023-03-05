@@ -1,9 +1,8 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 using Assets.Scripts.Extensions;
 using Assets.Scripts.Player.Components.Base;
-using Assets.Scripts.Patterns.EventBus;
+using Assets.Scripts.Utils.EventBus;
 
 namespace Assets.Scripts.Player.Components
 {
@@ -11,11 +10,15 @@ namespace Assets.Scripts.Player.Components
     {
         public JumpComponent(
             IEventBus<PlayerEvents> eventBus,
-            GameObject player,
-            PlayerSettings settings) : base(eventBus)
+            PlayerSettings settings) : base(eventBus, settings)
         {
-            _rigidbody = player.GetComponentOrThrowException<Rigidbody2D>();
-            _settings = settings ?? throw new NullReferenceException("PlayerSettings is null");
+        }
+
+        protected override void StartInternal()
+        {
+            base.StartInternal();
+
+            _rigidbody = _player.gameObject.GetComponentInChildrenOrThrowException<Rigidbody2D>();
         }
 
         protected override void ActivateInternal()
@@ -39,7 +42,6 @@ namespace Assets.Scripts.Player.Components
             _rigidbody.AddForce(Vector2.up * _rigidbody.mass * _settings.JumpForce);
         }
 
-        private readonly Rigidbody2D _rigidbody;
-        private readonly PlayerSettings _settings;
+        private Rigidbody2D _rigidbody;
     }
 }

@@ -47,6 +47,22 @@ namespace Assets.Scripts.Player
 
         private void OnEnable()
         {
+            ActivateAllComponents();
+        }
+
+        private void OnDisable()
+        {
+            DeactivateAllComponents();
+        }
+
+        private void Awake()
+        {
+            CheckSerializeFieldsOnNull();
+            StartAllComponents();
+        }
+
+        private void ActivateAllComponents()
+        {
             _inputComponent.Activate();
             _animationComponent.Activate();
             _stateComponent.Activate();
@@ -61,7 +77,7 @@ namespace Assets.Scripts.Player
             _staffEffectsComponent.Activate();
         }
 
-        private void OnDisable()
+        private void DeactivateAllComponents()
         {
             _inputComponent.Deactivate();
             _animationComponent.Deactivate();
@@ -77,25 +93,33 @@ namespace Assets.Scripts.Player
             _staffEffectsComponent.Deactivate();
         }
 
-        private void Awake()
+        private void CheckSerializeFieldsOnNull()
         {
             _bottomRightRayPoint.IfNullThrowException();
             _bottomLeftRayPoint.IfNullThrowException();
             _topLeftRayPoint.IfNullThrowException();
             _topRightRayPoint.IfNullThrowException();
-
             _staffEffectsPoint.IfNullThrowException();
         }
 
-        private void Start()
+        private void StartAllComponents()
         {
             _groundAndWallCheckerComponent.Start(
-                _bottomRightRayPoint, 
-                _bottomLeftRayPoint, 
-                _topLeftRayPoint, 
+                _bottomRightRayPoint,
+                _bottomLeftRayPoint,
+                _topLeftRayPoint,
                 _topRightRayPoint);
-
             _staffEffectsComponent.Start(_staffEffectsPoint);
+            _inputComponent.Start(this);
+            _animationComponent.Start(this);
+            _stateComponent.Start(this);
+            _jumpComponent.Start(this);
+            _flipComponent.Start(this);
+            _moveBoostComponent.Start(this);
+            _moveComponent.Start(this);
+            _fallTrackingComponent.Start(this);
+            _attackComponent.Start(this);
+            _dataComponent.Start(this);
         }
 
         private InputComponent _inputComponent;
@@ -109,8 +133,10 @@ namespace Assets.Scripts.Player
         private MoveBoostComponent _moveBoostComponent;
         private AttackComponent _attackComponent;
         private DataComponent _dataComponent;
-
         private StaffEffectsComponent _staffEffectsComponent;
     }
-}
 
+    public class Factory : PlaceholderFactory<Player>
+    {
+    }
+}

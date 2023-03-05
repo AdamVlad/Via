@@ -1,13 +1,12 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
 using Assets.Scripts.Extensions;
-using Assets.Scripts.Patterns.EventBus;
-using Assets.Scripts.Patterns.Observer;
 using Assets.Scripts.Player.Components.Base;
 using Assets.Scripts.Player.ComponentsData;
 using Assets.Scripts.Player.ComponentsData.Interfaces;
+using Assets.Scripts.Utils.EventBus;
+using Assets.Scripts.Utils.Observer;
 
 namespace Assets.Scripts.Player.Components
 {
@@ -16,12 +15,16 @@ namespace Assets.Scripts.Player.Components
         public MoveComponent(
             IEventBus<PlayerEvents> eventBus,
             MoveBoostComponent moveBoostComponent,
-            GameObject player,
-            PlayerSettings settings) : base(eventBus)
+            PlayerSettings settings) : base(eventBus, settings)
         {
             _boostingObservable = moveBoostComponent.IfNullThrowExceptionOrReturn();
-            _transform = player.IfNullThrowExceptionOrReturn().transform;
-            _settings = settings ?? throw new NullReferenceException("PlayerSettings is null");
+        }
+
+        protected override void StartInternal()
+        {
+            base.StartInternal();
+
+            _transform = _player.gameObject.transform;
         }
 
         protected override void ActivateInternal()
@@ -94,8 +97,7 @@ namespace Assets.Scripts.Player.Components
 
         private readonly ObservableComponentDecorator _boostingObservable;
 
-        private readonly Transform _transform;
-        private readonly PlayerSettings _settings;
+        private Transform _transform;
 
         private MoveBoostData _moveBoostDataHashed;
         private bool _dirty;

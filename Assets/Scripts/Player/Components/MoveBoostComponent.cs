@@ -1,8 +1,6 @@
-﻿using System;
-
-using Assets.Scripts.Patterns.EventBus;
-using Assets.Scripts.Player.Components.Base;
+﻿using Assets.Scripts.Player.Components.Base;
 using Assets.Scripts.Player.ComponentsData;
+using Assets.Scripts.Utils.EventBus;
 
 namespace Assets.Scripts.Player.Components
 {
@@ -10,9 +8,8 @@ namespace Assets.Scripts.Player.Components
     {
         public MoveBoostComponent(
             IEventBus<PlayerEvents> eventBus,
-            PlayerSettings settings) : base(eventBus)
+            PlayerSettings settings) : base(eventBus, settings)
         {
-            _settings = settings ?? throw new NullReferenceException("PlayerSettings is null");
         }
 
         protected override void ActivateInternal()
@@ -56,7 +53,5 @@ namespace Assets.Scripts.Player.Components
                 BoostMultiplier = 1
             });
         }
-
-        private readonly PlayerSettings _settings;
     }
 }

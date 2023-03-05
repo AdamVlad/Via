@@ -1,12 +1,10 @@
-﻿using System;
-using DragonBones;
-using UnityEngine;
+﻿using DragonBones;
 
 using Assets.Scripts.Extensions;
-using Assets.Scripts.Patterns.EventBus;
 using Assets.Scripts.Player.Components.Base;
 using System.Threading.Tasks;
 using Assets.Scripts.Player.ComponentsData;
+using Assets.Scripts.Utils.EventBus;
 
 namespace Assets.Scripts.Player.Components
 {
@@ -14,11 +12,15 @@ namespace Assets.Scripts.Player.Components
     {
         public AnimationComponent(
             IEventBus<PlayerEvents> eventBus,
-            GameObject character,
-            PlayerSettings settings) : base(eventBus)
+            PlayerSettings settings) : base(eventBus, settings)
         {
-            _armature = character.GetComponentInChildrenOrThrowException<UnityArmatureComponent>();
-            _settings = settings ?? throw new NullReferenceException("PlayerSettings is null");
+        }
+
+        protected override void StartInternal()
+        {
+            base.StartInternal();
+
+            _armature = _player.gameObject.GetComponentInChildrenOrThrowException<UnityArmatureComponent>();
         }
 
         protected override void ActivateInternal()
@@ -137,7 +139,6 @@ namespace Assets.Scripts.Player.Components
             });
         }
 
-        private readonly UnityArmatureComponent _armature;
-        private readonly PlayerSettings _settings;
+        private UnityArmatureComponent _armature;
     }
 }

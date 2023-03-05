@@ -1,15 +1,26 @@
 using System;
 
-using Assets.Scripts.Patterns.EventBus;
+using Assets.Scripts.Extensions;
 using Assets.Scripts.Player.Components.Interfaces;
+using Assets.Scripts.Utils.EventBus;
 
 namespace Assets.Scripts.Player.Components.Base
 {
     public abstract class ComponentBase : IPlayerComponent
     {
-        protected ComponentBase(IEventBus<PlayerEvents> eventBus)
+        protected ComponentBase(
+            IEventBus<PlayerEvents> eventBus,
+            PlayerSettings settings)
         {
             _eventBus = eventBus ?? throw new NullReferenceException("IEventBus<PlayerEvents> is null");
+            _settings = settings ?? throw new NullReferenceException("PlayerSettings is null");
+        }
+
+        public void Start(Player player)
+        {
+            _player = player.IfNullThrowExceptionOrReturn();
+
+            StartInternal();
         }
 
         public void Activate()
@@ -22,6 +33,10 @@ namespace Assets.Scripts.Player.Components.Base
             DeactivateInternal();
         }
 
+        protected virtual void StartInternal()
+        {
+        }
+
         protected virtual void ActivateInternal()
         {
         }
@@ -31,5 +46,7 @@ namespace Assets.Scripts.Player.Components.Base
         }
 
         protected IEventBus<PlayerEvents> _eventBus;
+        protected PlayerSettings _settings;
+        protected Player _player;
     }
 }

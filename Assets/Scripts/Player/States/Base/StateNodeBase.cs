@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-
-using Assets.Scripts.Patterns.EventBus;
 using Assets.Scripts.Player.Components;
+using Assets.Scripts.Utils.EventBus;
 
 namespace Assets.Scripts.Player.States.Base
 {

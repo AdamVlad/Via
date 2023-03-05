@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
 
 using Assets.Scripts.Effects.StaffEffects;
-using Assets.Scripts.Patterns.EventBus;
 using Assets.Scripts.Player.Components.Base;
 using Assets.Scripts.Extensions;
+using Assets.Scripts.Utils.EventBus;
 
 namespace Assets.Scripts.Player.Components
 {
     public class StaffEffectsComponent : ComponentBase
     {
-        public StaffEffectsComponent(IEventBus<PlayerEvents> eventBus) : base(eventBus)
+        public StaffEffectsComponent(
+            IEventBus<PlayerEvents> eventBus,
+            PlayerSettings settings) : base(eventBus, settings)
         {
             _orbEffect = Resources.Load<OrbEffect>("PlayerEffects/MagicOrb").IfNullThrowExceptionOrReturn();
             _boostedFireEffect = Resources.Load<BoostedFireEffect>("PlayerEffects/BoostedFire").IfNullThrowExceptionOrReturn();     // сделай скрипт, который находит путь к этому файлу автоматически

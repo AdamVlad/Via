@@ -1,10 +1,10 @@
-﻿using Assets.Scripts.Patterns.EventBus;
-using Assets.Scripts.Player.Components.Base;
-using Assets.Scripts.Patterns.Observer;
+﻿using Assets.Scripts.Player.Components.Base;
 using Assets.Scripts.Extensions;
 using Assets.Scripts.Player.ComponentsData.Interfaces;
 using Assets.Scripts.Player.States;
 using Assets.Scripts.Player.States.Base;
+using Assets.Scripts.Utils.EventBus;
+using Assets.Scripts.Utils.Observer;
 
 namespace Assets.Scripts.Player.Components
 {
@@ -12,7 +12,8 @@ namespace Assets.Scripts.Player.Components
     {
         public StateComponent(
             IEventBus<PlayerEvents> eventBus,
-            DataComponent dataComponent) : base(eventBus)
+            PlayerSettings settings,
+            DataComponent dataComponent) : base(eventBus, settings)
         {
             _dataComponent = dataComponent.IfNullThrowExceptionOrReturn();
 
@@ -151,8 +152,7 @@ namespace Assets.Scripts.Player.Components
                 data =>
                     data.AttackDataHashed.IsAttackEnded &&
                     !data.InputDataHashed.MoveRightButtonPressed &&
-                    !data.InputDataHashed.MoveLeftButtonPressed &&
-                    !data.InputDataHashed.JumpButtonPressed);
+                    !data.InputDataHashed.MoveLeftButtonPressed);
 
             _simpleAttackEndState.SetLink(
                 ref _moveLeftState,

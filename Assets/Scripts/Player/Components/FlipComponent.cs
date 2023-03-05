@@ -1,11 +1,13 @@
-﻿using Assets.Scripts.Patterns.EventBus;
-using Assets.Scripts.Player.Components.Base;
+﻿using Assets.Scripts.Player.Components.Base;
+using Assets.Scripts.Utils.EventBus;
 
 namespace Assets.Scripts.Player.Components
 {
     public sealed class FlipComponent : ComponentBase
     {
-        public FlipComponent(IEventBus<PlayerEvents> eventBus) : base(eventBus)
+        public FlipComponent(
+            IEventBus<PlayerEvents> eventBus,
+            PlayerSettings settings) : base(eventBus, settings)
         {
         }
 
