@@ -2,6 +2,7 @@
 using Zenject;
 
 using Assets.Scripts.Extensions;
+using Assets.Scripts.Utils.Factories;
 
 namespace Assets.Scripts
 {
@@ -11,9 +12,9 @@ namespace Assets.Scripts
         private Transform _playerSpawnPoint;
 
         [Inject]
-        private void Construct(Player.Factory playerFactory)
+        private void Construct(PlayerFactory playerPlayerFactory)
         {
-            _playerFactory = playerFactory;
+            _playerPlayerFactory = playerPlayerFactory;
         }
 
         private void Awake()
@@ -23,11 +24,11 @@ namespace Assets.Scripts
 
         private void Start()
         {
-            var player = _playerFactory.Create();
+            var player = _playerPlayerFactory.Create();
             player.transform.position = _playerSpawnPoint.position;
 
         }
 
-        private Player.Factory _playerFactory;
+        private PlayerFactory _playerPlayerFactory;
     }
 }

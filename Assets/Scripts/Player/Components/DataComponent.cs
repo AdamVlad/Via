@@ -60,25 +60,25 @@ namespace Assets.Scripts.Player.Components
                 case InputData inputData:
 
                     InputDataHashed = inputData;
-                    Notify(new NullData());
+                    Notify(InputDataHashed);
                     break;
 
                 case GroundAndWallCheckerData groundAndWallCheckerData:
 
                     GroundAndWallDataHashed = groundAndWallCheckerData;
-                    Notify(new NullData());
+                    Notify(GroundAndWallDataHashed);
                     break;
 
                 case FallingData fallingData:
                     FallingDataHashed = fallingData;
-                    Notify(new NullData());
+                    Notify(FallingDataHashed);
                     break;
 
                 case AttackData attackData:
 
                     AttackDataHashed = attackData;
-                    Notify(new NullData());
-                    AttackDataHashed.IsAttackEnded = false;
+                    Notify(AttackDataHashed);
+                    AttackDataHashed.IsSimpleAttackEnded = false;
                     break;
             }
         }

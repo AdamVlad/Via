@@ -2,17 +2,18 @@
 using Zenject;
 
 using Assets.Scripts.Player;
+using Assets.Scripts.Utils.Factories;
+using UnityEngine;
 
 namespace Assets.Scripts.Infrastructure
 {
     public sealed class FactoriesInstaller : MonoInstaller
     {
-        [Inject]
-        PlayerSettings _settings;
+        [SerializeField] private PlayerSettings _playerSettings;
 
         private void Awake()
         {
-            if (_settings == null)
+            if (_playerSettings == null)
             {
                 throw new NullReferenceException("Player settings not set");
             }
@@ -21,13 +22,22 @@ namespace Assets.Scripts.Infrastructure
         public override void InstallBindings()
         {
             InstallPlayerFactory();
+
+            InstallFireBulletsFactory();
         }
 
         private void InstallPlayerFactory()
         {
             Container
-                .BindFactory<Player.Player, Factory>()
-                .FromComponentInNewPrefab(_settings.PlayerPrefab);
+                .BindFactory<Player.Player, PlayerFactory>()
+                .FromComponentInNewPrefab(_playerSettings.PlayerPrefab);
+        }
+
+        private void InstallFireBulletsFactory()
+        {
+            Container
+                .Bind<FireBulletsFactory>()
+                .AsSingle();
         }
     }
 }

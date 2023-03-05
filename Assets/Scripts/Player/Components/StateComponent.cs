@@ -150,35 +150,35 @@ namespace Assets.Scripts.Player.Components
             _simpleAttackEndState.SetLink(
                 ref _idleState,
                 data =>
-                    data.AttackDataHashed.IsAttackEnded &&
+                    data.AttackDataHashed.IsSimpleAttackEnded &&
                     !data.InputDataHashed.MoveRightButtonPressed &&
                     !data.InputDataHashed.MoveLeftButtonPressed);
 
             _simpleAttackEndState.SetLink(
                 ref _moveLeftState,
                 data =>
-                    data.AttackDataHashed.IsAttackEnded &&
+                    data.AttackDataHashed.IsSimpleAttackEnded &&
                     data.InputDataHashed.MoveLeftButtonPressed &&
                     !data.InputDataHashed.MoveBoostButtonPressed);
 
             _simpleAttackEndState.SetLink(
                 ref _moveRightState,
                 data =>
-                    data.AttackDataHashed.IsAttackEnded &&
+                    data.AttackDataHashed.IsSimpleAttackEnded &&
                     data.InputDataHashed.MoveRightButtonPressed &&
                     !data.InputDataHashed.MoveBoostButtonPressed);
 
             _simpleAttackEndState.SetLink(
                 ref _boostedMoveLeftState,
                 data =>
-                    data.AttackDataHashed.IsAttackEnded &&
+                    data.AttackDataHashed.IsSimpleAttackEnded &&
                     data.InputDataHashed.MoveLeftButtonPressed &&
                     data.InputDataHashed.MoveBoostButtonPressed);
 
             _simpleAttackEndState.SetLink(
                 ref _boostedMoveRightState,
                 data =>
-                    data.AttackDataHashed.IsAttackEnded &&
+                    data.AttackDataHashed.IsSimpleAttackEnded &&
                     data.InputDataHashed.MoveRightButtonPressed &&
                     data.InputDataHashed.MoveBoostButtonPressed);
         }

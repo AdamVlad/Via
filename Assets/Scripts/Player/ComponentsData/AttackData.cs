@@ -4,6 +4,6 @@ namespace Assets.Scripts.Player.ComponentsData
 {
     public struct AttackData : IData
     {
-        public bool IsAttackEnded { get; set; }
+        public bool IsSimpleAttackEnded { get; set; }
     }
 }

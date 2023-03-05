@@ -1,10 +1,12 @@
 ﻿using DragonBones;
 
+using System.Threading.Tasks;
+
 using Assets.Scripts.Extensions;
 using Assets.Scripts.Player.Components.Base;
-using System.Threading.Tasks;
 using Assets.Scripts.Player.ComponentsData;
 using Assets.Scripts.Utils.EventBus;
+using AnimationState = DragonBones.AnimationState;
 
 namespace Assets.Scripts.Player.Components
 {
@@ -127,7 +129,7 @@ namespace Assets.Scripts.Player.Components
             Task.Factory.StartNew(() => WaitForAnimationEnd(animationState));
         }
 
-        private void WaitForAnimationEnd(DragonBones.AnimationState animationState)
+        private void WaitForAnimationEnd(AnimationState animationState)
         {
             while (!animationState.isCompleted)
             {
@@ -135,7 +137,7 @@ namespace Assets.Scripts.Player.Components
 
             Notify(new AttackData
             {
-                IsAttackEnded = true
+                IsSimpleAttackEnded = true
             });
         }
 

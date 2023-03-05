@@ -12,9 +12,10 @@
         OnStoppingMove,
         OnJumpStartStateEnter,
         OnJumpStartWhenBoostedStateEnter,
-        OnSimpleAttackStartStateEnter,
-        OnSimpleAttackEndStateEnter,
         OnFallStateEnter,
         OnFlipPlayerPicture,
+        OnSimpleAttackStartStateEnter,
+        OnSimpleAttackEndStateEnter,
+        ShootingFireBullet
     }
 }
