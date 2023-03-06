@@ -26,7 +26,6 @@ namespace Assets.Scripts
         {
             var player = _playerPlayerFactory.Create();
             player.transform.position = _playerSpawnPoint.position;
-
         }
 
         private PlayerFactory _playerPlayerFactory;

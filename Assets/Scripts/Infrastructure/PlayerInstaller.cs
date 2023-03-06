@@ -34,6 +34,7 @@ namespace Assets.Scripts.Infrastructure
             InstallMoveBoostingComponent();
             InstallMoveComponent();
             InstallFallTrackingComponent();
+            InstallCursorCaptureComponent();
             InstallAttackComponent();
             InstallStaffEffectsComponent();
         }
@@ -100,7 +101,8 @@ namespace Assets.Scripts.Infrastructure
         private void InstallFlipComponent()
         {
             Container
-                .Bind<FlipComponent>()
+                .Bind(typeof(FlipComponent), typeof(ITickable))
+                .To<FlipComponent>()
                 .AsSingle();
         }
 
@@ -124,6 +126,13 @@ namespace Assets.Scripts.Infrastructure
             Container
                 .Bind(typeof(FallTrackingComponent), typeof(IFixedTickable))
                 .To<FallTrackingComponent>()
+                .AsSingle();
+        }
+
+        private void InstallCursorCaptureComponent()
+        {
+            Container
+                .Bind<CursorCaptureComponent>()
                 .AsSingle();
         }
 

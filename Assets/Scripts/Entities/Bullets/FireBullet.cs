@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 using Zenject;
-
-using System.Collections;
 
 namespace Assets.Scripts.Entities.Bullets
 {
@@ -18,30 +17,31 @@ namespace Assets.Scripts.Entities.Bullets
         [SerializeField, Range(0, 5)] private float _lifeTime = 4;
         [SerializeField] private float _speed;
 
+        public void GiveMovementTo(Vector3 endPoint)
+        {
+            var convertedToVector2StartPoint = new Vector2(transform.position.x, transform.position.y);
+            var convertedToVector2EndPoint = new Vector2(endPoint.x, endPoint.y);
+            _direction = (convertedToVector2EndPoint - convertedToVector2StartPoint).normalized;
+
+            _dirty = true;
+
+            StartCoroutine(RunLifeCycle());
+        }
+
         private void FixedUpdate()
         {
             if (_dirty)
             {
                 transform.Translate(
-                    Vector3.right *
+                    _direction *
                     _speed *
                     Time.fixedDeltaTime);
             }
         }
 
-        private void OnEnable()
-        {
-            _dirty = true;
-            StartCoroutine(RunLifeCycle());
-        }
-
         private void OnDisable()
         {
             _dirty = false;
-        }
-
-        private void OnDestroy()
-        {
             StopCoroutine(RunLifeCycle());
         }
 
@@ -54,6 +54,8 @@ namespace Assets.Scripts.Entities.Bullets
         }
 
         private IObjectPool<FireBullet> _pool;
+
+        private Vector3 _direction;
 
         private bool _dirty;
     }

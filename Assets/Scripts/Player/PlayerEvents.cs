@@ -15,7 +15,6 @@
         OnFallStateEnter,
         OnFlipPlayerPicture,
         OnSimpleAttackStartStateEnter,
-        OnSimpleAttackEndStateEnter,
-        ShootingFireBullet
+        OnSimpleAttackEndStateEnter
     }
 }
