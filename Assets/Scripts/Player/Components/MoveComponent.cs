@@ -62,11 +62,18 @@ namespace Assets.Scripts.Player.Components
             if (_dirty)
             {
                 _transform.Translate(
-                    Vector3.right * 
+                    Vector3.right *
+                    _settings.SpeedCurve.Evaluate(_timeElapsed) *
                     _direction *
-                    _moveBoostDataHashed.BoostMultiplier *
                     _settings.NormalSpeed *
+                    _moveBoostDataHashed.BoostMultiplier *
                     Time.fixedDeltaTime);
+
+                _timeElapsed += Time.fixedDeltaTime;
+            }
+            else
+            {
+                _timeElapsed = 0;
             }
         }
 
@@ -102,5 +109,6 @@ namespace Assets.Scripts.Player.Components
         private MoveBoostData _moveBoostDataHashed;
         private bool _dirty;
         private int _direction;
+        private float _timeElapsed;
     }
 }

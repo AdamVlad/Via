@@ -4,6 +4,5 @@ namespace Assets.Scripts.Effects.StaffEffects
 {
     public class PowerUpFireBulletEffect : StaffEffectsBase
     {
-
     }
 }

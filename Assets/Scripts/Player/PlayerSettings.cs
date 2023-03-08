@@ -13,6 +13,9 @@ namespace Assets.Scripts.Player
         [Header("Physic")]
         [Space]
 
+        [SerializeField] private AnimationCurve _speedCurve;
+        public AnimationCurve SpeedCurve => _speedCurve;
+
         [SerializeField] private float _normalSpeed;
         public float NormalSpeed => _normalSpeed;
 

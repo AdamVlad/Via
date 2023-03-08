@@ -13,6 +13,48 @@ MonoBehaviour:
   m_Name: PlayerSettings
   m_EditorClassIdentifier: 
   _playerPrefab: {fileID: 6345831969824002156, guid: 609ea210d14536545980c4d24aa4a496, type: 3}
+  _speedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.049999237
+      value: -0.0023498535
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.23077184
+      value: 0.57602286
+      inSlope: 2.2445955
+      outSlope: 2.2445955
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.06345442
+    - serializedVersion: 3
+      time: 0.54905105
+      value: 0.91564053
+      inSlope: 0.38696146
+      outSlope: 0.38696146
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   _normalSpeed: 10
   _boostSpeedMultiplier: 2.3
   _jumpForce: 1000

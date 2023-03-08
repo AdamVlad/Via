@@ -5,8 +5,7 @@ namespace Assets.Scripts.Player.States
 {
     public class StateMachine
     {
-        public StateMachine(
-            ref DataComponent data)
+        public StateMachine(ref DataComponent data)
         {
             _data = data;
         }
@@ -21,9 +20,13 @@ namespace Assets.Scripts.Player.States
 
         public void ChangeState()
         {
-            CurrentState.EnterNextState(ref _data);
+            lock (_locker)
+            {
+                CurrentState.EnterNextState(ref _data);
+            }
         }
 
         private DataComponent _data;
+        private object _locker = new object();
     }
 }
