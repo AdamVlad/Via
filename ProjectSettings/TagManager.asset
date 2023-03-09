@@ -44,6 +44,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: TerrainFar
+    uniqueID: 1618945545
+    locked: 0
+  - name: TerrainMiddle
+    uniqueID: 3719111271
+    locked: 0
   - name: Player
     uniqueID: 1821910717
     locked: 0
@@ -52,4 +58,7 @@ TagManager:
     locked: 0
   - name: Effects
     uniqueID: 760402903
+    locked: 0
+  - name: TerrainNear
+    uniqueID: 693916757
     locked: 0
