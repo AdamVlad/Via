@@ -97,14 +97,14 @@ namespace Assets.Scripts.Player.Components
         {
             var hit = ThrowRay(point, direction, distance);
 
-            _isOnGround = hit.collider != null && hit.collider.name == "Ground";
+            _isOnGround = hit.collider != null && hit.collider.tag == "Ground";
         }
 
         private void CheckWall(Vector3 point, Vector3 direction, float distance)
         {
             var hit = ThrowRay(point, direction, distance);
 
-            _touchedWall = hit.collider != null && hit.collider.name == "Wall";
+            _touchedWall = hit.collider != null && hit.collider.tag == "Wall";
         }
 
         private RaycastHit2D ThrowRay(Vector3 point, Vector3 direction, float distance)
