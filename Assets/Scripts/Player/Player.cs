@@ -23,7 +23,8 @@ namespace Assets.Scripts.Player
             AttackComponent attackComponent,
             DataComponent dataComponent,
             StaffEffectsComponent staffEffectsComponent,
-            CursorCaptureComponent cursorCaptureComponent)
+            CursorCaptureComponent cursorCaptureComponent,
+            CameraCaptureComponent cameraCaptureComponent)
         {
             _inputComponent = inputComponent.IfNullThrowExceptionOrReturn();
             _animationComponent = animationComponent.IfNullThrowExceptionOrReturn();
@@ -38,6 +39,7 @@ namespace Assets.Scripts.Player
             _dataComponent = dataComponent.IfNullThrowExceptionOrReturn();
             _staffEffectsComponent = staffEffectsComponent.IfNullThrowExceptionOrReturn();
             _cursorCaptureComponent = cursorCaptureComponent.IfNullThrowExceptionOrReturn();
+            _cameraCaptureComponent = cameraCaptureComponent.IfNullThrowExceptionOrReturn();
         }
 
         [SerializeField] private Transform _bottomRightRayPoint;
@@ -62,6 +64,11 @@ namespace Assets.Scripts.Player
             StartAllComponents();
         }
 
+        private void Start()
+        {
+            _cameraCaptureComponent.Start(this);
+        }
+
         private void ActivateAllComponents()
         {
             _inputComponent.Activate();
@@ -77,6 +84,7 @@ namespace Assets.Scripts.Player
             _attackComponent.Activate();
             _stateComponent.Activate();
             _staffEffectsComponent.Activate();
+            _cameraCaptureComponent.Activate();
         }
 
         private void DeactivateAllComponents()
@@ -94,6 +102,7 @@ namespace Assets.Scripts.Player
             _attackComponent.Deactivate();
             _stateComponent.Deactivate();
             _staffEffectsComponent.Deactivate();
+            _cameraCaptureComponent.Deactivate();
         }
 
         private void CheckSerializeFieldsOnNull()
@@ -119,7 +128,7 @@ namespace Assets.Scripts.Player
             _attackComponent.Start(_staffEffectsPoint);
             _stateComponent.Start(this);
             _jumpComponent.Start(this);
-            _flipComponent.Start(transform);
+            _flipComponent.Start(this);
             _moveBoostComponent.Start(this);
             _moveComponent.Start(this);
             _fallTrackingComponent.Start(this);
@@ -139,5 +148,6 @@ namespace Assets.Scripts.Player
         private DataComponent _dataComponent;
         private StaffEffectsComponent _staffEffectsComponent;
         private CursorCaptureComponent _cursorCaptureComponent;
+        private CameraCaptureComponent _cameraCaptureComponent;
     }
 }

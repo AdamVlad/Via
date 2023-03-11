@@ -37,6 +37,7 @@ namespace Assets.Scripts.Infrastructure
             InstallCursorCaptureComponent();
             InstallAttackComponent();
             InstallStaffEffectsComponent();
+            InstallCameraCaptureComponent();
         }
 
         private void InstallSettings()
@@ -147,6 +148,14 @@ namespace Assets.Scripts.Infrastructure
         {
             Container
                 .Bind<StaffEffectsComponent>()
+                .AsSingle();
+        }
+
+        private void InstallCameraCaptureComponent()
+        {
+            Container
+                .Bind(typeof(CameraCaptureComponent), typeof(ITickable))
+                .To<CameraCaptureComponent>()
                 .AsSingle();
         }
     }

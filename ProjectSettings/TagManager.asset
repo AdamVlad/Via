@@ -15,9 +15,9 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
-  - 
-  - 
+  - CamerasConfiner
+  - Camera
+  - Background
   - 
   - 
   - 
@@ -43,6 +43,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 2561924231
     locked: 0
   - name: TerrainFar
     uniqueID: 1618945545

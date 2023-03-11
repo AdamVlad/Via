@@ -31,7 +31,6 @@ namespace Assets.Scripts.Utils.EventBus
         {
             if(_events.TryGetValue(playerState, out var thisEvent))
             {
-                UnityEngine.Debug.Log(playerState);
                 thisEvent.Invoke();
             }
         }

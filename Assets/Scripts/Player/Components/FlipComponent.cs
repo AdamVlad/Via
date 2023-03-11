@@ -16,11 +16,11 @@ namespace Assets.Scripts.Player.Components
         {
         }
 
-        public void Start(Transform transform)
+        protected override void StartInternal()
         {
             base.StartInternal();
 
-            _transform = transform.IfNullThrowExceptionOrReturn();
+            _transform = _player.gameObject.transform.IfNullThrowExceptionOrReturn();
 
             _mainCamera = Camera.main;
             _mouse = Mouse.current;

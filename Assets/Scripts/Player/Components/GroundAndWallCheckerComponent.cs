@@ -113,7 +113,7 @@ namespace Assets.Scripts.Player.Components
 
             Debug.DrawRay(ray.origin, ray.direction * distance, Color.red);
 
-            return Physics2D.Raycast(ray.origin, ray.direction, distance);
+            return Physics2D.Raycast(ray.origin, ray.direction, distance, LayerMask.GetMask("Ground"));
         }
 
         private bool DidOneParameterChange()
