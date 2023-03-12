@@ -8,24 +8,50 @@ namespace Assets.Scripts.Effects.Lighting
     [RequireComponent(typeof(Light2D))]
     public class LightFlicker : MonoBehaviour
     {
-        [SerializeField]
-        private float _flickerIntensity = 0.5f;
+        [SerializeField] private float _intensityChangedSpeedMultiplicator;
+
+        [SerializeField] private float _intensityUpperBorder = 1;
+        [SerializeField] private float _intensityBottomBorder = 0;
 
         private void Awake()
         {
             _light = gameObject.GetComponent<Light2D>().IfNullThrowExceptionOrReturn();
-            _baseIntensity = _light.intensity;
+            _light.intensity = _intensityUpperBorder;
+
+            var rand = new System.Random();
+            _startDelay = (float)rand.NextDouble();
         }
 
         private void Update()
         {
+            if (_startDelay > 0)
+            {
+                _startDelay -= Time.deltaTime;
+                return;
+            }
 
-            float noise = Mathf.PerlinNoise(Random.Range(0.0f, 1000.0f), Time.time);
-            _light.intensity = Mathf.Lerp(_baseIntensity - _flickerIntensity, _baseIntensity, noise);
-            
+            if (_light.intensity >= _intensityUpperBorder)
+            {
+                _isGlowIncreaseDirection = false;
+            }
+            else if (_light.intensity <= _intensityBottomBorder)
+            {
+                _isGlowIncreaseDirection = true;
+            }
+
+            if (_isGlowIncreaseDirection)
+            {
+                _light.intensity += Time.deltaTime * _intensityChangedSpeedMultiplicator;
+            }
+            else
+            {
+                _light.intensity -= Time.deltaTime * _intensityChangedSpeedMultiplicator;
+            }
         }
 
-        private float _baseIntensity;
         private Light2D _light;
+        private bool _isGlowIncreaseDirection;
+
+        private float _startDelay;
     }
 }
