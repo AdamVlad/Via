@@ -1,29 +1,31 @@
 ﻿using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 
-namespace Assets.Script.Effects.Lighting
+using Assets.Scripts.Extensions;
+
+namespace Assets.Scripts.Effects.Lighting
 {
+    [RequireComponent(typeof(Light2D))]
     public class LightFlicker : MonoBehaviour
     {
-        public bool Flicker = true;
+        [SerializeField]
+        private float _flickerIntensity = 0.5f;
 
-        public float FlickerIntensity = 0.5f;
-
-        private float BaseIntensity;
-        private Light LightComp;
-
-        void Awake()
+        private void Awake()
         {
-            LightComp = gameObject.GetComponent<Light>();
-            BaseIntensity = LightComp.intensity;
+            _light = gameObject.GetComponent<Light2D>().IfNullThrowExceptionOrReturn();
+            _baseIntensity = _light.intensity;
         }
 
-        void Update()
+        private void Update()
         {
-            if (Flicker)
-            {
-                float noise = Mathf.PerlinNoise(Random.Range(0.0f, 1000.0f), Time.time);
-                LightComp.intensity = Mathf.Lerp(BaseIntensity - FlickerIntensity, BaseIntensity, noise);
-            }
+
+            float noise = Mathf.PerlinNoise(Random.Range(0.0f, 1000.0f), Time.time);
+            _light.intensity = Mathf.Lerp(_baseIntensity - _flickerIntensity, _baseIntensity, noise);
+            
         }
+
+        private float _baseIntensity;
+        private Light2D _light;
     }
 }

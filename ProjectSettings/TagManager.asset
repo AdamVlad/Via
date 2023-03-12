@@ -56,6 +56,9 @@ TagManager:
   - name: Player
     uniqueID: 1821910717
     locked: 0
+  - name: TerrainMiddle2
+    uniqueID: 1209991889
+    locked: 0
   - name: MagicOrb
     uniqueID: 3069011677
     locked: 0
